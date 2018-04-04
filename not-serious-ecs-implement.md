@@ -18,18 +18,18 @@
 
 1. **必须简单**：在框架下使用ECS越简单越好，理想的方案是需要的时候随时加入，而不需要的时候即时删除。如果Entity代码中包含Component成员变量，那么就需要手工编码Component成员变量相关的操作，包括：命名，Init(), Dispose()等，删除或重命名时也需要手动调整相关的代码。因为实践中经常会遇到这样的操作，我认为如果经常手工编码的话过于复杂了。Entitas插件通过自动生成代码的方式自动化了这一过程。
 
-2. **代码编译时可以做到Entity与Component解耦**：
+2. **代码编译期可以做到Entity与Component解耦**：我们项目中有一个需求跟《守望先锋》有点像。我们希望部分Logic层的Client代码（比如MoveComponent）可以直接在Server上运行，但剥离出View层的代码(比如RenderComponent)。这就要求Logic层代码不能知道任何View层代码的内容，否则就会编译不过。同时由于所有相关代码的生命周期都是一样的，因此ECS是一个favorable的设计方案。具体就是在Client端Entity会挂接所有相关的Component，而在Server端Entity只挂接Logic层的Component。
 
+综合以上原因，相对理想的理想的方案就是类Unity3d中的Component组件方式：
 
-```java
+```csharp
     var entity = new GameObjectEntity();
-    entity.AddComponent(typeof(MoveComponent));
-    entity.AddComponent(typeof(RenderComponent));
+    entity.AddComponent(typeof(MoveComponent));      // Logic层
+    entity.AddComponent(typeof(RenderComponent));    // View层
     ...
     entity.RemoveComponent(typeof(RenderComponent));
 ```
 
-比如Unity3d插件Entitas，它通过自动生成代码的方案
 
 
 
