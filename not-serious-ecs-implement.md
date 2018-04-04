@@ -2,17 +2,14 @@
 
 ---
 
-通过使用ECS，我们可以像**填配置表一样订制代码**。
+ECS使我们可以像**填配置表一样订制代码**。
 
-懂行的人稍微看一下就会知道，我的设计并不是一个正统的ECS实现方案。正统的ECS中Component是纯数据的，而System则是纯函数无状态，我的设计暂时没有关心这些准则，先围绕自己关心的问题实现。从结果上看，更像是Unity3d中的Component实现方案。
+懂行的人稍微看一下就会知道，我将介绍的设计并不是正统的ECS实现方案。正统ECS中，Component是纯数据，System是纯函数（无状态）。在我的设计中暂时没有关心这些准则，先围绕自己关心的问题实现。从结果上看，更像是Unity3d中的Component实现方案。
 
-
-1. 简单
-2. Enitity与Component解耦
-
+框架基于Unity3d引擎，编码使用C#，因此下面的示例代码和语法也都是C#的。
 
 ---
-#### 1. Entity不需要知道正在使用哪些Component
+#### 0x01. Entity不需要知道正在使用哪些Component
 
 关于ECS框架网上有一些讨论，就目前我了解到的一些方案，Entity都是明确知道自己使用哪些Component的。我认为这跟OO中的组合模式（Composite Pattern）区别不大，我可以接受Component强引用Entity，但不能接受Entity强引用Component。之所以这样设计，有两个比较重要的原因：
 
@@ -30,7 +27,9 @@
     entity.RemoveComponent(typeof(RenderComponent));
 ```
 
+而为此付出的代价是：Entity中的Component都存储在一张Hashtable Type, Component 中，实测Hashtable比
 
+我们无法像成员变量一样直接访问Component，
 
 
 
