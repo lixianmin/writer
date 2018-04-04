@@ -23,14 +23,23 @@ ECS使我们可以像**填配置表一样订制代码**。
     var entity = new GameObjectEntity();
     entity.AddComponent(typeof(MoveComponent));      // Logic层
     entity.AddComponent(typeof(RenderComponent));    // View层
-    ...
+    // ...其它代码
     entity.RemoveComponent(typeof(RenderComponent));
 ```
 
 具体到实现，Entity中的Component全部存储在一张中心Hashtable（Type =&gt; Component）中，而为此**付出的代价是：Speed & Memory**：
 
 * Speed：因为对Component的Add/Remove/Get全部通过Hashtable进行，因此与直接访问类成员变量相比速度会更慢。在macOs 10.12.6 + Unity3d 2017.1.0f3下，实测C\#的Hashtable（Type =&gt; Component）与直接访问数组的耗时比大概为10:1，Dictionary&lt;Type, Component&gt;与直接访问数组的耗时比大概为15:1。测试的Hashtable与Dictionary都是使用的默认参数，没有调整loadFactor，据网上说相同的量级下Hashtable的loadFactor会更低，也因此会占用更大的内存。
+
+
+
 * Memory：传说，同样的数据，存储在哈希表中比存储在数组中要多占用两倍以上的内存。
+
+
+
+---
+
+#### 0x02. Component生命周期管理
 
 
 
