@@ -1,12 +1,18 @@
--
 
---
 
-ECS使我们可以像**填配置表一样订制代码**。
+作者：李现民
 
-懂行的人稍微看一下就会知道，我将介绍的设计并不是正统的ECS实现方案。正统ECS中，Component是纯数据，System是纯函数（无状态）。在我的设计中暂时没有关心这些准则，先围绕自己关心的问题实现。从结果上看，更像是Unity3d中的Component实现方案。
+github: https://github.com/lixianmin
 
-框架基于Unity3d引擎，编码使用C\#，因此下面的示例代码和语法也都是C\#的。
+---
+
+#### 0x00. Abstract
+
+本文中的ECS是Entity-Component-System（实体-组件-系统） 的缩写，是一种代码框架设计理念。ECS使我们可以
+
+懂行的人稍微看一下就会知道，我下面介绍的设计并不是正统的ECS实现方案。正统ECS中，要求Component是纯数据，System是纯函数（无状态）。在我的设计中（暂时maybe  -\_\_\_\_- ）没有care这些准则，我的目的是可以像**填配置一样订制代码**，而从结果上看，更像是Unity3d中的Component实现方案。希望了解正经ECS设计方案的，请移步文末的参考文献区，那里有一个链接也许对你有用。
+
+实现方案基于Unity3d引擎，编码使用C\#，因此下面的示例语法也都是C\#的。
 
 ---
 
@@ -16,7 +22,7 @@ ECS使我们可以像**填配置表一样订制代码**。
 
 1. **越简单越易用**：理想的情况下，Entit在需要任意Component时可随时创建，而不需要时可随时销毁。如果在Entity代码中硬编码了Component成员变量，那么就需要同样手工编码所有其它相关的操作，比如：命名，Init\(\), Dispose\(\)等，删除或重命名时也需要手动调整相关代码。这些例行操作在实践中经常遇到，因此我认为手工编码的话过于复杂了。参考文献中的Entitas通过插件自动生成代码的方式自动化了这一过程。
 
-1. **Entity在编译期与Component解耦**：我们项目有一个需求跟《守望先锋》很像。我们希望部分Logic层的Client代码（比如MoveComponent）可以直接在Server上运行，此时需要完全剥离出View层的代码\(比如RenderComponent\)。这要求Logic层代码不能强引用任何View层代码的信息，否则会编译不过。同时因为所有相关代码的生命周期都是一样的，因此动态增删Component是一个favorable的设计方案。具体就是在Client端Entity会动态挂接所有相关Component，而在Server端Entity只需要挂接Logic层的Component。
+2. **Entity在编译期与Component解耦**：我们项目有一个需求跟《守望先锋》很像。我们希望部分Logic层的Client代码（比如MoveComponent）可以直接在Server上运行，此时需要完全剥离出View层的代码\(比如RenderComponent\)。这要求Logic层代码不能强引用任何View层代码的信息，否则会编译不过。同时因为所有相关代码的生命周期都是一样的，因此动态增删Component是一个favorable的设计方案。具体就是在Client端Entity会动态挂接所有相关Component，而在Server端Entity只需要挂接Logic层的Component。
 
 综合以上原因，相对理想的理想的方案就是类Unity3d中的Component组件方式：
 
@@ -60,21 +66,21 @@ Update Method是游戏设计中的一种常规设计手法，具体方法可能�
 
 1. System只有行为，没有状态，是怎么做到的
 
-1. MoveSystem通过某种方式可以得到所有拥有Position和Speed的实体集合， 这是一种怎样的方式？
+2. MoveSystem通过某种方式可以得到所有拥有Position和Speed的实体集合， 这是一种怎样的方式？
 
-1. 文章表示可以通过加入EnemyComponent表示这是一个enemy，这意味着EnemyComponent是非常轻量级的，而我现在的实现是相对重量级的，内含的成员太多了
+3. 文章表示可以通过加入EnemyComponent表示这是一个enemy，这意味着EnemyComponent是非常轻量级的，而我现在的实现是相对重量级的，内含的成员太多了
 
-1. 我看Entitas的IComponent就是一个空的接口，它后面是怎么实现的
+4. 我看Entitas的IComponent就是一个空的接口，它后面是怎么实现的
 
-1. system中遍历组件需要按type进行排序，这样速度才会快
+5. system中遍历组件需要按type进行排序，这样速度才会快
 
-1. typeIndex与partId可以合并为一个int64
+6. typeIndex与partId可以合并为一个int64
 
-1. 有40%的component是singleton，这个应该如何支持？
+7. 有40%的component是singleton，这个应该如何支持？
 
-1. Component需要能订制是否pool
+8. Component需要能订制是否pool
 
-1. System要求无状态，C\#中有几个概念跟这个是相关的：静态类，工具类，纯函数，扩展方法
+9. System要求无状态，C\#中有几个概念跟这个是相关的：静态类，工具类，纯函数，扩展方法
 
 ---
 
