@@ -36,10 +36,10 @@ entity.RemoveComponent(typeof(RenderComponent));
 
 #### 0x02. 缓存友好
 
-从实现效果上，设计倾向于以属性为中心的设计（《游戏引擎架构P655》）。Entity中只需要存储实际用于的Component(即是说，我们不会有一些对象，内含未使用的Component成员)
-，这对于有效使用内存是有益的，但是，考虑到我们使用哈希表存储Component成员，一正一负，实际内存占用不好说是升了还是降了。
+从实现效果上，设计倾向于以属性为中心的设计（《游戏引擎架构P655》）。Entity中只需要存储实际用到的Component(即是说，我们不会有一些对象，内含未使用的Component成员)
+，这对于有效使用内存是有益的，不过，考虑到我们使用哈希表存储Component成员，一正一负，实际内存占用不好说是升了还是降了。
 
-
+与以对象为中心的设计相比较，以属性中心设计可能更缓存友好。Update Method是游戏设计中的一种常规设计手法，具体可能命名为Update()或Tick()，以下不再区分。在以对象为中心的模型中，很多宿主对象及属性对象都需要写一个Update()方法，用于在每一帧更新相关数据。实际上，因为Update()调用通常是从上而下逐级进行的，因此只要有一个属性对象需要Update()方法，都会强迫其所在的宿主对象写一个Update()方法。在ECS实现中，我们可以设计一个ComponentUpdateSystem类，收集所有包含Update()的Component，将它们**存储在同一个Array中并按Type排序**。这样，相同Type的Component在内存中是连续存储的，在调用Update()方法遍历时，能够减少或消除缓命中失败（cache miss）。此数据布局符合**数组之结构（struct of array, SoA）**的要求。
 
 
 
@@ -81,5 +81,6 @@ entity.RemoveComponent(typeof(RenderComponent));
 3. [浅谈《守望先锋》中的 ECS 构架（云风）](https://blog.codingnow.com/2017/06/overwatch_ecs.html)
 4. [Entitas-CSharp](https://github.com/sschmid/Entitas-CSharp)
 5. [游戏引擎架构](https://www.amazon.cn/dp/B00HY8SIX2/ref=sr_1_1?s=books&ie=UTF8&qid=1522924143&sr=1-1)
+6. [Update Method](https://github.com/lixianmin/design-pattern/blob/master/update-method.md)
 
 
