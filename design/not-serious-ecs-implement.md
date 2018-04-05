@@ -1,3 +1,8 @@
+
+---
+
+### 非正经ECS实现方案
+
 作者：李现民
 
 github: [https://github.com/lixianmin](https://github.com/lixianmin)
@@ -57,8 +62,6 @@ Update Method是游戏设计中的一种常规设计手法，具体方法可能�
 不同type的Component之间对Update\(\)方法的调用顺序可能有要求，比如Unity3d中专门区分了Update\(\)与LateUpdate\(\)应对这件事情。通过以下方式我们可以控制的更加细致：给每一种type提供一个typeIndex值，并将array中的Component按typeIndex的顺序排序（在C\#中，Array.Sort\(keys, items\)方法可以帮助）。大部分情况下，不同Component之间的Update\(\)调用顺序并无特殊要求，因此只需要在第一次访问这种Component的type时候自动生成一个typeIndex即可。对于少部分需要严格控制Update\(\)调用顺序的Component，只需要在游戏初始化时为它们设置指定的typeIndex值就可以了。
 
 在初版设计中，我将typeIndex作为property放到Component类中，但经过几周的迭代发现，该变量只对Update\(\)方法排序有用，因此将其转移到了ComponentUpdateSystem类中，作为Array.Sort\(keys, items\)的keys数组使用。我这种设计明显违反了ECS中要求System不能含有状态的准则，因此你们现在可以准备批评我了。
-
-
 
 ---
 
