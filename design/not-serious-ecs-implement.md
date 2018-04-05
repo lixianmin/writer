@@ -14,7 +14,7 @@ ECS使我们可以像**填配置表一样订制代码**。
 
 1. **越简单越易用**：理想的情况下，Entit在需要任意Component时可随时创建，而不需要时可随时销毁。如果在Entity代码中硬编码了Component成员变量，那么就需要同样手工编码所有其它相关的操作，比如：命名，Init\(\), Dispose\(\)等，删除或重命名时也需要手动调整相关代码。这些例行操作在实践中经常遇到，因此我认为手工编码的话过于复杂了。参考文献中的Entitas通过插件自动生成代码的方式自动化了这一过程。
 
-2. **Entity在编译期与Component解耦**：我们项目有一个需求跟《守望先锋》很像。我们希望部分Logic层的Client代码（比如MoveComponent）可以直接在Server上运行，此时需要完全剥离出View层的代码\(比如RenderComponent\)。这要求Logic层代码不能强引用任何View层代码的信息，否则会编译不过。同时因为所有相关代码的生命周期都是一样的，因此动态增删component是一个favorable的设计方案。具体就是在Client端Entity会动态挂接所有相关Component，而在Server端Entity只需要挂接Logic层的Component。
+2. **Entity在编译期与Component解耦**：我们项目有一个需求跟《守望先锋》很像。我们希望部分Logic层的Client代码（比如MoveComponent）可以直接在Server上运行，此时需要完全剥离出View层的代码\(比如RenderComponent\)。这要求Logic层代码不能强引用任何View层代码的信息，否则会编译不过。同时因为所有相关代码的生命周期都是一样的，因此动态增删Component是一个favorable的设计方案。具体就是在Client端Entity会动态挂接所有相关Component，而在Server端Entity只需要挂接Logic层的Component。
 
 综合以上原因，相对理想的理想的方案就是类Unity3d中的Component组件方式：
 
@@ -33,18 +33,20 @@ entity.RemoveComponent(typeof(RenderComponent));
 * Memory：传说，同样的数据，存储在哈希表中比存储在数组中要多占用两倍左右的内存。
 
 ---
-以属性为中心的设计
 
-以属性为中心的设计方案相对于以对象为中心的设计，
+#### 0x02. 缓存友好
 
-《游戏引擎架构》p655
+从实现效果上，设计倾向于以属性为中心的设计（《游戏引擎架构P655》）。Entity中只需要存储实际用于的Component(即是说，我们不会有一些对象，内含未使用的Component成员)
+，这对于有效使用内存是有益的，但是，考虑到我们使用哈希表存储Component成员，一正一负，实际内存占用不好说是升了还是降了。
+
+
 
 
 
 
 ---
 
-#### 0x02. Component生命周期管理
+#### 0x03. Component生命周期管理
 
 
 
@@ -78,5 +80,6 @@ entity.RemoveComponent(typeof(RenderComponent));
 2. [一个无框架的ECS实现（Entity-Component-System](https://zhuanlan.zhihu.com/p/32787878)
 3. [浅谈《守望先锋》中的 ECS 构架（云风）](https://blog.codingnow.com/2017/06/overwatch_ecs.html)
 4. [Entitas-CSharp](https://github.com/sschmid/Entitas-CSharp)
+5. [游戏引擎架构](https://www.amazon.cn/dp/B00HY8SIX2/ref=sr_1_1?s=books&ie=UTF8&qid=1522924143&sr=1-1)
 
 
