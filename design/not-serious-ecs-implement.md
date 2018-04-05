@@ -52,7 +52,9 @@ Update Method是游戏设计中的一种常规设计手法，具体方法可能�
 
 以属性中心设计则可能更加缓存友好。在ECS实现中，我们可以设计一个ComponentUpdateSystem类，收集所有包含Update\(\)的Component，将它们**存储在同一个array中并按type排序**。这样，相同type的Component在内存中是连续存储的，在遍历调用所有Component的Update\(\)方法时，能够减少或消除缓命中失败。此数据布局符合**数组之结构（struct of array, SoA）**的要求。
 
-具体到ComponentUpdateSystem类的实现细节，由于我们使用array存储Component对象，在Create/Destroy Component时，不应该立即调整array中的内容，否则会导致频繁移动array中的数据，可能引起不必要的CPU开销。Create Component时，可以先将新的Component对象append到数组尾部，在真正遍历array中的Component之前，将其按type排序。Destroy Component时，也不需要立即从array移除，只需要在遍历结束后的某个时刻调用一个RemoveAll\(\)方法统一移除即可（类似于List&lt;T&gt;.RemoveAll\(\)）。
+具体到ComponentUpdateSystem类的实现细节，由于我们使用array存储Component对象，在Create/Destroy Component时，不应该立即调整array中的内容，否则会导致频繁移动array中的数据，可能引起不必要的CPU开销。Create Component时，可以先将新的Component对象append到数组尾部，在真正遍历array中的Component之前，将其按type排序。Destroy Component时，也不需要立即从array中移除，只需要在遍历结束后的某个时刻调用一个RemoveAll\(\)方法统一移除即可（类似于List&lt;T&gt;.RemoveAll\(\)）。
+
+不同type的Component之间对Update\(\)方法的调用顺序可能有要求，比如Unity3d中专门区分了Update\(\)与LateUpdate\(\)应对这件事情。通过给每一种type提供一个index值，我们可以控制的更加细致。大部分情况下，不同Component之间的Update\(\)顺序并无特殊要求，因此只需要在第一次访问这种Component的type时候自动生成一个index即可。对于少部分需要严格控制Update\(\)顺序的Component，只需要在游戏初始化时为它们设置指定的index值就可以了。
 
 ---
 
