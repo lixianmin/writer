@@ -1,3 +1,6 @@
-# My Awesome Book
+# 清风竹林里下的感悟
 
-This file file serves as your book's preface, a great place to describe your book's content and ideas.
+
+
+主要记录工作生活中点滴感悟，不求成章，但求思考 ;\)
+
