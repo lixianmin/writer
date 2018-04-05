@@ -42,7 +42,7 @@ Update Method是游戏设计中的一种常规设计手法，具体方法可能�
 
 以属性中心设计则可能更加缓存友好。在ECS实现中，我们可以设计一个ComponentUpdateSystem类，收集所有包含Update()的Component，将它们**存储在同一个array中并按type排序**。这样，相同type的component在内存中是连续存储的，在遍历调用所有component的Update()方法时，能够减少或消除缓命中失败。此数据布局符合**数组之结构（struct of array, SoA）**的要求。
 
-具体到ComponentUpdateSystem类的实现细节，由于我们使用array存储component对象，在Create/Destory component时，不应该立即调整array中的内容，否则可能会导致频繁移到array中的数据，引起不必要的CPU开销。Create component时，可以先将新的component对象append到数组尾部，在真正遍历array中的component之前，将其按type排序。Destroy component时，也不需要立即从array移除，只需要在遍历结束以后在调用一个RemoveAll()方法统一移除即可（类似于List<T>.RemoveAll()）。
+具体到ComponentUpdateSystem类的实现细节，由于我们使用array存储component对象，在Create/Destory component时，不应该立即调整array中的内容，否则可能会导致频繁移到array中的数据，引起不必要的CPU开销。Create component时，可以先将新的component对象append到数组尾部，在真正遍历array中的component之前，将其按type排序。Destroy component时，也不需要立即从array移除，只需要在遍历结束以后在调用一个RemoveAll()方法统一移除即可（类似于ListT.RemoveAll()）。
 
 
 
