@@ -64,9 +64,9 @@ Update Method是游戏设计中的一种常规设计手法，具体方法可能�
 
 #### 0x03. Component基类与IComponent接口
 
-Entity类中有一对方法名为AddComponent和RemoveComponent，分别负责创建和销毁Component。这对方法分别会调用Component类中的一对虚方法DoInitialize\(\)和DoDispose\(\)。这样，Component的生命周期就由它所在的Entity全盘接管。
+Entity类中实现了一对名为AddComponent\(\)/RemoveComponent\(\)的方法，分别负责创建和删除Component。这对方法分别会调用Component类中的一对虚方法DoInitialize\(\)和DoDispose\(\)。这样，Component的生命周期完全由它所在的Entity控制。
 
-在某些情况下，我们可能不希望或无法使用Component基类。一种情况是，我们需要非常轻量级的组件，它可能只需要包含一个int或bool值，用于存取数值或当做标志位使用，此时使用Component创建一个子类的话显得过于重度了。另一种情况是，目标组件类已经有一个基类了，
+在某些情况下，我们可能不希望或无法使用Component基类。一种情况是，我们有时需要非常轻量级的组件，它可能只需要包含一个int或bool值，用于存取数值或当做标志位使用，此时基于Component创建一个子类的话显得过于重度了。另一种情况是，目标组件类已经有一个基类了。
 
 ---
 
