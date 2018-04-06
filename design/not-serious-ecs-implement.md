@@ -68,6 +68,133 @@ Entity类中实现了一对名为AddComponent\(\)/RemoveComponent\(\)的方法�
 
 在某些情况下，我们可能不希望或无法使用Component基类。一种情况是，我们有时需要非常轻量级的组件，它可能只需要包含一个int或bool值，用于存取数值或当做标志位使用，此时基于Component创建一个子类的话显得过于重度了。另一种情况是，目标组件类已经有一个基类了。
 
+
+
+```csharp
+
+using System;
+using System.Collections;
+
+namespace ECS
+{
+    public interface IComponent
+    {
+        
+    }
+
+    public interface IInitalizable
+    {
+        void Initalize();
+    }
+
+    public interface IIsDisposed
+    {
+        bool IsDisposed();
+    }
+
+    public interface IHaveEntity
+    {
+        Entity GetEntity();
+        void SetEntity(Entity entity);
+    }
+
+    public class Entity
+    {
+        public IComponent AddComponent(Type type)
+        {
+            if (null != type)
+            {
+                var component = Activator.CreateInstance(type) as IComponent;
+                if (null != component)
+                {
+                    var hasEntity = component as IHaveEntity;
+                    if (null != hasEntity)
+                    {
+                        hasEntity.SetEntity(this);
+                    }
+
+                    var initializable = component as IInitalizable;
+                    if (null != initializable)
+                    {
+                        initializable.Initalize();
+                    }
+
+                    _components.Add(type, component);
+                    return component;
+                }
+            }
+
+            return null;
+        }
+
+        public bool RemoveComponent(Type type)
+        {
+            if (null != type)
+            {
+                var component = _components[type];
+                if (null != component)
+                {
+                    var disposable = component as IDisposable;
+                    if (null != disposable)
+                    {
+                        disposable.Dispose();
+                    }
+
+                    _components.Remove(type);
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        private readonly Hashtable _components = new Hashtable();
+    }
+
+    public class Component : IInitalizable, IDisposable, IIsDisposed, IHaveEntity
+    {
+        void IInitalizable.Initalize()
+        {
+            DoInitialize();
+        }
+
+        void IDisposable.Dispose()
+        {
+            if (_isDisposed)
+            {
+                return;
+            }
+
+            _isDisposed = true;
+            DoDispose();
+        }
+
+        public bool IsDisposed()
+        {
+            return _isDisposed;
+        }
+
+        public Entity GetEntity()
+        {
+            return _entity;
+        }
+
+        void IHaveEntity.SetEntity(Entity entity)
+        {
+            _entity = entity;
+        }
+
+        protected virtual void DoInitialize() { }
+        protected virtual void DoDispose() { }
+
+        private Entity _entity;
+        private bool _isDisposed;
+    }
+}
+```
+
+
+
 ---
 
 #### 存疑问题
