@@ -1,4 +1,3 @@
-
 ---
 
 ### 非正经ECS实现方案
@@ -13,7 +12,7 @@ github: [https://github.com/lixianmin](https://github.com/lixianmin)
 
 本文中的ECS是Entity-Component-System（实体-组件-系统） 的缩写，是一种代码框架设计理念。ECS使我们可以
 
-懂行的人稍微看一下就会知道，我下面介绍的设计并不是正统的ECS实现方案。正统ECS中，要求Component是纯数据，System是纯函数（无状态）。在我的设计中（暂时maybe  -\_\_\_\_- ）没有care这些准则，我的目的是可以像**填配置一样订制代码**，而从结果上看，更像是Unity3d中的Component实现方案。希望了解正经ECS设计方案的，请移步文末的参考文献区，那里有一个链接也许对你有用。
+懂行的人稍微看一下就会知道，我下面介绍的设计并不是正统的ECS实现方案。正统ECS中，要求Component是纯数据，System是纯函数（无状态）。在我的设计中（暂时maybe -\_\_\_\_- ）没有care这些准则，我的目的是可以像**填配置一样订制代码**，而从结果上看，更像是Unity3d中的Component实现方案。希望了解正经ECS设计方案的，请移步文末的参考文献区，那里有一个链接也许对你有用。
 
 实现方案基于Unity3d引擎，编码使用C\#，因此下面的示例语法也都是C\#的。
 
@@ -59,13 +58,20 @@ Update Method是游戏设计中的一种常规设计手法，具体方法可能�
 
 具体到ComponentUpdateSystem类的实现细节，由于我们使用array存储Component对象，在Create/Destroy Component时，不应该立即调整array中的内容，否则会导致频繁移动array中的数据，可能引起不必要的CPU开销。Create Component时，可以先将新的Component对象append到数组尾部，在真正遍历array中的Component之前，将其按type排序（因此在最坏的情况下ComponentUpdateSystem.Update\(\)的时间复杂度为O\(NlogN\)）。Destroy Component时，也不需要立即从array中移除，只需要在遍历结束后的某个时刻调用一个RemoveAll\(\)方法统一移除即可（类似于List&lt;T&gt;.RemoveAll\(\)）。
 
-不同type的Component之间对Update\(\)方法的调用顺序可能有要求，比如Unity3d中专门区分了Update\(\)与LateUpdate\(\)应对这件事情。通过以下方式我们可以控制的更加细致：给每一种type提供一个typeIndex值，并将array中的Component按typeIndex的顺序排序（在C\#中，Array.Sort\(keys, items\)方法可以帮助）。大部分情况下，不同Component之间的Update\(\)调用顺序并无特殊要求，因此只需要在第一次访问这种Component的type时候自动生成一个typeIndex即可。对于少部分需要严格控制Update\(\)调用顺序的Component，只需要在游戏初始化时为它们设置指定的typeIndex值就可以了。
+不同type的Component之间对Update\(\)方法的调用顺序可能有要求，比如Unity3d中专门区分了Update\(\)与LateUpdate\(\)应对这件事情。通过以下方式我们可以控制的更加细致：给每一种type提供一个typeIndex值，并将array中的Component按typeIndex的顺序排序（在C\#中，Array.Sort\(keys, items\)方法可以帮助）。大部分情况下，不同Component之间的Update\(\)调用顺序并无特殊要求，因此只需要在第一次访问这种Component的type时候自动生成一个typeIndex即可。对于少部分需要严格控制Update\(\)调用顺序的Component，只需要在游戏初始化时为它们设置指定的typeIndex值就可以了。
 
 在初版设计中，我将typeIndex作为property放到Component类中，但经过几周的迭代发现，该变量只对Update\(\)方法排序有用，因此将其转移到了ComponentUpdateSystem类中，作为Array.Sort\(keys, items\)的keys数组使用。我这种设计明显违反了ECS中要求System不能含有状态的准则，因此你们现在可以准备批评我了。
 
 ---
 
-#### 0x03. Component生命周期管理
+#### 0x03. Component基类与IComponent接口
+
+entity类中有一对方法名为addcomponent和removecomponent，分别负责创建和销毁component。这对方法分别会调用component类中的一对虚方法doinit和dodipose。这样，component的生命周期就由它所在的entity全盘接管。
+
+在某些情况下，我们可能不希望或无法使用component基类。一种情况是，我们需要非常轻量级的组件，它可能只需要包含一个int或bool值，用于存取数值或当做标志位使用，此时使用component创建一个子类的话显得过于重度了。另一种情况是，目标组件类已经有一个基类了，
+
+
+
 
 ---
 
@@ -106,6 +112,5 @@ Update Method是游戏设计中的一种常规设计手法，具体方法可能�
 5. [游戏引擎架构](https://www.amazon.cn/dp/B00HY8SIX2/ref=sr_1_1?s=books&ie=UTF8&qid=1522924143&sr=1-1)
 
 6. [Update Method](https://github.com/lixianmin/design-pattern/blob/master/update-method.md)
-
 
 
