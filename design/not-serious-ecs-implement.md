@@ -11,7 +11,7 @@
 
 #### 0x00. Abstract
 
-本文中的ECS是Entity-Component-System（实体-组件-系统） 的缩写，是一种代码框架设计理念。但本文中的ECS而是歪理邪说，请
+ECS是Entity-Component-System（实体-组件-系统） 的缩写，是一种代码框架设计理念。但我下面要讲的ECS并不是正统的ECS实现方案，而是歪理邪说，请
 
 懂行的人稍微看一下就会知道，我下面介绍的设计并不是正统的ECS实现方案。正统ECS中，要求Component是纯数据，System是纯函数（无状态）。在我们的设计中（暂时maybe -\_\_\_\_- ）没有care这些准则，我们的目的是可以像**填配置一样订制代码**，而从结果上看，更像是Unity3d中的Component实现方案。希望了解正经ECS设计方案的，请移步文末的参考文献区，那里有一些链接也许对你有用。
 
@@ -79,22 +79,6 @@ namespace ECS
 
     }
 
-    public interface IInitalizable
-    {
-        void Initalize();
-    }
-
-    public interface IIsDisposed
-    {
-        bool IsDisposed();
-    }
-
-    public interface IHaveEntity
-    {
-        Entity GetEntity();
-        void SetEntity(Entity entity);
-    }
-
     public class Entity
     {
         public IComponent AddComponent(Type type)
@@ -124,68 +108,13 @@ namespace ECS
             return null;
         }
 
-        public bool RemoveComponent(Type type)
-        {
-            if (null != type)
-            {
-                var component = _components[type];
-                if (null != component)
-                {
-                    var disposable = component as IDisposable;
-                    if (null != disposable)
-                    {
-                        disposable.Dispose();
-                    }
-
-                    _components.Remove(type);
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
+        
         private readonly Hashtable _components = new Hashtable();
     }
 
     public class Component : IInitalizable, IDisposable, IIsDisposed, IHaveEntity
     {
-        void IInitalizable.Initalize()
-        {
-            DoInitialize();
-        }
-
-        void IDisposable.Dispose()
-        {
-            if (_isDisposed)
-            {
-                return;
-            }
-
-            _isDisposed = true;
-            DoDispose();
-        }
-
-        public bool IsDisposed()
-        {
-            return _isDisposed;
-        }
-
-        public Entity GetEntity()
-        {
-            return _entity;
-        }
-
-        void IHaveEntity.SetEntity(Entity entity)
-        {
-            _entity = entity;
-        }
-
-        protected virtual void DoInitialize() { }
-        protected virtual void DoDispose() { }
-
-        private Entity _entity;
-        private bool _isDisposed;
+        ...
     }
 }
 ```
@@ -214,9 +143,7 @@ namespace ECS
 
 10. System要求无状态，C\#中有几个概念跟这个是相关的：静态类，工具类，纯函数，扩展方法
 
-
-
-项目参考代码链接： https://github.com/lixianmin/cloud/tree/master/projects/ecs 
+项目参考代码链接： [https://github.com/lixianmin/cloud/tree/master/projects/ecs](https://github.com/lixianmin/cloud/tree/master/projects/ecs)
 
 ---
 
