@@ -64,13 +64,7 @@ Update Method是游戏设计中的一种常规设计手法，具体方法可能�
 
 #### 0x03. Component基类与IComponent接口
 
-框架实现中有一个Component基类和一个IComponent接口。Component基类用以应对大多数情况，它包含一个对宿主Entity的引用
-
-
-
-Entity类中实现了一对名为AddComponent\(\)/RemoveComponent\(\)的方法，分别负责创建和删除Component。这对方法分别会调用Component类中的一对虚方法DoInitialize\(\)和DoDispose\(\)。这样，Component的生命周期完全由它所在的Entity控制。
-
-在某些情况下，我们可能不希望或无法使用Component基类。一种情况是，我们有时需要非常轻量级的组件，它可能只需要包含一个int或bool值，用于存取数值或当做标志位使用，此时基于Component创建一个子类的话显得过于重度了。另一种情况是，目标组件类已经有一个基类了。
+创建和删除组件分别由Entity类中的一对名为AddComponent()/RemoveComponent()的方法负责。代码实现大概如下：
 
 ```csharp
 
@@ -111,6 +105,15 @@ public class Component : IInitalizable, IDisposable, IIsDisposed, IHaveEntity
     ...
 }
 ```
+
+框架实现了一个Component基类和以IComponent为代表的系列接口。
+
+多数比较复杂的组件类应该通过继承Component基类实现。它包含一个对宿主Entity的引用，并默认实现了IInitalizable（组件创建回调）、IDisposable（组件释放回调）和IIsDisposed（查询组件是否已经被释放）接口，这些接口的方法对应着组件对象的完整生命周期。
+
+在有些情况下，我们可能不希望或无法使用Component基类。一种可能的情况是，我们有时需要非常轻量级的组件，它可能只需要包含一个int值，此时基于创建一个Component的子类会显得过于重度。另一种可能的情况是，目标组件类已经预定了一个基类了，但在C#中我们无法使用多重继承。
+
+使用IComponent系列接口可以创建**与Component子类等价能力**的组件对象。从前面的示例代码可以看到，AddComponent()方法完全基于接口编程，它可以创建任何实现了IComponent接口（特别注意到**IComponent是一个空接口**）的类对象。如果需要其它IInitalizable, IDisposable等能力的话，只要实现对应的接口就可以。
+
 
 ---
 
