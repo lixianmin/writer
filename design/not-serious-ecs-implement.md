@@ -121,8 +121,13 @@ public class Component : IInitalizable, IDisposable, IIsDisposed, IHaveEntity
 
 1. 为什么没有遵循Component是pure data，System是pure function的ECS规范？
 
-> 框架并未否定正经的ECS实现方案，如前所述，只要实现了IComponent空接口的类都可以作为组件被Entity使用---这已经是理论上能做到的最小的约束了。我们完全可以使用纯数据的Component类，同时在设计System的时候拒绝包含任何状态。  
-> 只所以没有强制要求Component是pure data，是因为很多组件的专用性太强，它就只能是为某些Entity服务的，如果再把行为拆出来，目前感觉有些过渡设计了。好吧，其实作者受OO思想影响多年，暂时无法脱身也是一个~~最~~重要的原因。
+> 框架并未否定正经的ECS实现方案。如前所述，只要实现了IComponent空接口的类都可以作为组件被Entity使用---这已经是理论上能做到的最小的约束了。我们完全可以使用纯数据的Component和无状态的System。
+>
+> 只所以没有强制要求Component是pure data，是因为很多组件的专用性太强，它就只能是为某些Entity服务的，如果再把行为拆出来，目前感觉有些过渡设计了。只所以在设计System时带上了状态，
+>
+> 在正经的System实现中，Entity或Component通常集中存储在某个地方。由于每个System只处理某些特定类型的Entity/Component，因此需要每次处理前都需要先按预定义的条件过滤一遍。在我们的应用中，Entity与Component的创建频率是是特别频繁，这认为这种每次过滤的方式是一种CPU浪费，因此倾向于使用在System中做缓存的方式，这样System就包含了状态。
+>
+> 好吧，其实作者受OO思想影响多年，暂时无法脱身也是一个~~次~~重要的原因。
 
 1. Component是否应该有一个id标识符？
 
