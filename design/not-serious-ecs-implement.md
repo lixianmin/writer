@@ -64,7 +64,7 @@ Update Method是游戏设计中的一种常规设计手法，具体方法可能�
 
 #### 0x03. Component基类与IComponent接口
 
-创建和删除组件分别由Entity类中的一对名为AddComponent\(\)/RemoveComponent\(\)的方法负责。代码实现大概如下：
+创建和删除组件分别由Entity类中一对名为AddComponent\(\)/RemoveComponent\(\)的方法负责。代码实现如下：
 
 ```csharp
 public class Entity
@@ -89,6 +89,10 @@ public class Entity
                 }
 
                 _components.Add(type, component);
+                if (null != OnComponentCreated)
+                {
+                    OnComponentCreated(component);
+                }
                 return component;
             }
         }
@@ -96,6 +100,28 @@ public class Entity
         return null;
     }
 
+    public bool RemoveComponent(Type type)
+    {
+        if (null != type)
+        {
+            var component = _components[type];
+            if (null != component)
+            {
+                var disposable = component as IDisposable;
+                if (null != disposable)
+                {
+                    disposable.Dispose();
+                }
+
+                _components.Remove(type);
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public static event Action<IComponent> OnComponentCreated;
     private readonly Hashtable _components = new Hashtable();
 }
 
