@@ -11,9 +11,9 @@
 
 #### 0x00. Abstract
 
-ECS是Entity-Component-System（实体-组件-系统） 的缩写，是一种代码框架设计理念。但我下面要讲的ECS并不是正统的ECS实现方案，而是歪理邪说，请
+ECS是Entity-Component-System（实体-组件-系统） 的缩写，是一种代码框架设计理念。但我要讲的ECS并不是正经的ECS实现方案，而是歪理邪说，如果您已经感到不适，应立即移步。
 
-懂行的人稍微看一下就会知道，我下面介绍的设计并不是正统的ECS实现方案。正统ECS中，要求Component是纯数据，System是纯函数（无状态）。在我们的设计中（暂时maybe -\_\_\_\_- ）没有care这些准则，我们的目的是可以像**填配置一样订制代码**，而从结果上看，更像是Unity3d中的Component实现方案。希望了解正经ECS设计方案的，请移步文末的参考文献区，那里有一些链接也许对你有用。
+正经ECS中，Component是pure data，System是pure function（无状态）。在我们的设计中（暂时maybe -\_\_\_\_- ）没有care这些准则，我们的目的是可以像**填配置一样订制代码。**从实现效果上看，更像Unity3d中的Component实现方案。希望了解正经ECS设计方案的，请移步文末的参考文献区，那里有一些链接也许对你有用。
 
 该方案基于Unity3d引擎，编码使用C\#，因此下面的示例语法也都是C\#的。
 
@@ -64,58 +64,51 @@ Update Method是游戏设计中的一种常规设计手法，具体方法可能�
 
 #### 0x03. Component基类与IComponent接口
 
+框架实现中有一个Component基类和一个IComponent接口。Component基类用以应对大多数情况，它包含一个对宿主Entity的引用
+
+
+
 Entity类中实现了一对名为AddComponent\(\)/RemoveComponent\(\)的方法，分别负责创建和删除Component。这对方法分别会调用Component类中的一对虚方法DoInitialize\(\)和DoDispose\(\)。这样，Component的生命周期完全由它所在的Entity控制。
 
 在某些情况下，我们可能不希望或无法使用Component基类。一种情况是，我们有时需要非常轻量级的组件，它可能只需要包含一个int或bool值，用于存取数值或当做标志位使用，此时基于Component创建一个子类的话显得过于重度了。另一种情况是，目标组件类已经有一个基类了。
 
 ```csharp
-using System;
-using System.Collections;
 
-namespace ECS
+public class Entity
 {
-    public interface IComponent
+    public IComponent AddComponent(Type type)
     {
-
-    }
-
-    public class Entity
-    {
-        public IComponent AddComponent(Type type)
+        if (null != type)
         {
-            if (null != type)
+            var component = Activator.CreateInstance(type) as IComponent;
+            if (null != component)
             {
-                var component = Activator.CreateInstance(type) as IComponent;
-                if (null != component)
+                var hasEntity = component as IHaveEntity;
+                if (null != hasEntity)
                 {
-                    var hasEntity = component as IHaveEntity;
-                    if (null != hasEntity)
-                    {
-                        hasEntity.SetEntity(this);
-                    }
-
-                    var initializable = component as IInitalizable;
-                    if (null != initializable)
-                    {
-                        initializable.Initalize();
-                    }
-
-                    _components.Add(type, component);
-                    return component;
+                    hasEntity.SetEntity(this);
                 }
-            }
 
-            return null;
+                var initializable = component as IInitalizable;
+                if (null != initializable)
+                {
+                    initializable.Initalize();
+                }
+
+                _components.Add(type, component);
+                return component;
+            }
         }
 
-        
-        private readonly Hashtable _components = new Hashtable();
+        return null;
     }
 
-    public class Component : IInitalizable, IDisposable, IIsDisposed, IHaveEntity
-    {
-        ...
-    }
+    private readonly Hashtable _components = new Hashtable();
+}
+
+public class Component : IInitalizable, IDisposable, IIsDisposed, IHaveEntity
+{
+    ...
 }
 ```
 
@@ -143,7 +136,7 @@ namespace ECS
 
 10. System要求无状态，C\#中有几个概念跟这个是相关的：静态类，工具类，纯函数，扩展方法
 
-项目参考代码链接： [https://github.com/lixianmin/cloud/tree/master/projects/ecs](https://github.com/lixianmin/cloud/tree/master/projects/ecs)
+完整的项目参考代码链接： [https://github.com/lixianmin/cloud/tree/master/projects/ecs](https://github.com/lixianmin/cloud/tree/master/projects/ecs)
 
 ---
 
