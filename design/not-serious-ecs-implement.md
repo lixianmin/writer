@@ -5,13 +5,13 @@
 
 作者：李现民
 
-github: [https://github.com/lixianmin](https://github.com/lixianmin)
+原文地址：[https://github.com/lixianmin/writer/blob/master/design/not-serious-ecs-implement.md](https://github.com/lixianmin/writer/blob/master/design/not-serious-ecs-implement.md)
 
 ---
 
 #### 0x00. Abstract
 
-本文中的ECS是Entity-Component-System（实体-组件-系统） 的缩写，是一种代码框架设计理念。ECS使我们可以
+本文中的ECS是Entity-Component-System（实体-组件-系统） 的缩写，是一种代码框架设计理念。但本文中的ECS而是歪理邪说，请
 
 懂行的人稍微看一下就会知道，我下面介绍的设计并不是正统的ECS实现方案。正统ECS中，要求Component是纯数据，System是纯函数（无状态）。在我们的设计中（暂时maybe -\_\_\_\_- ）没有care这些准则，我们的目的是可以像**填配置一样订制代码**，而从结果上看，更像是Unity3d中的Component实现方案。希望了解正经ECS设计方案的，请移步文末的参考文献区，那里有一些链接也许对你有用。
 
@@ -68,10 +68,7 @@ Entity类中实现了一对名为AddComponent\(\)/RemoveComponent\(\)的方法�
 
 在某些情况下，我们可能不希望或无法使用Component基类。一种情况是，我们有时需要非常轻量级的组件，它可能只需要包含一个int或bool值，用于存取数值或当做标志位使用，此时基于Component创建一个子类的话显得过于重度了。另一种情况是，目标组件类已经有一个基类了。
 
-
-
 ```csharp
-
 using System;
 using System.Collections;
 
@@ -79,7 +76,7 @@ namespace ECS
 {
     public interface IComponent
     {
-        
+
     }
 
     public interface IInitalizable
@@ -193,8 +190,6 @@ namespace ECS
 }
 ```
 
-
-
 ---
 
 #### 存疑问题
@@ -219,6 +214,10 @@ namespace ECS
 
 10. System要求无状态，C\#中有几个概念跟这个是相关的：静态类，工具类，纯函数，扩展方法
 
+
+
+项目参考代码链接： https://github.com/lixianmin/cloud/tree/master/projects/ecs 
+
 ---
 
 ### References
@@ -234,6 +233,8 @@ namespace ECS
 5. [游戏引擎架构](https://www.amazon.cn/dp/B00HY8SIX2/ref=sr_1_1?s=books&ie=UTF8&qid=1522924143&sr=1-1)
 
 6. [Update Method](https://github.com/lixianmin/design-pattern/blob/master/update-method.md)
+
+7. [Implementing Component-Entity-Systems](https://www.gamedev.net/articles/programming/general-and-gameplay-programming/implementing-component-entity-systems-r3382/)
 
 
 
