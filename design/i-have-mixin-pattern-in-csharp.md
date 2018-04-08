@@ -1,5 +1,14 @@
 
 
+---
+#### I have mixin模式（C#）
+
+文：李现民
+
+源：[https://github.com/lixianmin/writer/blob/master/design/i-have-mixin-pattern-in-csharp.md](https://github.com/lixianmin/writer/blob/master/design/i-have-mixin-pattern-in-csharp.md)
+
+---
+
 C\#使用扩展方法实现mixin，这点毋庸置疑，但对如何在项目中推广mixin这件事，一直一来并没有找到合适的切入点。昨天突发奇想，终于找到一种还算合适的方案，我暂且称之为I have mixin模式。也许别人知道但我不知道，也许我接下来要讲的方案在业界已有定论，只是我孤陋寡闻没听过，也许有更好的方案-- 无论哪种情况，请您告诉我。
 
 该模式涉及到四个概念，分别是：宿主类，属性类，接口类和扩展类。在常规设计方案中，我们只会使用前两种概念（宿主类和属性类）。
