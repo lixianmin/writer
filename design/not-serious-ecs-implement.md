@@ -3,9 +3,9 @@
 
 ### 非正经ECS实现方案
 
-作者：李现民
+文：李现民
 
-原文地址：[https://github.com/lixianmin/writer/blob/master/design/not-serious-ecs-implement.md](https://github.com/lixianmin/writer/blob/master/design/not-serious-ecs-implement.md)
+源：[https://github.com/lixianmin/writer/blob/master/design/not-serious-ecs-implement.md](https://github.com/lixianmin/writer/blob/master/design/not-serious-ecs-implement.md)
 
 ---
 
@@ -155,13 +155,9 @@ public class Component : IInitalizable, IDisposable, IIsDisposed, IHaveEntity
 >
 > 好吧，其实作者受OO思想影响多年，暂时无法转变思想也是一个~~次~~重要的原因。
 
-
-
 二、组件是否可以是struct？
 
 > 可以但不建议。理论上只要实现了IComponent空接口的struct就可以作为组件被Entity使用，但因为我们使用了Hashtable存储Component对象，如果使用struct的话，会导致装箱拆箱问题，所以不建议使用。
-
-
 
 三、Component是否应该有一个id标识符？
 
@@ -169,25 +165,17 @@ public class Component : IInitalizable, IDisposable, IIsDisposed, IHaveEntity
 >
 > 唯一的一次应用是将某个组件id传递给lua脚本作为查询id使用，后来被我使用宿主Entity的id代替了。这个解决方案可能具备一定程度上的普适性，因为目前框架中每个Entity上相同类型的组件同时只能有一个，这样“宿主id+组件类型”就可以唯一确定是哪一个组件了。
 
-
-
 四、为什么每个Entity上同种类型的Component只能有一个？
 
 > 是的，Unity3d在同一个gameObject上可以同时有多个相同类型的Component。正是因为参考了Unity3d，最初设计的时候，每个Entity上是可以同时有多个同种类型的Component的。这样定位一个组件需要两个数据：type+id。这个方案给接下来的一系列组件相关的操作都带来了一些设计复杂度，包括存储、查询、排序、遍历等等。经过几周的代码迭代，我们发现似乎没有哪个需求是需要在同一个Entity上同时包含一个以上的相同类型的组件的。另外，调研了一下业界道友的一些实现方案（包括Entitas），发现他们也没有支持这个特性，这说明在实践中至少可以绕过这个特性，于是后来在重构代码的时候把这个特性移除了。这大大简化了很多方法的设计，并减少了代码量，简直是普天同庆。
-
-
 
 五、为什么没有使用AddComponen&lt;T&gt;\(\)这种泛型接口，而是使用了AddComponent\(Type type\)？
 
 > 在定义了AddComponent\(Type type\)后，泛型版本的方法可以使用扩展方法实现，即：AddComponent\(typeof\(T\)\) as T;
 
-
-
 六、Activator.CreateInstance\(type\)比起泛型版的new T\(\)会不会慢？
 
 > 我反编译了Mono的实现，泛型版的new T\(\)最后就是使用了Activator.CreateInstance\(typeof\(T\)\);实现的，dotnet的实现手法没有查过，不清楚。
-
-
 
 七、根据《守望先锋》的经验，它们最终有大约40%的Component是Singleton，在框架中如何支持？另外，某些Component可能需要频繁的创建和销毁，是否应该考虑加入Pool的方案？
 
@@ -198,8 +186,6 @@ public class Component : IInitalizable, IDisposable, IIsDisposed, IHaveEntity
 > 方案二：加一个新的AddSingletonComponent\(\)方法，这样可以避免方案一的性能问题，对原先已经在运行的代码也没有任何影响。该方案的问题是：组件是否是Singleton应该由设计组件的人决定，而不是由使用组件的人决定。
 >
 > 方案三：扩展AddComponent\(\)方法，加入一个flags参数，用这个参数区分组件对象是否为Singleton。这个方案的优点跟方案二相同，并且给未来扩展flags留下了余地。该方案的问题跟方案二是一样的：组件是否是Singleton应该由设计组件的人决定，而不是由使用组件的人决定。
-
-
 
 八、无状态System应该如何实现？
 
