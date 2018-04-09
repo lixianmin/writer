@@ -3,7 +3,7 @@
 
 ### 非正经ECS实现方案
 
-文：李现民
+文：普通熊猫
 
 源：[https://github.com/lixianmin/writer/blob/master/design/not-serious-ecs-implement.md](https://github.com/lixianmin/writer/blob/master/design/not-serious-ecs-implement.md)
 
