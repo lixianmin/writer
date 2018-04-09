@@ -15,32 +15,32 @@ ECS是Entity-Component-System（实体-组件-系统） 的缩写，是一种代
 
 正经ECS中，Component是pure data，System是pure function（无状态）。在我们的设计中（暂时maybe -\_\_\_\_- ）没有care这些准则，我们的目的是可以像**填配置一样订制代码。**从实现效果上看，更像Unity3d中的Component实现方案。希望研究正经ECS设计方案的同学，请移步文末的参考文献区，那里有一些链接也许对你有用。
 
-该方案基于Unity3d引擎，使用C\#编码，示例语法也都使用C\#。
+方案基于Unity3d引擎，使用C\#编码，示例语法也都使用C\#。框架代码中使用了Part一词指代Component，有两个原因：一是Component这个单词已经被Unity3d占了，二是我觉得Component这个单词太长了。
 
 ---
 
-#### 0x01. Entity不需要知道正在使用哪些Component
+#### 0x01. Entity不需要知道正在使用哪些Part
 
-就目前我了解到的一些实现方案中，Entity都明确知道自己会使用哪些Component。我认为这跟OO中的组合模式（Composite Pattern）区别不大。我可以接受Component强引用Entity，但不能接受Entity强引用Component。之所以这样，有两个比较重要的原因：
+就目前我了解到的一些实现方案中，Entity都明确知道自己会使用哪些组件。我认为这跟OO中的组合模式（Composite Pattern）区别不大。我可以接受Part强引用Entity，但不能接受Entity强引用Part。之所以这样，有两个比较重要的原因：
 
-1. **越简单越易用**：理想的情况下，Entity在需要任意Component时可随时添加，而不需要时可随时删除。如果Entity代码中硬编码了Component成员变量，那么就需要同样手工编码所有其它相关的操作，比如：命名，Initialize\(\), Dispose\(\)等，删除或重命名相关代码时也需要手动调整。这些属于常见操作，在编写代码时经常遇到，因此我认为手工编码的话过于复杂了。参考文献中有一个Unity3d的插件叫Entitas，它通过自动生成代码的方式简化了这一过程。
+1. **越简单越易用**：理想的情况下，Entity在需要任意Part时可随时添加，而不需要时可随时删除。如果Entity代码中硬编码了Part成员变量，那么就需要同样手工编码所有其它相关的操作，比如：命名，Initialize\(\), Dispose\(\)等，删除或重命名相关代码时也需要手动调整。这些属于常见操作，在编写代码时经常遇到，因此我认为手工编码的话过于复杂了。参考文献中有一个Unity3d的插件叫Entitas，它通过自动生成代码的方式简化了这一过程。
 
-2. **Entity在编译期与Component解耦**：我们项目有一个跟《守望先锋》很像的需求。我们希望部分Logic层的Client代码（比如MoveComponent）可以直接在Server上运行，此时需要完全剥离出View层的代码\(比如RenderComponent\)。这要求Logic层代码不能强引用任何View层代码的信息，否则会编译不过。同时因为所有相关代码的生命周期都是一样的，因此动态增删Component是一个favorable的设计方案。具体就是在Client端Entity会动态挂接所有相关Component，而在Server端Entity只需要挂接Logic层的Component。
+2. **Entity在编译期与Part解耦**：我们项目有一个跟《守望先锋》很像的需求。我们希望部分Logic层的Client代码（比如MovePart）可以直接在Server上运行，此时需要完全剥离出View层的代码\(比如RenderPart\)。这要求Logic层代码不能强引用任何View层代码的信息，否则会编译不过。同时因为所有相关代码的生命周期都是一样的，因此动态增删Part是一个favorable的设计方案。具体就是在Client端Entity会动态挂接所有相关Part，而在Server端Entity只需要挂接Logic层的Part。
 
 综合以上原因，相对理想的理想的方案就是类Unity3d中的组件使用方式：
 
 ```csharp
 var entity = new GameObjectEntity();
-entity.AddComponent(typeof(MoveComponent));   // Logic层
-entity.AddComponent(typeof(RenderComponent)); // View层
+entity.AddPart(typeof(MovePart));   // Logic层
+entity.AddPart(typeof(RenderPart)); // View层
 
 // ...其它代码
-entity.RemoveComponent(typeof(RenderComponent));
+entity.RemovePart(typeof(RenderPart));
 ```
 
-具体实现时，Entity中的Component全部存储在一张中心Hashtable（Type =&gt; Component）中，为此**付出的代价是：Speed & Memory**：
+具体实现时，Entity中的Part全部存储在一张中心Hashtable（Type =&gt; Part）中，为此**付出的代价是：Speed & Memory**：
 
-* Speed：因为对Component的Add/Remove/Get全部通过Hashtable进行，因此与直接访问类成员变量相比速度会慢得多。在macOS 10.12.6 + Unity3d 2017.1.0f3下，实测C\#的Hashtable（Type =&gt; Component）与直接访问数组的耗时比大概为10:1，Dictionary&lt;Type, Component&gt;与直接访问数组的耗时比大概为15:1。测试时Hashtable与Dictionary都使用了默认参数，没有调整loadFactor。网传默认情况下Hashtable的loadFactor比Dictionary更低，也因此会占用更大的内存。
+* Speed：因为对Part的Add/Remove/Get全部通过Hashtable进行，因此速度比直接访问类成员变量慢很多。在macOS 10.12.6 + Unity3d 2017.1.0f3下，实测C\#的Hashtable（Type =&gt; Part）与直接访问数组的耗时比大概为10:1，Dictionary&lt;Type, Part&gt;与直接访问数组的耗时比大概为15:1。测试时Hashtable与Dictionary都使用了默认参数，没有调整loadFactor。网传默认情况下Hashtable的loadFactor比Dictionary更低，也因此会占用更大的内存。
 
 * Memory：传说，同样的数据，存储在哈希表中比存储在数组中要多占用两倍左右的内存。
 
@@ -48,72 +48,73 @@ entity.RemoveComponent(typeof(RenderComponent));
 
 #### 0x02. 缓存友好
 
-从实现效果上，ECS设计倾向于以属性为中心（请参考《游戏引擎架构P655》）。Entity中只需要存储实际用到的Component（即：我们不会有一些Entity，内含未使用的Component成员），这对于有效使用内存是有益的。不过，考虑到我们使用哈希表存储Component成员，一正一负，实际内存占用不好说是升了还是降了。
+从实现效果上，ECS设计倾向于以属性为中心（请参考《游戏引擎架构P655》）。Entity中只需要存储实际用到的Part（即：我们不会有一些Entity，内含未使用的Part成员），这对于有效使用内存是有益的。不过，考虑到我们使用哈希表存储Part成员，一正一负，实际内存占用不好说是升了还是降了。
 
 Update Method是游戏设计中的一种常规设计手法，具体方法可能命名为Update\(\)或Tick\(\)，其含义文中不作区分，框架中使用Tick\(\)。在以对象为中心的设计中，很多宿主对象与其属性对象都需要写一个Tick\(\)方法，用于在每一帧更新相关数据。实际上，因为Tick\(\)调用通常是自上而下逐级进行的，因此只要有一个属性对象需要Tick\(\)方法，都会强迫其所在的宿主对象及每一个上游对象都拥有Tick\(\)方法。这样，以游戏代码中的初始Tick\(\)方法为根节点，自上而下，由外到内，对所有对象Tick\(\)方法的调用可以看成是一个树形结构，我们可称之为Tick树。以对象为中心的设计模型有一些缺点，其中之一便是Tick树中相邻叶节点的类型通常是不一样的，因此在遍历整个Tick树的过程中，缓存命中失败的概率（cache miss rate）比较大。
 
-以属性中心设计则可能更加缓存友好。在我们的ECS实现方案中，我们设计了一个名为ComponentTickSystem的类，收集所有包含Tick\(\)的Component，将它们**存储在同一个array中并按type排序**。这样，相同type的Component在内存中是连续存储的，数据布局符合**数组之结构（struct of array, SoA）**的要求。在遍历调用所有Component的Tick\(\)方法时，能够减少或消除缓命中失败。
+以属性中心设计则可能更加缓存友好。在我们的ECS实现方案中，我们设计了一个名为PartTickSystem的类，收集所有包含Tick\(\)的Part，将它们**存储在同一个array中并按type排序**。这样，相同type的Part在内存中是连续存储的，数据布局符合**数组之结构（struct of array, SoA）**的要求。在遍历调用所有Part的Tick\(\)方法时，能够减少或消除缓命中失败。
 
-具体到ComponentTickSystem类的实现细节，由于我们使用array存储Component对象，在添加或删除Component时，不会立即调整array中的内容，否则会导致频繁移动array中的数据，可能引起不必要的CPU开销。添加Component时，可以先将新的Component对象append到数组尾部，在真正遍历array中的Component之前，将其按type排序（因此在最坏的情况下ComponentTickSystem.Tick\(\)的时间复杂度为O\(NlogN\)）。删除Component时，也不需要立即从array中移除，只需要在遍历结束后的某个时刻调用一个RemoveAll\(\)方法统一移除即可（类似于List&lt;T&gt;.RemoveAll\(\)，只移动一次内存）。
+具体到PartTickSystem类的实现细节，由于我们使用array存储Part对象，在添加或删除Part时，不需要立即调整array中的内容，否则会导致频繁移动array中的数据，可能引起不必要的CPU开销。添加Part时，可以先将新的Part对象append到数组尾部，在真正遍历array中的Part之前，将其按type排序（因此在最坏的情况下PartTickSystem.Tick\(\)的时间复杂度为O\(NlogN\)）。删除Part时，也不需要立即从array中移除，只需要在遍历结束后的某个时刻调用一个RemoveAll\(\)方法统一移除即可（类似于List&lt;T&gt;.RemoveAll\(\)，只移动一次内存）。
 
-不同type的Component之间对Tick\(\)方法的调用先后顺序可能有要求，Unity3d中专门区分了Update\(\)与LateUpdate\(\)应对这件事情。我们通过以下方式可以控制的更加细致：给每一种type提供一个typeIndex值，并将array中的Component按typeIndex的顺序排序（在C\#中，Array.Sort\(keys, items\)方法可以帮助）。大部分情况下，不同Component之间的Tick\(\)调用顺序并无特殊要求，因此只需要在第一次访问这种Component的type时候自动生成一个typeIndex即可。对于少部分需要严格控制Tick\(\)调用顺序的Component，只需要在游戏初始化时为它们设置指定的typeIndex值就可以了。
+不同type的Part之间对Tick\(\)方法的调用先后顺序可能有要求，Unity3d中专门区分了Update\(\)与LateUpdate\(\)应对这件事情。我们通过以下方式可以控制的更加细致：给每一种type提供一个typeIndex值，并将array中的Part按typeIndex的顺序排序（在C\#中，Array.Sort\(keys, items\)方法可以帮忙）。大部分情况下，不同Part之间的Tick\(\)调用顺序并无特殊要求，因此只需要在第一次访问这种Part的type时候自动生成一个typeIndex即可。对于少部分需要严格控制Tick\(\)调用顺序的Part，则需要在游戏初始化时为它们设置指定的typeIndex值。
 
-在初版设计中，我们将typeIndex作为property放到Component类中，但经过几周的迭代发现，该变量只在排序Tick\(\)的调用顺序时有用，因此将其转移到了ComponentTickSystem类中，作为Array.Sort\(keys, items\)的keys参数。细心的朋友已经注意到，这种设计明显违反了ECS中要求System不能含有状态的准则。
+在初版设计中，我们将typeIndex作为property放到Part类中，但经过几周的迭代发现，该变量只在排序Tick\(\)的调用顺序时有用，因此将其转移到了PartTickSystem类中，作为Array.Sort\(keys, items\)的keys参数。细心的朋友已经注意到，这种设计明显违反了ECS中要求System不能含有状态的准则。
 
 ---
 
-#### 0x03. Component基类与IComponent接口
+#### 0x03. Part基类与IPart接口
 
-创建和删除组件分别由Entity类中一对名为AddComponent\(\)/RemoveComponent\(\)的方法负责。代码实现如下：
+创建和删除组件分别由Entity类中一对名为AddPart\(\)/RemovePart\(\)的方法负责。代码实现如下：
 
 ```csharp
 public class Entity
 {
-    public IComponent AddComponent(Type type)
+    public IPart AddPart(Type type)
     {
         if (null != type)
         {
-            var component = Activator.CreateInstance(type) as IComponent;
-            if (null != component)
+            var part = Activator.CreateInstance(type) as IPart;
+            if (null != part)
             {
-                var hasEntity = component as IHaveEntity;
-                if (null != hasEntity)
+                var haveEntity = part as IHaveEntity;
+                if (null != haveEntity)
                 {
-                    hasEntity.SetEntity(this);
+                    haveEntity.SetEntity(this);
                 }
 
-                var initializable = component as IInitalizable;
+                var initializable = part as IInitalizable;
                 if (null != initializable)
                 {
                     initializable.Initalize();
                 }
 
-                _components.Add(type, component);
-                if (null != OnComponentCreated)
+                _parts.Add(type, part);
+                if (null != OnPartCreated)
                 {
-                    OnComponentCreated(component);
+                    OnPartCreated(part);
                 }
-                return component;
+                return part;
             }
         }
 
         return null;
     }
 
-    public bool RemoveComponent(Type type)
+
+    public bool RemovePart(Type type)
     {
         if (null != type)
         {
-            var component = _components[type];
-            if (null != component)
+            var part = _parts[type];
+            if (null != part)
             {
-                var disposable = component as IDisposable;
+                var disposable = part as IDisposable;
                 if (null != disposable)
                 {
                     disposable.Dispose();
                 }
 
-                _components.Remove(type);
+                _parts.Remove(type);
                 return true;
             }
         }
@@ -121,11 +122,11 @@ public class Entity
         return false;
     }
 
-    public static event Action<IComponent> OnComponentCreated;
-    private readonly Hashtable _components = new Hashtable();
+    public static event Action<IPart> OnPartCreated;
+    private readonly Hashtable _parts = new Hashtable();
 }
 
-public class Component : IInitalizable, IDisposable, IIsDisposed, IHaveEntity
+public class Part : IInitalizable, IDisposable, IIsDisposed, IHaveEntity
 {
     ...
 }
