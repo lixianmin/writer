@@ -126,19 +126,24 @@ public class Entity
     private readonly Hashtable _parts = new Hashtable();
 }
 
+public interface IPart
+{
+
+}
+    
 public class Part : IInitalizable, IDisposable, IIsDisposed, IHaveEntity
 {
     ...
 }
 ```
 
-框架实现了一个Component基类和IComponent等一系列接口。
+框架实现了一个Part基类和IPart等一系列接口。
 
-多数逻辑比较复杂的组件类应该通过继承Component基类实现。它包含一个对宿主Entity的引用，并默认实现了IInitalizable（组件创建回调）、IDisposable（组件释放回调）和IIsDisposed（查询组件是否已经被释放）接口，这些接口背后的方法对应着组件对象的完整生命周期。
+多数逻辑比较复杂的组件类应该通过继承Part基类实现。它包含一个对宿主Entity的引用，并默认实现了IInitalizable（组件创建回调）、IDisposable（组件释放回调）和IIsDisposed（查询组件是否已经被释放）接口，这些接口背后的方法对应着组件对象的完整生命周期。
 
-在有些情况下，我们可能不希望或无法使用Component基类。一种情况是，我们有时需要非常轻量级的组件，它可能只需要包含一个int值，此时创建一个Component的子类会显得过于重度。另一种情况是，目标组件类已经预定了一个基类了，但在C\#中我们无法使用多重继承。
+在有些情况下，我们可能不希望或无法使用Part基类。一种情况是，我们有时需要非常轻量级的组件，它可能只需要包含一个int值，此时创建一个Part的子类会显得过于重度。另一种情况是，目标组件类已经预定了一个基类了，但在C\#中我们无法使用多重继承。
 
-使用IComponent系列接口可以创建**与Component子类等价能力**的组件对象。从前面的示例代码可以看到，AddComponent\(\)方法完全基于接口编程，它可以创建任何实现了IComponent接口的类对象（特别注意到**IComponent是一个空接口**）。如果需要其它IInitalizable, IDisposable等能力的话，只要实现对应的接口就可以。
+使用IPart系列接口可以创建**与Part子类等价能力**的组件对象。从前面的示例代码可以看到，AddPart\(\)方法完全基于接口编程，它可以创建任何实现了IPart接口的类对象（特别注意到**IPart是一个空接口**）。如果需要其它IInitalizable, IDisposable等能力的话，只要实现对应的接口就可以。
 
 完整的代码地址请参考：[https://github.com/lixianmin/cloud/tree/master/projects/ecs](https://github.com/lixianmin/cloud/tree/master/projects/ecs)
 
@@ -146,47 +151,47 @@ public class Part : IInitalizable, IDisposable, IIsDisposed, IHaveEntity
 
 #### 0x04. 设计权衡
 
-一、为什么没有遵循Component是pure data，System是pure function的ECS规范？
+一、为什么没有遵循Part是pure data，System是pure function的ECS规范？
 
-> 框架并未否定正经的ECS实现方案。如前所述，只要实现了IComponent空接口的类都可以作为组件被Entity使用---这对组件类几乎没有增加任何额外数据，可能是理论上能做到的最小的约束了。我们完全可以使用纯数据的Component和无状态的System。
+> 框架并未否定正经的ECS实现方案。如前所述，只要实现了IPart空接口的类都可以作为组件被Entity使用---这对组件类几乎没有增加任何额外数据，可能是理论上能做到的最小的约束了。我们完全可以使用纯数据的Part和无状态的System。
 >
-> 只所以没有强制要求Component是pure data，是因为很多组件的专用性太强，它们就只能是为某些Entity服务的，如果再把行为拆出来，感觉有些设计过渡了。
+> 只所以没有强制要求Part是pure data，是因为很多组件的专用性太强，它们就只能是为某些Entity服务的，如果再把行为拆出来，感觉有些设计过渡了。
 >
-> 在正经的System实现中，Entity或Component通常集中存储在某个地方。由于每个System只处理某些特定类型的Entity/Component，因此需要在每次处理前先按预定义的条件过滤一遍。在我们的应用中，Entity与Component的创建频率不是特别频繁，这认为使用每次过滤的方式是一种CPU浪费，更倾向于使用在System中做缓存的方式，于是System就包含了状态。
+> 在正经的System实现中，Entity或Part通常集中存储在某个地方。由于每个System只处理某些特定类型的Entity/Part，因此需要在每次处理前先按预定义的条件过滤一遍。在我们的应用中，Entity与Part的创建频率不是特别频繁，这认为使用每次过滤的方式是一种CPU浪费，更倾向于使用在System中做缓存的方式，于是System就包含了状态。
 >
 > 好吧，其实作者受OO思想影响多年，暂时无法转变思想也是一个~~次~~重要的原因。
 
 二、组件是否可以是struct？
 
-> 可以但不建议。理论上只要实现了IComponent空接口的struct就可以作为组件被Entity使用，但因为我们使用了Hashtable存储Component对象，如果使用struct的话，会导致装箱拆箱问题，所以不建议使用。
+> 可以但不建议。理论上只要实现了IPart空接口的struct就可以作为组件被Entity使用，但因为我们使用了Hashtable存储Part对象，如果使用struct的话，会导致装箱拆箱问题，所以不建议使用。
 
-三、Component是否应该有一个id标识符？
+三、Part是否应该有一个id标识符？
 
-> 初版设计时Component的确有一个全局唯一的id标识符，后来移除了。这个全局唯一id是通过一个static的int变量自加得来，通过它我们可以跟踪到所有处于alive状态的组件对象。一开始我觉得这会很有用，但经过几个星期的迭代，我发现实际上应用不是很广泛，就移除了。
+> 初版设计时Part的确有一个全局唯一的id标识符，后来移除了。这个全局唯一id是通过一个static的int变量自加得来，通过它我们可以跟踪到所有处于alive状态的组件对象。一开始我觉得这会很有用，但经过几个星期的迭代，我发现实际上应用不是很广泛，就移除了。
 >
 > 唯一的一次应用是将某个组件id传递给lua脚本作为查询id使用，后来被我使用宿主Entity的id代替了。这个解决方案可能具备一定程度上的普适性，因为目前框架中每个Entity上相同类型的组件同时只能有一个，这样“宿主id+组件类型”就可以唯一确定是哪一个组件了。
 
-四、为什么每个Entity上同种类型的Component只能有一个？
+四、为什么单个Entity上同种类型的Part只支持一个？
 
-> 是的，Unity3d在同一个gameObject上可以同时有多个相同类型的Component。正是因为参考了Unity3d，最初设计的时候，每个Entity上是可以同时有多个同种类型的Component的。这样定位一个组件需要两个数据：type+id。这个方案给接下来的一系列组件相关的操作都带来了一些设计复杂度，包括存储、查询、排序、遍历等等。经过几周的代码迭代，我们发现似乎没有哪个需求是需要在同一个Entity上同时包含一个以上的相同类型的组件的。另外，调研了一下业界道友的一些实现方案（包括Entitas），发现他们也没有支持这个特性，这说明在实践中至少可以绕过这个特性，于是后来在重构代码的时候把这个特性移除了。这大大简化了很多方法的设计，并减少了代码量，简直是普天同庆。
+> 是的，Unity3d在同一个gameObject上可以同时有多个相同类型的Component。正是因为参考了Unity3d，最初设计的时候，每个Entity上是可以同时有多个同种类型的Part的。这样定位一个组件需要两个数据：type+id。这个方案给接下来的一系列组件相关的操作都带来了一些设计复杂度，包括存储、查询、排序、遍历等等。经过几周的代码迭代，我们发现似乎没有哪个需求是需要在同一个Entity上同时包含一个以上的相同类型的组件的。另外，调研了一下业界道友的一些实现方案（包括Entitas），发现他们也没有支持这个特性，这说明在实践中至少可以绕过这个特性，于是后来在重构代码的时候把这个特性移除了。这大大简化了很多方法的设计，并减少了代码量，简直是普天同庆。
 
-五、为什么没有使用AddComponen&lt;T&gt;\(\)这种泛型接口，而是使用了AddComponent\(Type type\)？
+五、为什么没有使用AddPart&lt;T&gt;\(\)这种泛型接口，而是使用了AddPart\(Type type\)？
 
-> 在定义了AddComponent\(Type type\)后，泛型版本的方法可以使用扩展方法实现，即：AddComponent\(typeof\(T\)\) as T;
+> 在定义了AddPart\(Type type\)后，泛型版本的方法可以使用扩展方法实现，即：AddPart\(typeof\(T\)\) as T;
 
 六、Activator.CreateInstance\(type\)比起泛型版的new T\(\)会不会慢？
 
 > 我反编译了Mono的实现，泛型版的new T\(\)最后就是使用了Activator.CreateInstance\(typeof\(T\)\);实现的，dotnet的实现手法没有查过，不清楚。
 
-七、根据《守望先锋》的经验，它们最终有大约40%的Component是Singleton，在框架中如何支持？另外，某些Component可能需要频繁的创建和销毁，是否应该考虑加入Pool的方案？
+七、根据《守望先锋》的经验，它们最终有大约40%的组件是Singleton，在框架中如何支持？另外，某些组件可能需要频繁的创建和销毁，是否应该考虑加入Pool的方案？
 
 > 目前框架中的对象都是直接new出来的，对于Singleton和Pool还没有想好解决方案。以实现Singleton为例，有几种参考方案：
 >
-> 方案一：使用Attribute属性或ISingleton接口来标记组件是一个Singleton类，并在AddComponent\(\)的时候获取这些信息。Attribute属性可能更友好一些，因为它可以带一些控制参数，比如用于控制Pool的大小。该方案的问题是：每次调用AddComponent\(\)的时候都需要查询这些标记信息，这是一笔额外开销，特别是对于那些不需要这些信息的普通组件来说。即使我们使用一张Hashtable缓存这些信息，也会多一次Hashtable的查询，这个开销是否能被接受还需要斟酌。
+> 方案一：使用Attribute属性或ISingleton接口来标记组件是一个Singleton类，并在AddPart\(\)的时候获取这些信息。Attribute属性可能更友好一些，因为它可以带一些控制参数，比如用于控制Pool的大小。该方案的问题是：每次调用AddPart\(\)的时候都需要查询这些标记信息，这是一笔额外开销，特别是对于那些不需要这些信息的普通组件来说。即使我们使用一张Hashtable缓存这些信息，也会多一次Hashtable的查询，这个开销是否能被接受还需要斟酌。
 >
-> 方案二：加一个新的AddSingletonComponent\(\)方法，这样可以避免方案一的性能问题，对原先已经在运行的代码也没有任何影响。该方案的问题是：组件是否是Singleton应该由设计组件的人决定，而不是由使用组件的人决定。
+> 方案二：加一个新的AddSingletonPart\(\)方法，这样可以避免方案一的性能问题，对原先已经在运行的代码也没有任何影响。该方案的问题是：组件是否是Singleton应该由设计组件的人决定，而不是由使用组件的人决定。
 >
-> 方案三：扩展AddComponent\(\)方法，加入一个flags参数，用这个参数区分组件对象是否为Singleton。这个方案的优点跟方案二相同，并且给未来扩展flags留下了余地。该方案的问题跟方案二是一样的：组件是否是Singleton应该由设计组件的人决定，而不是由使用组件的人决定。
+> 方案三：扩展AddPart\(\)方法，加入一个flags参数，用这个参数区分组件对象是否为Singleton。这个方案的优点跟方案二相同，并且给未来扩展flags留下了余地。该方案的问题跟方案二是一样的：组件是否是Singleton应该由设计组件的人决定，而不是由使用组件的人决定。
 
 八、无状态System应该如何实现？
 
