@@ -39,7 +39,7 @@ ECS是Entity-Component-System（实体-组件-系统） 的缩写，是一种代
 
 具体实现时，Entity中的Part全部存储在一张中心Hashtable（Type =&gt; Part）中，但也因此**付出了代价：Speed & Memory**：
 
-* Speed：因为对Part的Add/Remove/Get全部通过Hashtable进行，因此速度比直接访问类成员变量慢很多。在macOS 10.12.6 + Unity3d 2017.1.0f3下，实测C\#的Hashtable（Type =&gt; Part）与直接访问数组的耗时比大概为10:1，Dictionary&lt;Type, Part&gt;与直接访问数组的耗时比大概为15:1。测试时Hashtable与Dictionary都使用了默认参数，没有调整loadFactor。网传默认情况下Hashtable的loadFactor比Dictionary更低，也因此会占用更大的内存。
+* Speed：因为对Part的Add/Remove/Get全部通过Hashtable进行，因此速度比直接访问类成员变量慢很多。在macOS 10.12.6 + Unity3d 2017.1.0f3下，实测C\#的Hashtable（Type =&gt; Part）与直接访问数组的耗时比大概为10:1，Dictionary&lt;Type, Part&gt;与直接访问数组的耗时比大概为15:1。测试时Hashtable与Dictionary都使用了默认参数，没有调整loadFactor。网传默认情况下Hashtable的loadFactor比Dictionary更低，也因此会占用更大的内存。
 
 * Memory：传说，同样的数据，存储在哈希表中比存储在数组中要多占用两倍左右的内存。
 
@@ -51,7 +51,7 @@ ECS是Entity-Component-System（实体-组件-系统） 的缩写，是一种代
 
 Update Method是游戏设计中的一种常规设计手法，具体方法可能命名为Update\(\)或Tick\(\)，其含义在此不作区分，框架中使用Tick\(\)。在以对象为中心的设计中，很多宿主对象与其属性对象都需要写一个Tick\(\)方法，用于在每一帧更新相关数据。实际上，因为Tick\(\)调用通常是自上而下逐级进行的，因此只要有一个属性对象需要Tick\(\)方法，都会强迫其所在的宿主对象及每一个上游对象都拥有Tick\(\)方法。这样，以游戏代码中的初始Tick\(\)方法为根节点，自上而下，由外到内，对所有对象Tick\(\)方法的调用可以看成是一个树形结构，我们可称之为Tick树。以对象为中心的设计模型有一些缺点，其中之一便是Tick树中相邻叶节点的类型通常是不一样的，因此在遍历整个Tick树的过程中，缓存命中失败的概率（cache miss rate）比较大。
 
-以属性中心设计则可能更加缓存友好。在我们的ECS实现方案中，我们设计了一个名为PartTickSystem的类，收集所有包含Tick\(\)的Part，将它们**存储在同一个array中并按type排序**。这样，相同type的Part在内存中是连续存储的，数据布局符合**数组之结构（struct of array, SoA）**的要求。在遍历调用所有Part的Tick\(\)方法时，能够减少或消除缓命中失败。
+以属性中心设计则可能更加缓存友好。在我们的ECS实现方案中，我们设计了一个名为PartTickSystem的类，收集所有包含Tick\(\)的Part，将它们**存储在同一个array中并按type排序**。这样，相同type的Part在内存中是连续存储的，数据布局符合**数组之结构\(struct of array, SoA\)**的要求。在遍历调用所有Part的Tick\(\)方法时，能够减少或消除缓命中失败。
 
 具体到PartTickSystem类的实现细节，由于我们使用array存储Part对象，在添加或删除Part时，不需要立即调整array中的内容，否则会导致频繁移动array中的数据，可能引起不必要的CPU开销。添加Part时，可以先将新的Part对象append到数组尾部，在真正遍历array中的Part之前，将其按type排序（因此在最坏的情况下PartTickSystem.Tick\(\)的时间复杂度为O\(NlogN\)）。删除Part时，也不需要立即从array中移除，只需要在遍历结束后的某个时刻调用一个RemoveAll\(\)方法统一移除即可（类似于List&lt;T&gt;.RemoveAll\(\)，只移动一次内存）。
 
@@ -166,7 +166,7 @@ public class Part : IInitalizable, IDisposable, IIsDisposed, IHaveEntity
 
 > 初版设计时Part的确有一个全局唯一的id标识符，后来移除了。这个全局唯一id是通过一个static的int变量自加得来，通过它我们可以跟踪到所有处于alive状态的组件对象。一开始我觉得这会很有用，但经过几个星期的迭代，我发现实际上用途不是很广泛，就移除了。
 >
-> 唯一的一次应用是将某个组件id传递给lua脚本作为查询id使用，后来被我使用宿主Entity的id替代了。这个替代方案可能具备一定程度上的普适性，因为目前框架中每个Entity上相同类型的组件同时只能有一个，这样“宿主id+组件类型”就可以唯一确定是哪一个组件了。
+> 唯一的一次应用是将某个组件id传递给lua脚本作为查询id使用，后来被我使用宿主Entity的id替代了。这个替代方案可能具备一定程度上的普适性，因为目前框架中每个Entity上相同类型的组件同时只能有一个，这样“宿主id+组件类型”就可以唯一确定是哪一个组件了。
 
 四、为什么单个Entity上同种类型的Part只支持一个？
 
