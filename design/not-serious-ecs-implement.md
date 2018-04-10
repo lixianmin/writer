@@ -158,9 +158,12 @@ public class Part : IInitalizable, IDisposable, IIsDisposed, IHaveEntity
     
     好吧，其实作者受OO思想影响多年，暂时无法转变思想也是一个~~次~~重要的原因。
 
-1. 组件是否可以是struct？
+1. Entity是否可以同时是一个IPart
+    可以，完全可以，我已经在项目中这么用了。
 
-    可以但不建议。理论上只要实现了IPart空接口的struct就可以作为组件被Entity使用，但因为我们使用了Hashtable存储Part对象，如果使用struct的话，会导致装箱拆箱问题，所以不建议使用。
+1. Part是否可以是struct？
+
+    可以但不能这么使用。理论上只要实现了IPart空接口的struct就可以作为组件被Entity使用，但因为我们使用了Hashtable存储Part对象，如果使用struct的话，会导致装箱拆箱问题，所以不建议使用。
 
 1. 为什么要IInitPart接口初始化组件对象，直接使用构造方法不更直接嘛？
     
