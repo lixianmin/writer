@@ -11,9 +11,9 @@
 
 #### 0x00. Abstract
 
-ECS是Entity-Component-System（实体-组件-系统） 的缩写，是一种代码框架设计理念。但我下面要讲的ECS并不是正经的ECS实现方案，只是借了ECS的壳。
+ECS是Entity-Component-System（实体-组件-系统） 的缩写，是一种框架设计模式，多用于游戏开发。但我下面要讲的ECS并不是正经的ECS实现方案，只是借了ECS的壳。
 
-正经ECS中，Component是pure data，System是pure function（无状态）。在我的设计中（暂时maybe -\_\_\_\_- ）没有恪守这些准则，我的目的是可以像**填配置一样订制代码。**从实现效果上看，更像Unity3d中的Component实现方案。希望研究正经ECS设计方案的同学，请移步文末的参考文献区，那里有一些链接也许对你有用。
+正经ECS可简述为："Entities as ID's", "Components as raw Data", and "Code stored in Systems, not in Components or Entities"。翻译成中文就是：Entities是一组ID's，Components是纯数据，Systems是则是纯函数（无状态）。在我的设计中（暂时 -\_\_\_\_- ）没有恪守这些准则，我的目的是可以像**填配置一样订制代码。**从实现效果上看，更像Unity3d中的Component实现方案。希望研究正经ECS设计方案的同学，请移步文末的参考文献区，那里有一些链接也许对你有用。
 
 方案基于Unity3d引擎，使用C\#编码，示例语法也都使用C\#。框架代码以及下文中我使用Part一词指代Component，有两个原因：一是Component这个单词已经被Unity3d占了，二是我觉得Component这个单词太长了。
 
@@ -142,11 +142,11 @@ public class Part : IPart, IInitPart, IDisposable, IIsDisposed
 
 #### 0x04. 设计权衡
 
-1. 为什么没有遵循Component是pure data，System是pure function的ECS规范？
+1. 为什么没有遵循Components是raw data，Systems是pure code的ECS规范？
 
    框架并未否定正经的ECS实现方案。如前所述，只要实现了IPart空接口的类都可以作为组件被Entity使用---这对组件类几乎没有增加额外数据，可能是理论上能做到的最小的约束了。我们完全可以使用纯数据的Part和无状态的System。
 
-   只所以没有强制要求Part是pure data，是因为很多组件的专用性太强，它们就只能是为某些Entity服务的，如果再把行为拆出来，感觉有些设计过度了。
+   只所以没有强制要求Part是raw data，是因为很多组件的专用性太强，它们就只能是为某些Entity服务，如果再把行为拆出来，感觉有些设计过度了。
 
    在正经的System实现中，Entity或Part通常集中存储在某个地方。由于每个System只处理某些特定类型的Entity/Part，因此需要在每次访问前先按预定义的条件过滤一遍。在我们的应用中，Entity与Part的创建频率不是特别频繁，我认为使用每次过滤的方式是一种CPU浪费，更倾向于使用在System中做缓存的方式，于是System就包含了状态。
 
@@ -205,19 +205,21 @@ public class Part : IPart, IInitPart, IDisposable, IIsDisposed
 
 #### 0x06. References
 
-1. [游戏开发中的ECS 架构概述](https://zhuanlan.zhihu.com/p/30538626)
+1. [wiki: Entity–component–system](https://en.wikipedia.org/wiki/Entity%E2%80%93component%E2%80%93system)
 
-2. [一个无框架的ECS实现（Entity-Component-System](https://zhuanlan.zhihu.com/p/32787878)
+2. [游戏开发中的ECS 架构概述](https://zhuanlan.zhihu.com/p/30538626)
 
-3. [浅谈《守望先锋》中的 ECS 构架（云风）](https://blog.codingnow.com/2017/06/overwatch_ecs.html)
+3. [一个无框架的ECS实现（Entity-Component-System](https://zhuanlan.zhihu.com/p/32787878)
 
-4. [Entitas-CSharp](https://github.com/sschmid/Entitas-CSharp)
+4. [浅谈《守望先锋》中的 ECS 构架（云风）](https://blog.codingnow.com/2017/06/overwatch_ecs.html)
 
-5. [游戏引擎架构](https://www.amazon.cn/dp/B00HY8SIX2/ref=sr_1_1?s=books&ie=UTF8&qid=1522924143&sr=1-1)
+5. [Entitas-CSharp](https://github.com/sschmid/Entitas-CSharp)
 
-6. [Update Method](https://github.com/lixianmin/design-pattern/blob/master/update-method.md)
+6. [游戏引擎架构](https://www.amazon.cn/dp/B00HY8SIX2/ref=sr_1_1?s=books&ie=UTF8&qid=1522924143&sr=1-1)
 
-7. [Implementing Component-Entity-Systems](https://www.gamedev.net/articles/programming/general-and-gameplay-programming/implementing-component-entity-systems-r3382/)
+7. [Update Method](https://github.com/lixianmin/design-pattern/blob/master/update-method.md)
+
+8. [Implementing Component-Entity-Systems](https://www.gamedev.net/articles/programming/general-and-gameplay-programming/implementing-component-entity-systems-r3382/)
 
 
 
