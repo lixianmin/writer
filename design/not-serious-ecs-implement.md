@@ -13,7 +13,7 @@
 
 ECS是Entity-Component-System（实体-组件-系统） 的缩写，是一种框架设计模式，多用于游戏开发。但我下面要讲的ECS并不是正经的ECS实现方案，只是借了ECS的壳。
 
-正经ECS可简述为："Entities as ID's", "Components as raw Data", and "Code stored in Systems, not in Components or Entities"。翻译成中文就是：Entities是一组ID's，Components是纯数据，Systems是则是纯函数（无状态）。在我的设计中（暂时 -\_\_\_\_- ）没有恪守这些准则，我的目的是可以像**填配置一样订制代码。**从实现效果上看，更像Unity3d中的Component实现方案。希望研究正经ECS设计方案的同学，请移步文末的参考文献区，那里有一些链接也许对你有用。
+正经ECS可简述为："Entities as ID's", "Components as raw Data", and "Code stored in Systems, not in Components or Entities"。意译为：Entity就是一个ID，Component是纯数据，System是则是纯逻辑。在我的设计中（暂时 -\_\_\_\_- ）没有恪守这些准则，我的目的是可以像**填配置一样订制代码。**从实现效果上看，更像Unity3d中的Component实现方案。希望研究正经ECS设计方案的同学，请移步文末的参考文献区，那里有一些链接也许对你有用。
 
 方案基于Unity3d引擎，使用C\#编码，示例语法也都使用C\#。框架代码以及下文中我使用Part一词指代Component，有两个原因：一是Component这个单词已经被Unity3d占了，二是我觉得Component这个单词太长了。
 
@@ -142,7 +142,7 @@ public class Part : IPart, IInitPart, IDisposable, IIsDisposed
 
 #### 0x04. 设计权衡
 
-1. 为什么没有遵循Components是raw data，Systems是pure code的ECS规范？
+1. 为什么没有遵循Component是纯数据，Systems是纯逻辑的ECS规范？
 
    框架并未否定正经的ECS实现方案。如前所述，只要实现了IPart空接口的类都可以作为组件被Entity使用---这对组件类几乎没有增加额外数据，可能是理论上能做到的最小的约束了。我们完全可以使用纯数据的Part和无状态的System。
 
@@ -205,7 +205,7 @@ public class Part : IPart, IInitPart, IDisposable, IIsDisposed
 
 #### 0x06. References
 
-1. [wiki: Entity–component–system](https://en.wikipedia.org/wiki/Entity%E2%80%93component%E2%80%93system)
+1. [wiki: Entity–component–system](https://en.wikipedia.org/wiki/Entity–component–system)
 
 2. [游戏开发中的ECS 架构概述](https://zhuanlan.zhihu.com/p/30538626)
 
