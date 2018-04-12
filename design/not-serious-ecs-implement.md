@@ -142,7 +142,9 @@ public class Part : IPart, IInitPart, IDisposable, IIsDisposed
 
 #### 0x04. 设计缺陷
 
-内存占用、GetPart\(\)的性能开销
+
+目前主要的问题有两个，都是由于我们在Entity中使用Hashtable存储组件的原因。跟使用数组的方式相比，Hashtable存储同样的数据占用内存比较大， GetPart()也适合于在Tick()中反复调用
+
 
 ---
 
