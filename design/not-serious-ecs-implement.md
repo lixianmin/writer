@@ -122,7 +122,7 @@ public interface IPart
 {
 
 }
-public class Part : IPart, IInitPart, IDisposable, IIsDisposed
+public class Part : IPart, IInitPart, IDisposable, IIsDisposed
 {
 ...
 }
@@ -152,7 +152,7 @@ public class Part : IPart, IInitPart, IDisposable, IIsDisposed
 
    框架并未否定正经的ECS实现方案。如前所述，只要实现了IPart空接口的类都可以作为组件被Entity使用---这对组件类几乎没有增加额外数据，可能是理论上能做到的最小的约束了。我们完全可以使用纯数据的Part和无状态的System。
 
-   只所以没有强制要求Part是raw data，是因为很多组件的专用性太强，它们就只能是为某些Entity服务，如果再把行为拆出来，感觉有些设计过度了。
+   只所以没有强制要求Part是raw data，是因为很多组件的专用性太强，它们就只能是为某些Entity服务，如果再把行为拆出来，感觉有些设计过度了。
 
    在正经的System实现中，Entity或Part通常集中存储在某个地方。由于每个System只处理某些特定类型的Entity/Part，因此需要在每次访问前先按预定义的条件过滤一遍。在我们的应用中，Entity与Part的创建频率不是特别频繁，我认为使用每次过滤的方式是一种CPU浪费，更倾向于使用在System中做缓存的方式，于是System就包含了状态。
 

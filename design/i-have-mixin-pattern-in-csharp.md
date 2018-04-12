@@ -3,7 +3,7 @@
 
 ### I have mixin模式（C\#）
 
-文：普通熊猫
+文：普通熊猫
 
 源：[https://github.com/lixianmin/writer/blob/master/design/i-have-mixin-pattern-in-csharp.md](https://github.com/lixianmin/writer/blob/master/design/i-have-mixin-pattern-in-csharp.md)
 
@@ -126,7 +126,7 @@ C\#使用扩展方法实现mixin，这点毋庸置疑，但对如何在项目中
 
 再举个例子：Unity3d中有一个广泛应用的类名为Transform，它实现了很多3d坐标相关的操作。我们可以定义一个接口类IHaveTransform和一个扩展类IHaveTransformEx，从此以后，只要实现了IHaveTransform接口的类都将因此收益。
 
-你可能已经注意到我在对扩展方法命名时都使用了以Ex结尾方式，目的是为了让程序员明确的知道自己调用是扩展方法而不是成员方法，这在很多情况下是有益的。比如对IHaveTransformEx中的SetPositionEx\(\)方法，宿主类可能需要定义一个同名方法SetPosition\(\)（注意没有Ex）用于处理一些特殊情况。如果扩展类中的方法也命名为SetPosition\(\)的话，两个方法的区分度就很低了，程序员使用时很容易混淆。
+你可能已经注意到我在对扩展方法命名时都使用了以Ex结尾方式，目的是为了让程序员明确的知道自己调用是扩展方法而不是成员方法，这在很多情况下是有益的。比如对IHaveTransformEx中的SetPositionEx\(\)方法，宿主类可能需要定义一个同名方法SetPosition\(\)（注意没有Ex）用于处理一些特殊情况。如果扩展类中的方法也命名为SetPosition\(\)的话，两个方法的区分度就很低了，程序员使用时很容易混淆。
 
 想想我们自己的项目中定义过多少名为GetXXX\(\)的方法，如果有一小半能用上I have mixin模式的话，生活会变得多么美好~
 
