@@ -37,11 +37,7 @@ ECS是Entity-Component-System（实体-组件-系统） 的缩写，是一种框
     entity.RemovePart(typeof(RenderPart));
 ```
 
-具体实现时，Entity中的Part全部存储在一张中心Hashtable（Type =&gt; Part）中，但也因此**付出了代价：Speed & Memory**：
-
-* Speed：因为对Part的Add/Remove/Get全部通过Hashtable进行，因此速度比直接访问类成员变量慢很多。在macOS 10.12.6 + Unity3d 2017.1.0f3下，实测C\#的Hashtable（Type =&gt; Part）与直接访问数组的耗时比大概为10:1，Dictionary&lt;Type, Part&gt;与直接访问数组的耗时比大概为15:1。测试时Hashtable与Dictionary都使用了默认参数，没有调整loadFactor。网传默认情况下Hashtable的loadFactor比Dictionary更低，也因此会占用更大的内存。
-
-* Memory：传说，同样的数据，存储在哈希表中比存储在数组中要多占用两倍左右的内存。
+具体实现时，Entity中的Part全部存储在一张中心Hashtable（Type =&gt; Part）中，但也因此**付出了代价：Speed & Memory**，详见第0x04小节：设计缺陷。
 
 ---
 
@@ -142,8 +138,23 @@ public class Part : IPart, IInitPart, IDisposable, IIsDisposed
 
 #### 0x04. 设计缺陷
 
+由于实现机制的原因，我们使用Hashtable存储Entity的组件，因此需要注意潜在的**速度与内存**开销。
 
-目前主要的问题有两个，都是由于我们在Entity中使用Hashtable存储组件的原因。跟使用数组的方式相比，Hashtable存储同样的数据占用内存比较大， GetPart()也适合于在Tick()中反复调用
+首先是速度。因为对Part的Add/Remove/Get全部通过Hashtable进行，因此速度比直接访问类成员变量慢很多。如果把class想像成一个存储类成员变量的容器，那么按下标访问的数组是速度最快的容器实现方式。在测试中，我假设获取类成员变量的速度与从数组中按下标获取数组元素的速度相仿 --- 没有证据，但我认为这是一个相对合理的基准。测试时Hashtable与Dictionary都使用了默认参数，没有调整loadFactor。测试结果如下表所示：
+
+[测试代码地址](https://github.com/lixianmin/cloud/tree/master/projects/SortedTableTests)
+测试目标：测试各容器与直接使用下标访问数组元素的耗时比。
+测试环境：macOS 10.12.6 + Unity2017.3.1p4 + C#
+
+| 容器 | 耗时比 |
+|--|--|
+| Array |  1: 1 |
+| Hashtable（Type => Part）| 10 : 1 |
+| Dictionary<Type, Part>	| 15 : 1 |
+
+实测从Hashtable和数组中获取相同元素的耗时比为10:1，也就是说可以大致认为GetPart()的耗时是获取普通类成员变量的10倍。这种速度落差对偶发的组件访问影响不大，但需要注意在Tick()中反复调用GetPart()的情况。
+
+其次是内存。同样的数据，存储在Hashtable中比存储在数组中要多占用更多的内存，
 
 
 ---
