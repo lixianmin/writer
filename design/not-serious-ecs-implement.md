@@ -138,23 +138,35 @@ public class Part : IPart, IInitPart, IDisposable, IIsDisposed
 
 #### 0x04. 设计缺陷
 
-由于实现机制的原因，我们使用Hashtable存储Entity的组件，因此需要注意潜在的**速度与内存**开销。
+为了降低Entity与Part之间的耦合度，实现机制上我们使用Hashtable存储Part组件，也因此需要注意潜在的**速度与内存**开销。
 
-首先是速度。因为对Part的Add/Remove/Get全部通过Hashtable进行，因此速度比直接访问类成员变量慢很多。如果把class想像成一个存储类成员变量的容器，那么按下标访问的数组是速度最快的容器实现方式。在测试中，我假设获取类成员变量的速度与从数组中按下标获取数组元素的速度相仿 --- 没有证据，但我认为这是一个相对合理的基准。测试时Hashtable与Dictionary都使用了默认参数，没有调整loadFactor。测试结果如下表所示：
+首先是速度。因为对Part的Add/Remove/Get全部通过Hashtable进行，因此速度比直接访问类成员变量慢很多。如果把class想像成一个存储类成员变量的容器，那么数组是速度最快的容器实现方式。在测试中，我假设获取类成员变量的速度与从数组中按下标获取数组元素的速度相仿 --- 并没有证据，但我认为这是一个相对合理的假设。另外，测试时Hashtable与Dictionary都使用了默认参数，没有调整loadFactor。测试情况如下：
 
-[测试代码地址](https://github.com/lixianmin/cloud/tree/master/projects/SortedTableTests)
-测试目标：测试各容器与直接使用下标访问数组元素的耗时比。
-测试环境：macOS 10.12.6 + Unity2017.3.1p4 + C#
+测试代码：[MBHashtableSpeedTest](https://github.com/lixianmin/cloud/tree/master/projects/SortedTableTests)
+测试目标：测试各类容器与数组相比获取元素的耗时比。
+测试环境：MacBook Pro(13-inch, 2016) + macOS 10.12.5 + Unity2017.1.1f1 + C#
+测试方案：容器大小50，按type获取数据10000次的总时间相除
 
 | 容器 | 耗时比 |
 |--|--|
-| Array |  1: 1 |
-| Hashtable（Type => Part）| 10 : 1 |
-| Dictionary<Type, Part>	| 15 : 1 |
+| Array | 1: 1 |
+| Hashtable（Type => Part）| 13 : 1 |
+| Dictionary<Type,  Part> | 25 : 1 |
 
-实测从Hashtable和数组中获取相同元素的耗时比为10:1，也就是说可以大致认为GetPart()的耗时是获取普通类成员变量的10倍。这种速度落差对偶发的组件访问影响不大，但需要注意在Tick()中反复调用GetPart()的情况。
+从表里可以看到，从Hashtable和数组中获取相同元素的耗时比大概为13:1，因此可以大致认为GetPart()的耗时是获取普通类成员变量的13倍。这种速度落差对偶发的组件访问可能影响不大，但需要警惕在Tick()/Update()中反复调用GetPart()的情况。
 
-其次是内存。同样的数据，存储在Hashtable中比存储在数组中要多占用更多的内存，
+其次是内存。同样的数据，存储在Hashtable中比存储在数组中要多占用更多的内存。测试内存的方案与测试速度的方案类似，仍然使用Array, Hashtable, Dictionary三种容器对比，容器仍然使用默认参数，未调整loadFactor。测试情况如下：
+
+测试代码：[MBHashtableMemoryTest](https://github.com/lixianmin/cloud/tree/master/projects/SortedTableTests)
+测试目标：测试各类容器的内存占用情况。
+测试环境：MacBook Pro(13-inch, 2016) + macOS 10.12.5 + Unity2017.1.1f1 + C#
+测试方案：容器大小50，每种类型生成10000份，取平均容器的大小
+
+| 容器 | 平均大小 |
+|--|--|
+| Array | 1.9KB |
+| Hashtable（Type => Part）| 2.6KB |
+| Dictionary<Type,  Part> | 4.4KB |
 
 
 ---
