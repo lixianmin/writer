@@ -13,17 +13,17 @@
 
 ECS是Entity-Component-System（实体-组件-系统） 的缩写，是一种框架设计模式，多用于游戏开发。但我下面要讲的ECS并不是正经的ECS实现方案，只是借了ECS的壳。
 
-正经ECS可简述为："Entities as ID's", "Components as raw Data", and "Code stored in Systems, not in Components or Entities"。意译为：Entity就是一个ID，Component是纯数据，System是纯逻辑。在我的设计中（暂时 -\_\_\_\_- ）没有恪守这些准则，我的目的是可以像**填配置一样订制代码。**从实现效果上看，更像Unity3d中的Component实现方案。希望研究正经ECS设计方案的同学，请移步文末的参考文献区，那里有一些链接也许对你有用。
+正经ECS可简述为："Entities as ID's", "Components as raw Data", and "Code stored in Systems, not in Components or Entities"。意译为：Entity就是一个ID，Component是纯数据，System是纯逻辑。在我的设计中（暂时 -\_\_\_\_- ）没有恪守这些准则，我的目的是可以像**填配置一样订制代码。**从实现效果上看，更像Unity3d中的Component实现方案。希望研究正经ECS设计方案的同学，请直接移步文末的参考文献区，那里有一些链接也许对你有用。
 
-方案基于Unity3d引擎，使用C\#编码，示例语法也都使用C\#。框架代码以及下文中我使用Part一词指代Component，有两个原因：一是Component这个单词已经被Unity3d占了，二是我觉得Component这个单词太长了。
+方案基于Unity3d引擎，使用C\#编码，示例语法也都使用C\#。框架代码以及下文中我使用Part一词指代Component，原因有两个：一是Component这个单词已经被Unity3d占了，二是我觉得Component这个单词太长了。
 
 ---
 
 #### 0x01. Entity不需要知道正在使用哪些Part
 
-就目前我了解到的一些实现方案中，Entity都明确知道自己会使用哪些组件。我认为这跟OO中的组合模式（Composite Pattern）区别不大。我可以接受Part强引用Entity，但不能接受Entity强引用Part。之所以这样，有两个比较重要的原因：
+就目前我了解到的一些实现方案中，Entity都明确知道自己会使用哪些组件。我认为这样的实现方案与OO中的组合模式（Composite Pattern）区别不大。我可以接受Part强引用Entity，但不能接受Entity强引用Part。之所以这样，有两个比较重要的原因：
 
-1. **越简单越易用**：理想的情况下，Entity在任意时刻需要任意Part时可随时添加，不需要某个Part时则随时删除。如果Entity代码中硬编码了Part成员变量，那么就需要同样手工编码所有其它相关的操作，比如：命名，Initialize\(\), Dispose\(\)等，删除或重命名相关代码时也需要手动调整。这些属于常见操作，在编写代码时经常遇到，我认为手工编码的话过于复杂了。参考文献中有一个Unity3d的插件叫Entitas，它通过自动生成代码的方式简化了这个过程。
+1. **越简单越易用**：理想的情况下，Entity在任意时刻需要任意Part时可随时添加，不需要某个Part时则随时删除。如果Entity代码中硬编码了Part成员变量，那么就需要同样手工调用所有其它相关的操作，比如：命名，Initialize\(\), Dispose\(\)等，删除或重命名相关代码时也需要手动调整。这些属于常见操作，在编写代码时经常遇到，我认为每次都手工调用这些操作。参考文献中的Entitas是一个Unity3d的插件，它通过自动生成代码的方式简化了这个过程。
 
 2. **Entity在编译期与Part解耦**：我们项目有一个跟《守望先锋》类似的需求。我们希望部分Logic层的Client代码（比如MovePart）可以直接在Server上运行，此时需要完全剥离出View层的代码\(比如RenderPart\)。这要求Logic层代码不能强引用任何View层代码的信息，否则会编译不过。同时因为所有相关代码的生命周期都是一样的，因此动态增删Part是一个favorable的设计方案。具体就是在Client端Entity会动态挂接所有相关Part，而在Server端Entity只需要挂接Logic层的Part。
 
@@ -37,7 +37,7 @@ ECS是Entity-Component-System（实体-组件-系统） 的缩写，是一种框
     entity.RemovePart(typeof(RenderPart));
 ```
 
-具体实现时，Entity中的Part全部存储在一张中心Hashtable（Type =&gt; Part）中，但也因此**付出了代价：Speed & Memory**，详见第0x04小节：设计缺陷。
+具体实现时，Entity中的Part全部存储在一张中心Hashtable（Type =&gt; Part）中，但也因此**付出了速度和内存的代价**，详见第《0x04 设计缺陷》小节。
 
 ---
 
@@ -45,9 +45,9 @@ ECS是Entity-Component-System（实体-组件-系统） 的缩写，是一种框
 
 从实现效果上，ECS设计倾向于以属性为中心（可参考《游戏引擎架构P655》）。Entity中只需要存储实际用到的Part（即：我们不会有一些Entity，内含未使用的Part成员），这对于有效使用内存是有益的。不过，考虑到我们使用哈希表存储Part成员，一正一负，实际内存占用不好说是升了还是降了。
 
-Update Method是游戏设计中的一种常规设计手法，具体方法可能命名为Update\(\)或Tick\(\)，其含义在此不作区分，框架中使用Tick\(\)。在以对象为中心的设计中，很多宿主对象与其属性对象都需要写一个Tick\(\)方法，用于在每一帧更新相关数据。实际上，因为Tick\(\)调用通常是自上而下逐级进行的，因此只要有一个属性对象需要Tick\(\)方法，都会强迫其所在的宿主对象及每一个上游对象都拥有Tick\(\)方法。这样，以游戏代码中的初始Tick\(\)方法为根节点，自上而下，由外到内，对所有对象Tick\(\)方法的调用可以看成是一个树形结构，我们可称之为Tick树。以对象为中心的设计模型有一些缺点，其中之一便是Tick树中相邻叶节点的类型通常是不一样的，因此在遍历整个Tick树的过程中，缓存命中失败的概率（cache miss rate）比较大。
+Update Method是游戏设计中的一种常规设计手法，具体方法可能命名为Update\(\)或Tick\(\)，其含义在文中不作区分，框架中使用Tick\(\)。在以对象为中心的设计中，很多宿主对象与其属性对象都需要写一个Tick\(\)方法，用于在每一帧更新相关数据。实际上，因为Tick\(\)调用通常是自上而下逐级进行的，因此只要有一个属性对象需要Tick\(\)方法，都会强迫其所在的宿主对象及每一个上游对象都拥有Tick\(\)方法。这样，以游戏代码中的初始Tick\(\)方法为根节点，自上而下，由外到内，对所有对象Tick\(\)方法的调用可以看成是一个树形结构，我们可称之为Tick树。以对象为中心的设计模型有一些缺点，其中之一便是Tick树中相邻叶节点的类型通常是不一样的，因此在遍历整个Tick树的过程中，缓存命中失败的概率（cache miss rate）比较大。
 
-以属性中心设计则可能更加缓存友好。在我们的ECS实现方案中，我们设计了一个名为PartTickSystem的类，收集所有包含Tick\(\)的Part，将它们**存储在同一个array中并按type排序**。这样，相同type的Part在内存中是连续存储的，数据布局符合**数组之结构\(struct of array, SoA\)**的要求。在遍历调用所有Part的Tick\(\)方法时，能够减少或消除缓命中失败。
+以属性中心设计则可能更加缓存友好。在我们的ECS实现方案中，设计了一个名为PartTickSystem的类，收集所有包含Tick\(\)的Part，将它们**存储在同一个array中并按type排序**。这样，相同type的Part在内存中是连续存储的，数据布局符合**数组之结构\(struct of array, SoA\)**的要求。在遍历调用所有Part的Tick\(\)方法时，能够减少或消除缓命中失败。
 
 具体到PartTickSystem类的实现细节，由于我们使用array存储Part对象，在添加或删除Part时，不需要立即调整array中的内容，否则会导致频繁移动array中的数据，可能引起不必要的CPU开销。添加Part时，可以先将新的Part对象append到数组尾部，在真正遍历array中的Part之前，将其按type排序（因此在最坏的情况下PartTickSystem.Tick\(\)的时间复杂度为O\(NlogN\)）。删除Part时，也不需要立即从array中移除，只需要在遍历结束后的某个时刻调用一个RemoveAll\(\)方法统一移除即可（类似于List&lt;T&gt;.RemoveAll\(\)，只移动一次内存）。
 
@@ -138,7 +138,7 @@ public class Part : IPart, IInitPart, IDisposable, IIsDisposed
 
 #### 0x04. 设计缺陷
 
-为了降低Entity与Part之间的耦合度，实现机制上我们使用Hashtable存储Part组件，也因此需要注意潜在的**速度与内存**开销。
+为了降低Entity与Part之间的耦合度，实现机制上我们使用Hashtable存储Entity中的Part组件，也因此需要注意潜在的**速度与内存**开销。
 
 首先是速度。因为对Part的Add/Remove/Get全部通过Hashtable进行，因此速度比直接访问类成员变量慢很多。如果把class想像成一个存储类成员变量的容器，那么速度最快的容器实现方式就是使用数组。在测试中，我假设获取类成员变量的速度与从数组中按下标获取数组元素的速度相仿（并没有证据，但我认为这是一个相对合理的假设）。另外，测试中Hashtable与Dictionary都使用了默认参数，没有调整loadFactor。测试细节如下：
 
