@@ -6,4 +6,5 @@
   * [I have mixin模式（C\#）](design/i-have-mixin-pattern-in-csharp.md)
 * [manager](manager.md)
   * [程序员交接文档](manager/coder-handover.md)
+  * [工作总结文档](manager/work-summary.md)
 
