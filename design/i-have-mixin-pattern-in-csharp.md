@@ -3,7 +3,7 @@
 
 ### I have mixin模式（C\#）
 
-文：普通熊猫
+文：普通熊猫
 
 源：[https://github.com/lixianmin/writer/blob/master/design/i-have-mixin-pattern-in-csharp.md](https://github.com/lixianmin/writer/blob/master/design/i-have-mixin-pattern-in-csharp.md)
 
