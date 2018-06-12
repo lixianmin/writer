@@ -33,7 +33,21 @@ Two-by-four array of samples from N(3, 6.25): #  注意 6.25 = 2.5 * 2.5
 
 >>> 2.5 * np.random.randn(2, 4) + 3
 ```
-4. np.meshgrid(x, y)
+4. 数据过滤
+
+```python
+# 得到一个随机漫步的二维数组
+steps = np.where(np.random.randint(0, 2, size=(5000, 1000)) > 0, 1, -1)
+walks = np.cumsum(steps, 1)
+
+# 得到过滤数组，注意使用了any(1)
+hits30 = (np.abs(walks) > 30).any(1)
+filtered = walks[hits30]
+```
+
+
+
+1. np.meshgrid(x, y)
 ```python
 x, y = np.arange(5), np.arange(3)	# x和y代表的分别是在x轴和y轴上采样的点
 xs, ys = np.meshgrid(x, y)			# xs,ys则代表着通过x,y向量组合出来的mesh面上的所有的坐标点的横纵坐标向量，其中xs是所有的x坐标，ys是所有的y坐标，它们拥有同样的shape

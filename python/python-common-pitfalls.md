@@ -26,4 +26,4 @@ print(age)
 #### References
 
 1. [Python 变量作用域](https://blog.csdn.net/cc7756789w/article/details/46635383)
-2. 
+2. [Overcoming frustration: Correctly using unicode in python2](https://pythonhosted.org/kitchen/unicode-frustrations.html)
