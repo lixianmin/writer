@@ -28,13 +28,24 @@
 
 
 
-1. 时间操作
+1. 增删改查（crud）操作
 
-```sql
--- 选择expiration_date小于今天的数据
-select * from MedicineTable where expiration_date < date('now'); 
+   ```sql
+   insert into
+   update set
+   select from
+   delete from
+   ```
 
-```
+   
+
+2. 时间操作
+
+    ```sql
+    -- 选择expiration_date小于今天的数据
+    select * from MedicineTable where expiration_date < date('now'); 
+
+    ```
 
 
 

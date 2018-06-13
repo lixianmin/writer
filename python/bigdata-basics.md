@@ -45,9 +45,7 @@ hits30 = (np.abs(walks) > 30).any(1)
 filtered = walks[hits30]
 ```
 
-
-
-1. np.meshgrid(x, y)
+5. np.meshgrid(x, y)
 ```python
 x, y = np.arange(5), np.arange(3)	# x和y代表的分别是在x轴和y轴上采样的点
 xs, ys = np.meshgrid(x, y)			# xs,ys则代表着通过x,y向量组合出来的mesh面上的所有的坐标点的横纵坐标向量，其中xs是所有的x坐标，ys是所有的y坐标，它们拥有同样的shape
