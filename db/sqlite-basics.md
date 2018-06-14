@@ -29,10 +29,10 @@
 1. 增删改查（crud）操作
 
    ```sql
-   insert into
-   update set
-   select from table where group by having order by desc
-   delete from
+   insert into table_name [(column1, ...)] values (value1, ...)
+   update table_name set column1= value1 where [condition]
+   select from table_name where [condition] group by [] having [] order by [] desc
+   delete from table_name where [condition]
    ```
 
 2. 条件语句

@@ -15,12 +15,12 @@
 
 #### 0x02 常用库
 
-| 名字                                       | 安装                                                         |
-| ------------------------------------------ | ------------------------------------------------------------ |
-| [ipython](https://ipython.org/)            | pip install --user ipython<br/>pip install --user --upgrade jupyter |
-| [numpy](http://www.numpy.org/)             | 科学计算基础库                                               |
-| [pinyin](https://pypi.org/project/pinyin/) | 将汉字转化为对应的拼音                                       |
-|                                            |                                                              |
+| 名字                                          | 安装                                                         |
+| --------------------------------------------- | ------------------------------------------------------------ |
+| [ipython](https://ipython.org/)               | pip install --user ipython<br/>pip install --user --upgrade jupyter |
+| [numpy](http://www.numpy.org/)                | 科学计算基础库                                               |
+| [pypinyin](https://pypi.org/project/pypinyin) | 将汉字转化为对应的拼音                                       |
+|                                               |                                                              |
 
 
 
