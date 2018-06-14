@@ -1,14 +1,14 @@
 
 
 ---
-#### 按行读取
+#### 0x01 按行读取
 ```
 for line in open('file.txt'): #默认打开方式为'r'，即只读
     print(line, end='') #注意end=''，字串line本身包括了换行符
 ```
 
 ---
-#### 随机读取
+#### 0x02 随机读取
 ```
 with open('file.txt') as fin:
     print(fin.readline()) #读一行，这包括最后的换行符
@@ -18,7 +18,7 @@ print(fin.read())   #读取文件全文
 ```
 
 ---
-#### 写文件
+#### 0x03 写文件
 ```
 with open('file.txt', 'w') as fout:
     fout.write(s)       # 写一行，不带换行符
@@ -26,7 +26,7 @@ with open('file.txt', 'w') as fout:
 ```
 
 ---
-#### 文件编码问题
+#### 0x04 文件编码问题
 
 只有**文件才会涉及到编码，所以称为文件编码**：
 
@@ -63,3 +63,12 @@ with open('utf8.txt', 'w', encoding= 'utf8') as fout:
 注意：
 1. 当文件中仅包含ASSII字符时，Windows中记事本会将其识别为GB2312编码；
 2. 脚本文件(*.py)本身需要是utf8格式，否则无法执行；
+
+
+
+----
+
+#### 0x05 References
+
+1. [Overcoming frustration: Correctly using unicode in python2](https://pythonhosted.org/kitchen/unicode-frustrations.html#overcoming-frustration-correctly-using-unicode-in-python2)
+2. 

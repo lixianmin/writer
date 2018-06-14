@@ -4,7 +4,7 @@
 
 ---
 
-#### sqlite3命令行
+#### 0x01 sqlite3命令行
 
 1. mac中terminal自带sqlite3命令；
 2. sql命令直接输入，以";"结束并执行；
@@ -24,34 +24,48 @@
 
 ----
 
-#### 常见操作
-
-
+#### 0x02 常见操作
 
 1. 增删改查（crud）操作
 
    ```sql
    insert into
    update set
-   select from
+   select from table where group by having order by desc
    delete from
    ```
 
-   
+2. 条件语句
 
-2. 时间操作
+    | Name   | Notice             |
+    | ------ | ------------------ |
+    | where  | select的查询条件   |
+    | having | group by的分类条件 |
+    | on     | join的连接条件     |
+
+
+
+3. 时间
+  使用Integer类型，插入删除时使用str
 
     ```sql
     -- 选择expiration_date小于今天的数据
     select * from MedicineTable where expiration_date < date('now'); 
-
     ```
 
+4. bool
+  创建使用Integer类型，插入时使用0/1
 
+  ```sql
+  insert into Inventroy(name, nessary) values ('百蕊颗粒', 1)
+  select * from Inventory where nessary
+  ```
+
+   
 
 ----
 
-#### References
+#### 0x03 References
 
 1. [SQLite 教程](http://www.runoob.com/sqlite/sqlite-tutorial.html)
 2. [python2操作sqlite3](https://docs.python.org/2/library/sqlite3.html)
