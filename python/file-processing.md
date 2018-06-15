@@ -28,13 +28,34 @@ with open('file.txt', 'w') as fout:
 ---
 #### 0x04 文件编码问题
 
-只有**文件才会涉及到编码，所以称为文件编码**：
+| unicode                                          | str（python2中称为str，python3中称为bytes） |
+| ------------------------------------------------ | ------------------------------------------- |
+| 对标物是内存中普通类对象，只不过它描述的是string | 对应序列化后的字节流，方便disk存储、net传输 |
+| 描述单位是character，human readable              | 描述单位是byte, machine readable            |
 
-1. 从文件或io设备交换数据使用的是str，只有**str才会有文件编码**；
 
-2. 从stdin读入是str类型，但是print()的时候可以使用str或unicode；
 
-3. 从sqlite3执行select读出的是unicode；
+A Unicode sandwich: bytes on the outside, Unicode on the inside.
+
+
+
+1. **普通类对象存储到disk需要选择序列化方案，如xml, json等，而unicode对象的序列化方案就是utf-8**
+
+2. PNG, JPEG, MP3, WAV, ASCII, UTF-8 etc are different forms of encodings
+
+3. character是human readable，而str是machine readable
+
+   - 从io设备交换数据使用的是str，就像我们使用字节流在网上传输数据一样；
+   - 数据经过编码以byte的形式存储到文件，所以**才有文件编码**说法；
+
+4. 从stdin读入是bytes类型；
+
+5. stdout的output一定是bytes:
+
+   - print()可以接受unicode参数，但会隐藏地执行了assii编码，因此有时候会出错；
+   - 当有中文输出时，强烈**建议print()使用bytes参数，这样输出的中文才可以grep**；
+
+6. 从sqlite3执行select读出的是unicode；
 
    ```python
    def print_text (text):
@@ -70,5 +91,6 @@ with open('utf8.txt', 'w', encoding= 'utf8') as fout:
 
 #### 0x05 References
 
-1. [Overcoming frustration: Correctly using unicode in python2](https://pythonhosted.org/kitchen/unicode-frustrations.html#overcoming-frustration-correctly-using-unicode-in-python2)
-2. 
+1. [Byte Objects vs String in Python](https://www.geeksforgeeks.org/byte-objects-vs-string-python/)
+2. [Pragmatic Unicode](https://nedbatchelder.com/text/unipain.html)
+3. [Overcoming frustration: Correctly using unicode in python2](https://pythonhosted.org/kitchen/unicode-frustrations.html#overcoming-frustration-correctly-using-unicode-in-python2)
