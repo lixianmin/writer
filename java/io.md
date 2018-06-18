@@ -116,6 +116,37 @@ File对象用于操作文件目录，并不包含读写文件的方法。
 
 ---
 
+#### 0x05 RandomAccessFile
+
+1. 该类实现了DataInput与DataOutput接口，因此可以操作各种primitive数据类型；
+2. 该类提供随机访问文件的能力，这是各种InputStream和OutputStream所不具备的；
+3. 该类并没有考虑buffer机制，因此频繁小数据量IO时性能会很差，此时应该换用MappedByteBuffer或BufferedXXX系列类读写文件
+
+```java
+public static void copyFile(String srcFile, String destFile) throws IOException {
+
+        try (RandomAccessFile fis = new RandomAccessFile(srcFile, "r");
+             RandomAccessFile fos = new RandomAccessFile(destFile, "rw");
+             FileChannel fci = fis.getChannel();
+             FileChannel fco = fos.getChannel();
+        ) {
+
+            long size = fci.size();
+            MappedByteBuffer inputBuffer = fci.map(FileChannel.MapMode.READ_ONLY, 0, size);
+            MappedByteBuffer outputBuffer = fco.map(FileChannel.MapMode.READ_WRITE, 0, size); // 因为这里使用的是MapMode.READ_WRITE，所以前面必须使用RandomAccessFile，而不能使用FileOutputStream
+
+            for (int i = 0; i < size; i++) {
+                byte b = inputBuffer.get(i);
+                outputBuffer.put(i, b);
+            }
+        }
+    }
+```
+
+
+
+---
+
 #### References
 
 1. [IO流学习总结](https://github.com/Snailclimb/Java-Guide/blob/master/Java%E7%9B%B8%E5%85%B3/Java%20IO%E4%B8%8ENIO.md)
