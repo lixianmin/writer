@@ -83,11 +83,12 @@ File对象用于操作文件目录，并不包含读写文件的方法。
 
 #### 0x04 ByteBuffer
 
-**ByteBuffer的定位有些类似于C#中的MemoryStream**：
+ByteBuffer的定位有些**类似于C#中的MemoryStream（但却是定长的）**：
 
 1. 缓存：在IO操作中用作数据中转站，用于提高IO性能
-2. Buffer下有8种buffer类，即ByteBuffer, MappedByteBuffer, CharBuffer, ShortBuffer, IntBuffer, LongBuffer, FloatBuffer, DoubleBuffer
+2. Buffer下有8种buffer类，即ByteBuffer, MappedByteBuffer, CharBuffer, ShortBuffer, IntBuffer, LongBuffer, FloatBuffer, DoubleBuffer。基本数据类型中，除布尔类型外都有对应的缓冲区实现。
 3. ByteBuffer本身是一个abstract类，内含工厂方法allocate(int)与allocateDirect(int)用于生成对象；
+4. ByteBuffer是定长的，也就是capacity不会像MemoryStream那长自动增长；
 
 
 
@@ -107,8 +108,9 @@ File对象用于操作文件目录，并不包含读写文件的方法。
 | methods       | description                                             |
 | ------------- | ------------------------------------------------------- |
 | asIntBuffer() | 创建IntBuffer视图                                       |
-| clear()       | 设置limit= capacity; position= 0; 切换至write模式前调用 |
-| flip()        | 设置limit=position; position= 0; 切换为read模式前调用   |
+| clear()       | 重置position并设置limit= capacity; 计划**写数据前**调用 |
+| flip() 轻弹   | 重置position并设置limit=position; 计划**读数据前**调用  |
+| rewind()      | 重置position，计划**重新读数据前**调用                  |
 | slice()       | 创建一个新的ByteBuffer，与当前的ByteBuffer共享内存      |
 |               |                                                         |
 
@@ -116,14 +118,67 @@ File对象用于操作文件目录，并不包含读写文件的方法。
 
 ---
 
-#### 0x05 RandomAccessFile
+#### 0x05 Channel
 
-1. 该类实现了DataInput与DataOutput接口，因此可以操作各种primitive数据类型；
-2. 该类提供随机访问文件的能力，这是各种InputStream和OutputStream所不具备的；
-3. 该类并没有考虑buffer机制，因此频繁小数据量IO时性能会很差，此时应该换用MappedByteBuffer或BufferedXXX系列类读写文件
+早期java使用stream抽象io操作，java1.4之后引入nio，然后开始使用channel抽象io操作。channel所抽象的层次并不是io操作所处理的数据，而是一个**已经建立好的支持io操作的实体的连接**，也就是说channl一定对应着一个实体连接，常见的是file与net连接。
+
+channel的操作都是基于ByteBuffer缓冲对象的，而不是像Stream一样基于byte[] buffer。
+
+
+
+###### FileChannel
+
+可能是**java中速度最快的文件读写方案**。
+
+1. FileChannel在多线程下是安全的
+2. read(dst, position) /write(src, position) 随机读写文件
+3. `int write(src)`操作**不能保证将所有的数据写出**，它的返回值代表着写出的字节数。注意，这与OutputStream的`void write(byte[])`方法不一样，后者是没有返回值的。
+4. FileChannel.open(path, StandardOpenOption.READ) 打开一个只读的文件
+5. transferTo() 可能会被操作系统优化成一个非常快速的直接传输
+
+
 
 ```java
-public static void copyFile(String srcFile, String destFile) throws IOException {
+
+// copy 1.4GB的文件需要1.7s
+public static long copyFile(String srcPath, String dstPath) throws IOException {
+
+        try (FileChannel fci = FileChannel.open(Paths.get(srcPath), StandardOpenOption.READ);
+             FileChannel fco = FileChannel.open(Paths.get(dstPath), StandardOpenOption.CREATE, StandardOpenOption.WRITE)
+        ) {
+            return fci.transferTo(0, fci.size(), fco);
+//            long count = 0;
+//            ByteBuffer buffer = ByteBuffer.allocate(4096);
+//            while (fci.read(buffer) != -1 || buffer.position() != 0) {
+//                buffer.flip();
+//                count += fco.write(buffer);
+//                buffer.compact();
+//            }
+//
+//            return count;
+        }
+    }
+
+// copy 1.4GB的文件需要3.0s
+public static long copyFileByStream (String srcFile, String destFile) throws IOException {
+
+        try (FileInputStream fis = new FileInputStream(srcFile);
+             FileOutputStream fos = new FileOutputStream(destFile);
+        ) {
+            long count = 0;
+            byte[] buffer = new byte[4096];
+
+            for (int size = 0; (size = fis.read(buffer)) != -1; ) {
+                fos.write(buffer, 0, size);
+                count += size;
+            }
+
+            return count;
+        }
+}
+
+// copy 1.4GB的文件需要3.6s
+public static void copyFileByRandomAccessFile(String srcFile, String destFile) throws IOException {
 
         try (RandomAccessFile fis = new RandomAccessFile(srcFile, "r");
              RandomAccessFile fos = new RandomAccessFile(destFile, "rw");
@@ -144,6 +199,20 @@ public static void copyFile(String srcFile, String destFile) throws IOException 
 ```
 
 
+
+---
+
+
+
+#### 0x06 RandomAccessFile (deprecated)
+
+1. 该类实现了DataInput与DataOutput接口，因此可以操作各种primitive数据类型；
+
+2. 该类提供随机访问文件的能力，这是各种InputStream和OutputStream所不具备的；
+
+3. 该类并没有考虑buffer机制，因此频繁小数据量IO时性能会很差，此时应该换用MappedByteBuffer或BufferedXXX系列类读写文件
+
+   
 
 ---
 
