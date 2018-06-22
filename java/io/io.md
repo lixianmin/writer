@@ -64,78 +64,6 @@ File对象用于操作文件目录，并不包含读写文件的方法。
 
 ---
 
-#### 0x03 Files
-
-
-
-| Target     | Code                                                         |
-| ---------- | ------------------------------------------------------------ |
-| 全文件读写 | byte[] bytes = Files.readAllBytes(path); <br/>List<String> lines = Files.readAllLines(path);<br/>**Stream<String> lines = Files.lines(path);** |
-| char读写   | Files.newBufferedReader()                                    |
-| byte读写   | Files.newInputStream()                                       |
-| 文件copy   | Files.copy(source, destination)                              |
-| 文件删除   | Files.deleteIfExists(path)                                   |
-| 目录遍历   | Files.walkFileTree()                                         |
-
-
-
----
-
-#### 0x04 ByteBuffer
-
-ByteBuffer的定位有些**类似于C#中的MemoryStream（但却是定长的）**：
-
-1. 缓存：在IO操作中用作数据中转站，用于提高IO性能
-2. Buffer下有8种buffer类，即ByteBuffer, MappedByteBuffer, CharBuffer, ShortBuffer, IntBuffer, LongBuffer, FloatBuffer, DoubleBuffer。基本数据类型中，除布尔类型外都有对应的缓冲区实现。
-3. ByteBuffer本身是一个abstract类，内含工厂方法allocate(int)与allocateDirect(int)用于生成对象；
-4. ByteBuffer是定长的，也就是capacity不会像MemoryStream那长自动增长；
-
-
-
-所有缓冲区都有4个属性：capacity、limit、position、mark，并遵循：mark <= position <= limit <= capacity，下表格是对着4个属性的解释：
-
-| 属性     | 描述                                                         |
-| -------- | ------------------------------------------------------------ |
-| Capacity | 容量，即可以容纳的最大数据量；在缓冲区创建时被设定并且不能改变 |
-| Limit    | 表示缓冲区的当前终点，不能对缓冲区超过极限的位置进行读写操作。且极限是可以修改的 |
-| Position | 位置，下一个要被读或写的元素的索引，每次读写缓冲区数据时都会改变改值，为下次读写作准备 |
-| Mark     | 标记，调用mark()来设置mark=position，再调用reset()可以让position恢复到标记的位置 |
-
-
-
-方法解析：
-
-| methods       | description                                             |
-| ------------- | ------------------------------------------------------- |
-| asIntBuffer() | 创建IntBuffer视图                                       |
-| clear()       | 重置position并设置limit= capacity; 计划**写数据前**调用 |
-| flip() 轻弹   | 重置position并设置limit=position; 计划**读数据前**调用  |
-| rewind()      | 重置position，计划**重新读数据前**调用                  |
-| slice()       | 创建一个新的ByteBuffer，与当前的ByteBuffer共享内存      |
-|               |                                                         |
-
-
-
----
-
-#### 0x05 Channel
-
-早期java使用stream抽象io操作，java1.4之后引入nio，然后开始使用channel抽象io操作。channel所抽象的层次并不是io操作所处理的数据，而是一个**已经建立好的支持io操作的实体的连接**，也就是说channl一定对应着一个实体连接，常见的是file与net连接。
-
-channel的操作都是基于ByteBuffer缓冲对象的，而不是像Stream一样基于byte[] buffer。
-
-
-
-###### FileChannel
-
-可能是**java中速度最快的文件读写方案**。
-
-1. FileChannel在多线程下是安全的
-2. read(dst, position) /write(src, position) 随机读写文件
-3. `int write(src)`操作**不能保证将所有的数据写出**，它的返回值代表着写出的字节数。注意，这与OutputStream的`void write(byte[])`方法不一样，后者是没有返回值的。
-4. FileChannel.open(path, StandardOpenOption.READ) 打开一个只读的文件
-5. transferTo() 可能会被操作系统优化成一个非常快速的直接传输
-
 
 
 ```java
@@ -222,3 +150,4 @@ public static void copyFileByRandomAccessFile(String srcFile, String destFile) t
 2. [ByteBuffer常用方法详解](https://blog.csdn.net/u012345283/article/details/38357851)
 3. [Java NIO学习笔记之二-图解ByteBuffer](https://my.oschina.net/flashsword/blog/159613) 
 4. [Memory Stream in Java](https://stackoverflow.com/questions/8436688/memory-stream-in-java)
+5. [SocketChannel](http://wiki.jikexueyuan.com/project/java-nio/socketchannel.html)

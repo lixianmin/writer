@@ -15,10 +15,15 @@
 | cmd + [ | 回退到上一次编辑的位置 |
 | cmd + 1   | Explorer            |
 | cmd + 7   | Structure           |
-| cmd + o       | open class          |
+| cmd + o       | open class ，长按cmd**连点两次o可以勾选include non-project items** |
 | ctrl + r | 运行程序 |
 | shift + F6 | rename              |
 | double shift  | search anywhere     |
+
+---
+#### 技巧
+1. 找不到源代码的话，可以看看是否有对应类的Impl实现，往往可以反编译一份出来
+2. 
 
 ----
 #### 设置
