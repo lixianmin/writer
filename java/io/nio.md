@@ -8,7 +8,9 @@
 
 channel的操作都是基于ByteBuffer缓冲对象的，而不是像Stream一样基于byte[] buffer。
 
-unix五大IO模型参考图：
+SocketChannel的non-blocking模式体现在connect会立即返回；ServerSocketChannel的non-blocking模式体现在accept()会立即返回；
+
+unix五大IO模型：
 
 <img src="https://raw.githubusercontent.com/jasonGeng88/blog/master/201708/assets/java-nio-02.jpg" style="zoom:80%" />
 
@@ -95,7 +97,64 @@ FileChannel是**支持随机读写**的（因此RandomAccessFile可以废除了�
 
 ---
 
-#### 0x05 读不出来 vs. 写不出去
+#### 0x05 SocketChannel
+
+##### connect
+
+`public abstract boolean connect(SocketAddress remote) throws IOException`
+
+底层socket建立连接：
+
+1. 如果此通道为non-blocking mode，则调用此方法发起一个非阻塞连接操作。如果连接立即建立成功，则返回true，否则返回false，此后必须通过调用finishConnect方法来完成链接。
+2. 如果通道处于blocking mode，则阻塞直到建立链接成功或者网络异常返回。可以在任意时间调用此方法。如果正在调用此方法时在此通道上调用了read或者write(原则上说几乎不应该如此操作)，那么read/write将阻塞.底层实现简析。此方法将会对readLock/writeLock对象锁进行同步,由此可见在connect时，将阻塞read/write操作。
+
+connect参考代码：
+
+```java
+ try {
+    begin();//中断响应  
+    connectThread.doConnect();//对于remote为本地连接时,极有可能会立即返回  
+    if (connectSuccess) {
+        return true;
+    }
+    if (isBlocking) {
+        for (; ; ) {
+            if (connectSucees) {
+                return true;
+            }
+        }
+    } else {
+        state = CONNECT_PENDING;
+        return false;
+    }
+} finally {
+    end( boolean);//中断响应  
+}catch(Exception e){
+    close();
+    throw e;
+}
+```
+
+
+
+##### finishConnect
+
+`public abstract boolean finishConnect() throws IOException`
+
+促成套接字连接完成。在channel的non-blocking mode下调用，如果已经建立连接则返回true，否则返回false。此方法在非阻塞模式下会立即返回。
+
+```java
+boolean isSuccess = channel.connect(remote);  
+if(!isSuccess){  
+    while(!finishConnect()){
+        Thread.sleep(500);  
+    }
+}
+```
+
+
+
+##### 读不出来 vs. 写不出去
 
 在面向Stream的IO抽象模型中，read/write都是阻塞型方法，其中void write()系列方法都**没有返回值**，所以只要不发生异常，write()调用完成后可以保证数据写出到流中（此处忽略flush()相关内容）。
 
@@ -115,7 +174,13 @@ public void write(String str, int off, int len);
 
 
 
-而在面向channel的抽象模型中，read/write都有一个int/long类型的返回值，它们代表着有效读写的数据长度。在non-blocking模式下要特别注意，nio的一次read/write可能**读不出来也写不出去**。因此需要小心处理。
+而在面向channel的抽象模型中，read/write都有一个int/long类型的返回值，它们代表着有效读写的数据长度。在non-blocking mode下要特别注意，nio的一次read/write可能**读不出来也写不出去**。因此需要小心处理。以SocketChannel为例，当SocketChannel被设置为non-blocking mode下，它的read操作可能返回三类值：
+
+1. 大于0，表示读取到了字节数；
+2. 等于0，没有读取到消息，可能是TCP处于Keep-Alive状态，接收到的是TCP握手消息；
+3. -1，即EOF，连接已经被对方合法关闭。
+
+
 
 一个向SocketChannel写数据的例子如下：
 
@@ -147,8 +212,8 @@ while ((readLength = srcChannel.read(buffer)) > 0 || buffer.position() != 0) {
     buffer.compact();
 }
 
-// readLength == -1 代表对方写完数据了
-// 在使用http get一张image时，server会通知CONTENT-LENGTH，需要client自行判断读结束。
+// 1. readLength == -1，即EOF，连接已经被对方合法关闭
+// 2. 在使用http get一张image时，server会通知CONTENT-LENGTH，需要client自行判断读结束。
 if (readLength == -1 || item.isDone()) {
     key.cancel();
     srcChannel.close();
@@ -161,8 +226,6 @@ if (readLength == -1 || item.isDone()) {
 ---
 
 #### 0x06 存疑问题
-
-SocketChannel的non-blocking模式体现在connect会立即返回；ServerSocketChannel的non-blocking模式体现在accept()会立即返回；
 
 SocketChannel在non-blocking mode下，调用channel.connect(remote);时，是否有可能直接返回true连接成功了，在这种情况下注册的OP_CONNECT还能在select()轮询时收到对应的事件通知吗？
 
@@ -178,5 +241,6 @@ channel.register (selector, SelectionKey. OP_ CONNECT| SelectionKey. OP_ READ)�
 
 #### 0x07 References
 
-1. [FileChannel](http://wiki.jikexueyuan.com/project/java-nio/filechannel.html)
-2. [JAVA NIO 一步步构建I/O多路复用的请求模型](https://github.com/jasonGeng88/blog/blob/master/201708/java-nio.md)
+1. [JAVA NIO 一步步构建I/O多路复用的请求模型](https://github.com/jasonGeng88/blog/blob/master/201708/java-nio.md)
+2. [NIO-SocketChannel详解](http://shift-alt-ctrl.iteye.com/blog/1840409)
+3. [FileChannel](http://wiki.jikexueyuan.com/project/java-nio/filechannel.html)
