@@ -6,8 +6,6 @@
 
 #### C++有六大内存问题
 
-首先是内存碎片，跟我们关系不大，忽略之。
-
 描述一个缓冲区需要两个属性：**头部指针（head pointer）和长度（length）**，这两个属性使用不好就会产生五个问题，如下图所示：
 
 ```mermaid
@@ -36,6 +34,10 @@ style Buffer fill:#f9f,stroke:#333,stroke-width:4px
 跟缓冲区的length相关只有一个：
 
 1. 如果不使用length控制会产生缓存溢出（buffer overrun）
+
+
+
+第六个内存问题是内存碎片，跟我们关系不大，忽略之。
 
 
 
