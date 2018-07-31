@@ -89,6 +89,31 @@ select actor_id from table where actor_id + 1 = 5;
 
 
 
+##### 5.3.3 多列索引
+
+ index_merge优化的特点：
+
+1. 只能合并针对单个table的scan；
+
+2. 如果where子句很复杂的话，可能需要拆解：
+
+```sql
+(x AND y) OR z => (x OR z) AND (y OR z)
+(x OR y) AND z => (x AND z) OR (y AND z)
+```
+
+3. 不能应用到full-text indices；
+
+
+
+----
+
+#### References
+
+1. [Index Merge Optimization](https://dev.mysql.com/doc/refman/8.0/en/index-merge-optimization.html)
+2. [MySQL 优化之 index merge(索引合并)](https://www.cnblogs.com/digdeep/archive/2015/11/18/4975977.html)
+3. 
+
 
 
 
