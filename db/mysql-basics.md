@@ -4,7 +4,7 @@
 
 #### 0x01 mysql命令行
 
-1. mysql -u用户名 -p密码；
+1. mysql -uroot -p12345678；
 2. sql命令直接输入，**以";"或"\G"结束**并执行；
 3. **判断相等时只使用一个"="**；
 4. alter user 'root'@'localhost' identified by '12345678'; 修改密码；

@@ -244,3 +244,4 @@ channel.register (selector, SelectionKey. OP_ CONNECT| SelectionKey. OP_ READ)�
 1. [JAVA NIO 一步步构建I/O多路复用的请求模型](https://github.com/jasonGeng88/blog/blob/master/201708/java-nio.md)
 2. [NIO-SocketChannel详解](http://shift-alt-ctrl.iteye.com/blog/1840409)
 3. [FileChannel](http://wiki.jikexueyuan.com/project/java-nio/filechannel.html)
+4. [Java I/O模型从BIO到NIO和Reactor模式](http://www.jasongj.com/java/nio_reactor/)
