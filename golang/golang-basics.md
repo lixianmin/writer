@@ -1,5 +1,22 @@
 
 
+
+
+----
+
+#### shell
+
+| Command              | Description                   |
+| -------------------- | ----------------------------- |
+| godoc -h             |                               |
+| godoc -http=:6060    | 在6060端口起doc服务           |
+| godoc package [Func] | 查询package中的Func的帮助文档 |
+|                      |                               |
+| gofmt -h             |                               |
+| go run main.go       | 直接编译运行main.go           |
+
+
+
 ---
 
 #### if for switch
@@ -42,3 +59,10 @@ fmt.Printf("%T, %s\n", s16, s16)
 	```
 4. [reflect.TypeOf](https://golang.org/pkg/reflect/#TypeOf)((*os.File)(nil))返回变量类型
 
+
+
+----
+
+#### References
+
+1. [Golang 新手可能会踩的 50 个坑](https://segmentfault.com/a/1190000013739000)
