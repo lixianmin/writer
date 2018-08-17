@@ -11,11 +11,23 @@
 
 
 
+```go
+// 单个同步
+exit := make(chan struct{})
+defer close(exit)
+
+// 多个同步
+var wg sync.WaitGroup
+defer wg.Done()
+```
+
+
+
+
+
 ---
 
 #### defer使用原则
-
-
 
 1. defer中的函数参数在调用到的那一刻确定
 
@@ -28,7 +40,7 @@ func a() {
 }
 ```
 
-2. 后入先出defer栈
+2. defer栈：LIFO
 
 ```go
 func b() {
