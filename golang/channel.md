@@ -15,7 +15,11 @@
      - 如果通道内还有数据，则返回已缓冲数据，此时ok idom返回true
      - 如果通道内没有数据，则返回0值，此时ok idom返回false
 7. 向nil通道收发数据，都会引发阻塞
-8. **close只能用于send端**，而不能用于recv端
+8. **左发右收，左关右等**：
+   - 左发：`c <- data` 是sender
+   - 右等：`data <- c` 是receiver
+   - 左关：sender负责close channel
+   - 右等：receiver需要等到channel关闭后自动退出
 
 
 
@@ -30,17 +34,20 @@
 ```go
 // ok idom
 for {
-    x, ok := <- c
-    // 据此判断通道是否被关闭
-    if !ok {
-        return
+    select{
+        case x, ok := <- c:
+            // 据此判断通道是否被关闭，通道关闭了才能退出goroutine
+            if !ok {
+                return
+            }
+        case <- timerC:
+        	// 如果一个channel确认不用了，就要置nil，否则如果它是closed状态，有可能死循环
+        	timerC = nil
     }
-    
-    println(x)
 }
 
 // range 模式
-// 循环获取消息，直到chan被关闭
+// 循环获取消息，直到channel被关闭，所以这个是不能用于select的
 for x := range c {
     println(c)
 }
