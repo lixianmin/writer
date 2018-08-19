@@ -6,14 +6,16 @@
 
 #### shell
 
-| Command              | Description                   |
-| -------------------- | ----------------------------- |
-| godoc -h             |                               |
-| godoc -http=:6060    | 在6060端口起doc服务           |
-| godoc package [Func] | 查询package中的Func的帮助文档 |
-|                      |                               |
-| gofmt -h             |                               |
-| go run main.go       | 直接编译运行main.go           |
+| Command              | Description                                     |
+| -------------------- | ----------------------------------------------- |
+| godoc -h             |                                                 |
+| godoc -http=:6060    | 在6060端口起doc服务                             |
+| godoc package [Func] | 查询package中的Func的帮助文档                   |
+|                      |                                                 |
+| gofmt -h             |                                                 |
+| go fmt               | `go fmt -l -w` 格式化当前目录下所有的文件并写回 |
+| go run main.go       | 直接编译运行main.go                             |
+| go test              | 运行单元测试                                    |
 
 
 
