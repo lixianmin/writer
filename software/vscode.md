@@ -28,5 +28,6 @@
 {
     "editor.fontSize": 18,      // 编辑器字体大小
     "workbench.editor.enablePreview": false,    // 使用cmd+p在新窗口打开文件，而不是复用旧的窗口
+    "terminal.integrated.fontSize": 16,
 }
 ```
