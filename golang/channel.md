@@ -20,6 +20,7 @@
    - 右等：`data <- c` 是receiver
    - 左关：sender负责close channel
    - 右等：receiver需要等到channel关闭后自动退出
+9. **goroutine中接收数据的fiber在一定要通过参数传递获取**，因此它在对象上的引用很快会被设置为nil
 
 
 
