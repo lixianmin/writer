@@ -14,7 +14,7 @@
    - 右等：`data <- c` 是receiver
    - 左关：**sender负责close channel**
    - 右等：receiver需要等到channel关闭后自动退出
-7. receiver**等待的channel必须以函数参数的方式拿到**，因为它在对象上的引用可能在任意时刻被设置为nil
+7. receiver**可能被close的channel必须以函数参数的方式拿到**，因为它在对象上的引用可在任意时刻变为nil
 8. 对同一个对象的所有操作都要通过同一个channel进行，否则需要同步
 
 
@@ -29,7 +29,7 @@
 
 ```go
 // receiver准则：
-// 1. receiver等待的channel必须以函数参数的方式拿到，因为它在对象上的引用可能在任意时刻被设置为nil
+// 1. receiver可能被close的channel必须以函数参数的方式拿到，因为它在对象上的引用可在任意时刻变为nil
 func (team *UserTeam) goProcessor(commandQueue chan IUserCommand) {
 	for {
 		select {
