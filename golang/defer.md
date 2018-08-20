@@ -8,6 +8,7 @@
 
 1. defer在包装函数return之后执行，常用于资源清理类工作
 2. recover只有在defer的方法里才有意义，原因是recover用于恢复panic，只有当程序panic了并且已经返回的过程中才有recover的必要
+3. 跟普通的函数相比，加了defer的函数需要消耗4~5倍的CPU时间
 
 
 
