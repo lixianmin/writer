@@ -23,7 +23,9 @@
 
 
 
-1. 函数与方法是不一样的，方法含有状态，因此**首选纯函数**，哪怕参数多一点儿，命名丑一点儿。**信心很重要，虽然代替不了测试，但纯函数会让状态变简单，编码思路清晰很多**。
+1. 函数与方法是不一样的，方法包含状态，而函数没有状态
+   - 因此所有**goroutine都应该设计成纯函数，配合线程安全的参数，可以保证线程安全**
+   - 普通函数，如果确定它们**只在同一个goroutine中调用**，则它们的参数是可以带参数的
 2. 关于goroutine中使用的变量：
    - **首选局部变量，这样可以确保该变量只在本goroutine中使用**，而不会其它goroutine无意识的修改
    - 次选参数传入，这样可以确保该变量不会被异步设置成nil。典型的应用就是**goroutine中用作receiver的channel对象必须以参数方式传入**，因为主线程会将该close(channel)并设置原始channel变量为nil
@@ -36,9 +38,16 @@
 
 #### 同步方案解析
 
-进程退出并不会等待并发任务结束，可以通过channel阻塞，然后发出退出信号以同步
+
+
+##### close channel方案
+
+1. 如果是一次性同步
+2. 如果是1对1的通知
+3. 支持多个goroutine同时等待channel关闭
 
 ```go
+// 进程退出并不会等待并发任务结束，可以通过channel阻塞，然后发出退出信号以同步
 exit := make(chan struct{})
 go func() {
     time.Sleep(time.Second)
@@ -51,7 +60,11 @@ go func() {
 
 
 
-如果需要等待多个任务结束，就需要使用sync.WaitGroup
+##### sync.WaitGroup方案
+
+1. 如果是一次性的通知
+2. 如果是N对1的情况
+3. 支持在多个goroutine中调用wg.Wai()
 
 ```go
 var wg sync.WaitGroup
@@ -70,16 +83,23 @@ wg.Wait()
 
 
 
-控制对同一个map在不同goroutine中的read/write可以使用RWMutex
+在读取数据的频率远远大于写数据的频率的场合可以考虑使用RWMutex，例如控制同一个map在不同goroutine中的read/write的时候：
 
 ```go
 var lock sync.RWMutex
-// write
-lock.Lock()
-lock.Unlock()
 
-// read
-lock.RLock()
-lock.RUnlock()
+func fetchUser (userID int64) *User {
+    lock.RLock()
+    var user, ok = map[userID]
+    lock.RUnlock()
+    if !ok {
+        user = newUser()
+        lock.Lock()
+        map[userID] = user
+        lock.Unlock()
+    }
+    
+    return user
+}
 ```
 
