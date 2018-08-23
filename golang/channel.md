@@ -16,6 +16,7 @@
    - 右等：receiver需要等到channel关闭后自动退出
 7. receiver**可能被close的channel必须以函数参数的方式拿到**，因为它在对象上的引用可在任意时刻变为nil
 8. 对同一个对象的所有操作都要通过同一个channel进行，否则需要同步
+9. 从实现上来说，channel依旧使用锁同步机制，单次获取更多数据（批处理），可改善频繁加锁造成的性能问题。
 
 
 
@@ -29,8 +30,9 @@
 
 ```go
 // receiver准则：
-// 1. receiver可能被close的channel必须以函数参数的方式拿到，因为它在对象上的引用可在任意时刻变为nil
-func (team *UserTeam) goProcessor(commandQueue chan IUserCommand) {
+// 1. goroutine的处理函数建议写成纯函数，使用的所有数据要么是参数，要么是自建局部变量
+// 2. 特别其中用作receiver的channel，必须以函数参数方式拿到，因为它在对象上的引用可在任意时刻变为nil
+func goCommandHandler(commmandQueue chan IUserCommand) {
 	for {
 		select {
 		// ok idiom，当commandQueue被sender关闭后，在receiver中等待所有数据接收完毕后自动退出

@@ -6,6 +6,10 @@
 
 1. goroutine的自定义栈初始仅2KB，但最大可能到GB规模
 2. 与defer一样， goroutine也会因"延迟执行"而立即计算并复制执行参数
+3. Mutex并**不支持递归锁**，即便在同一goroutine下也会导致死锁
+4. 对性能要求较高时，应避免使用`defer Unlock`
+5. 对单个数据读写保护，可尝试使用原子操作，如`atomic.LoadInt32(&i)`
+6. 执行严格测试，尽可能打开数据竞争检测
 
 
 
@@ -26,7 +30,11 @@
 1. 函数与方法是不一样的，方法包含状态，而函数没有状态
    - 因此所有**goroutine都应该设计成纯函数，配合线程安全的参数，可以保证线程安全**
    - 普通函数，如果确定它们**只在同一个goroutine中调用**，则它们的参数是可以带参数的
-2. 关于goroutine中使用的变量：
+2. 可以将某些**只会在goroutine内部使用的函数定义在goroutine内**，这样可以提供更强的安全性保证：
+   - 内部函数使用的所有变量，要么是goroutine参数（要求线程安全），要么是goroutine的局部变量（线程安全）
+   - 内部函数意味着绝对不会被外部代码调用到，因此**不需要担心误用**问题
+   - 内部函数可以带一部分upvalue，因此函数定义会简单不少
+3. 关于goroutine中使用的变量：
    - **首选局部变量，这样可以确保该变量只在本goroutine中使用**，而不会其它goroutine无意识的修改
    - 次选参数传入，这样可以确保该变量不会被异步设置成nil。典型的应用就是**goroutine中用作receiver的channel对象必须以参数方式传入**，因为主线程会将该close(channel)并设置原始channel变量为nil
    - 最次使用类成员变量或closure的upvalue，这时需要**程序员确保这些变量的可用性**，例如不会被异步关闭或置nil
@@ -83,7 +91,9 @@ wg.Wait()
 
 
 
-在读取数据的频率远远大于写数据的频率的场合可以考虑使用RWMutex，例如控制同一个map在不同goroutine中的read/write的时候：
+##### sync.RWMutex
+
+1. 在**读取数据的频率远远大于写数据的频率**的场合可以考虑使用RWMutex，例如控制同一个map在不同goroutine中的read/write的时候：
 
 ```go
 var lock sync.RWMutex
@@ -102,4 +112,35 @@ func fetchUser (userID int64) *User {
     return user
 }
 ```
+
+
+
+##### Semaphore方案
+
+通常，我们使用sync.Mutex互斥量来做互斥访问，但当同时允许的并发数大于1的时候，就需要用到semaphore方案
+
+```go
+var parallelCount = 2
+var sem = make(chan struct{}, parallelCount)
+
+func test(){
+    sem <- struct{}{}		// acquire获取信号
+    defer func(){ <-sem }()	// release释放信息
+    ......
+}
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

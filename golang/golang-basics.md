@@ -55,7 +55,7 @@ for i, x := range data[:] { // 仅复制slice，不包括底层的array
 | gofmt -h             |                                                 |
 | go fmt               | `go fmt -l -w` 格式化当前目录下所有的文件并写回 |
 | go run main.go       | 直接编译运行main.go                             |
-| go test              | 运行单元测试                                    |
+| go test -timeout 5s  | 运行单元测试                                    |
 
 
 
