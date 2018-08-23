@@ -10,8 +10,14 @@
 | cmd+shift+O | 函数列表    |
 | ctrl+`      | terminal    |
 
+----
+#### golang设置
+1. gocode set package-lookup-mode g
+
+
+
 ---
-#### 插件
+####  unity3d设置
 
 1. .Net Core Tools
 2. C#
