@@ -4,11 +4,12 @@
 
 #### 0x01 mysql命令行
 
-1. mysql -uroot -p12345678；
-2. sql命令直接输入，**以";"或"\G"结束**并执行；
-3. **判断相等时只使用一个"="**；
-4. alter user 'root'@'localhost' identified by '12345678'; 修改密码；可以设置空密码
-5. explain xxx; 查询分析
+1. MySQL的字符集请指定为[utf8mb4](https://dev.mysql.com/doc/refman/5.6/en/charset-unicode-utf8mb4.html)以支持完整的中文字符集；
+2. mysql -uroot -p12345678；
+3. sql命令直接输入，**以";"或"\G"结束**并执行；
+4. **判断相等时只使用一个"="**；
+5. alter user 'root'@'localhost' identified by '12345678'; 修改密码；可以设置空密码
+6. explain xxx; 查询分析
 
 
 
