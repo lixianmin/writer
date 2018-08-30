@@ -22,8 +22,13 @@
 
 ---
 #### 技巧
-1. 找不到源代码的话，可以看看是否有对应类的Impl实现，往往可以反编译一份出来
-2. 
+1. 激活：https://zhile.io/2018/08/17/jetbrains-license-server-crack.html
+
+2. 找不到源代码的话，可以看看是否有对应类的Impl实现，往往可以反编译一份出来
+
+3. git config --global user.email "lixianmin@xatom.com"
+
+     git config --global user.name "lixianmin"
 
 ----
 #### 设置
