@@ -24,3 +24,11 @@
 
 1. Editor -> General -> Auto Import，设置自动导入
 2. Tools -> File Watchers，点击+，加入go fmt，设置文件保存时自动格式化
+
+
+
+----
+
+#### 激活
+
+1. http://idea.congm.in
