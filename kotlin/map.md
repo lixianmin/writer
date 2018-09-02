@@ -1,5 +1,12 @@
 
 
+---
+
+1. headMap()/tailMap()，即使找不到也只是返回一个size为0的map，不会返回null
+2. 
+
+
+
 ```kotlin
 
 // 只读map
