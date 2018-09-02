@@ -16,10 +16,10 @@
 
 ##### table操作快捷键
 
-| Hotkeys          | Description                   |
-| ---------------- | ----------------------------- |
-| cmd+t            | 在当前位置插入table           |
-| cmd+enter        | 插入一行                      |
-| cmd+shift+delete | 删除当前行                    |
-| shift+enter      | 当前单元格中加入<br \/>换行符 |
+| Hotkeys              | Description                   |
+| -------------------- | ----------------------------- |
+| alt + cmd + t        | 在当前位置插入table           |
+| cmd + enter          | 插入一行                      |
+| cmd + shift + delete | 删除当前行                    |
+| shift + enter        | 当前单元格中加入<br \/>换行符 |
 
