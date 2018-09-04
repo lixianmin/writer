@@ -40,8 +40,6 @@ for i, x := range data[:] { // 仅复制slice，不包括底层的array
 
 
 
-
-
 ----
 
 #### shell
@@ -73,7 +71,7 @@ for i, x := range data[:] { // 仅复制slice，不包括底层的array
 
 #### 引用类型
 
-1. golang中引用类型特指slice, map, chan这三种类型，这意味着其它类型，包括array, struct, interface等都是结构体类型，在传递是完整的copy，而不是只传递引用
+1. golang中引**用类型特指slice, chan, map这三种类型**，这意味着其它类型，包括array, struct, interface等都是结构体类型，结构体体型传递的是完整的copy，而不是传递引用
 2. 引用类型需要使用make进行初始化，**编译器**会将make转换成目标类型专用的创建函数，因此不存在运行时性能开销
 
 
