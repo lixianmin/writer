@@ -28,6 +28,7 @@ func main() {
 
 	// 定义一个len()==4, cap()==8的slice
 	b := make([]int, 4, 8)
+    // 注意：这个append()会从第5个位置开始增加数据
 	b = append(b, 1, 2, 3, 4, 5)
 	printSlice(b)
 
