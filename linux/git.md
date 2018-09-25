@@ -22,6 +22,7 @@ git pull            | pull
 git push            | push
 **git rebase -i targetBase** | 将targetBase拿过来，将当前分支上的修改在targetBase的基础上重新应用一遍 
 git remote -v       | 查看远程的url地址
+git remote set-url origin [url] | 重新设置remote地址 
 git reset --hard HEAD   | 把你工作目录中所有未提交的内容清空
 
 
