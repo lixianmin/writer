@@ -6,8 +6,11 @@
 
 #### basics
 
-1. lateinit，在kotlin中，一个非可选值必须在编译时赋初始值，**否则编译器会报错**，而lateinit就是告诉编译器说：虽然我没有赋初值，但我不是忘记了，等会儿再说，我会记得的。
-2. 
+1. 构造函数，其中的参数如果**加了val就是public只读**的，如果**加了var就是public可写**的，如果**两个都不加，就是私有**变量
+2. class内定义的成员变量默认是public的，需要自己补private
+3. kotlin中的==相当于java中的equals，是结构相等的玩法，而要判断引用相等的话使用===
+4. lateinit，在kotlin中，一个非可选值必须在编译时赋初始值，**否则编译器会报错**，而lateinit就是告诉编译器说：虽然我没有赋初值，但我不是忘记了，等会儿再说，我会记得的。
+5. kotlin的类型定义喜欢两个关键词一组，比如`data class, enum class, inner class, sealed class`
 
 
 
@@ -23,24 +26,6 @@ val p : String by lazy {
 // 扩展函数
 fun String.spaceToCamelCase() {
     ....
-}
-
-// if not null 缩写
-val files = File("test").listFiles()
-println(files?.size)
-println(files?.size ?: "empty")
-
-// if null执行一个语句
-val values = ....
-val email = values["email"] ? ("email is missing")
-
-// 在可能会空的集合中取第一个元素
-val mainEmail = emails.firstOrNull() ?: ""
-
-// if not null执行代码
-val value = ...
-value?.let {
-    // 如果value不为null则执行
 }
 
 // 返回when表达式
@@ -114,14 +99,6 @@ stream.buffered().reader().use{
     reader -> println(reader.readText())
 }
 
-// 使用可空Boolean
-val b: Boolean? = ...
-if (b == true) {
-    
-}else {
-    // b是false或null
-}
-
 // 类型别名
 typealias MouseClickHandler = (Any, MouseEvent) -> Unit
 typealias PersionIndex = Map<String, Persion>
@@ -129,14 +106,13 @@ typealias PersionIndex = Map<String, Persion>
 // 命名参数
 drawSquare(x= 10, y=10, wi=true)
 
-
 ```
 
 
 
+-----
 
-
-##### 使用区间
+#### 使用区间
 
 ```kotlin
 for (i in 1..100) 		// [1, 100]
@@ -144,54 +120,6 @@ for (i in 1 until 100)	// [1, 100)
 for (x in 2..10 step 2)	//
 for (x in 10 downTo 1)	// 
 ```
-
-
-
------
-
-#### 作用域函数
-
-1. 这里面功能最强的是let，它使用it代表当前迭代对象，并自定义返回值
-
-2. let和run都是自定义返回值，简称**let it run**，区别是run应用在this对象上，而let应用到it对象上
-
-3. apply, also，它们都以**a开头，都返回this**，都是对一个对象做一件事情
-
-   - apply在this对象上做
-   - also是在it对象上做
-
-
-```kotlin
-// T.()表示传入的是一个不带参数的方法，该方法属于类T，而返回值this就是T对象
-// apply以a开头，因此返回this，适合于链式表达式
-fun <T> T.apply(block: T.() -> Unit): T {
-    block();
-    return this
-}
-
-// also以a开头，因此返回this，适合于链式表达式
-fun <T> T.also(block: (T) -> Unit): T {
-    block(this);
-    return this
-}
-
-// 跟apply很像，只不过返回f()的返回值，而不是this
-fun <T, R> T.run(f: T.() -> R): R = f()
-
-// let将当前对象默认作为it参数，注意区分一下it与this
-fun <T, R> T.let(f: (T) -> R): R = f(this)
-
-// with
-fun <T, R> with(receiver: T, f: T.() -> R): R = receiver.f()
-
-
-```
-
-
-
-
-
-
 
 
 
