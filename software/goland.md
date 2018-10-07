@@ -13,6 +13,7 @@
 | alt + cmd + L     | 格式化                 |
 | cmd + [           | 回退到上一次编辑的位置 |
 | cmd + 1           | Explorer               |
+| cmd + 6           | 打开todo list          |
 | cmd + 7           | Structure              |
 | cmd + o           | open class             |
 | cmd + shift + F12 | 切换主编辑区域全屏显示 |

@@ -102,3 +102,4 @@ for i, x := range data[:] { // 仅复制slice，不包括底层的array
 
 1. [Golang 新手可能会踩的 50 个坑](https://segmentfault.com/a/1190000013739000)
 2. [Package strconv](https://golang.org/pkg/strconv/)
+3. [Comparing Values in Go](https://medium.com/learning-the-go-programming-language/comparing-values-in-go-8f7b002e767a)
