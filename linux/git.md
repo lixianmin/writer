@@ -60,7 +60,7 @@ git stash apply stash@{2}   | 按名字apply
 ---
 #### 如何回滚代码
 
-git reset --head xxxx 是重置代码到某个版本，但如果想回滚代码的话，需要使用git revert，另外，可以使用git rebase -i 在交互界面里把一些revert的操作合并到一个里面提交
+git reset --hard xxxx 是重置代码到某个版本，但如果想回滚代码的话，需要使用git revert，另外，可以使用git rebase -i 在交互界面里把一些revert的操作合并到一个里面提交
 
 
 
