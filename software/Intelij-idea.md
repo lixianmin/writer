@@ -30,6 +30,8 @@
 
      git config --global user.name "lixianmin"
 
+4. http://plugins.jetbrains.com/ 插件下载
+
 ----
 #### 设置
 
