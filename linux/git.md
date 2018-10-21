@@ -53,7 +53,7 @@ git stash apply stash@{2}   | 按名字apply
 1. git checkout master，切换到master分支
 2. git pull，更新master分支的数据
 3. git checkout lixianmin，切换到lixianmin分支
-4. git rebase -i master，基于master分支将所有lixianmin分支上的修改应用到lixianmin分支
+4. git rebase -i master，基于master分支将所有lixianmin分支上的修改应用到lixianmin分支（**在哪个分支上改哪个分支**）
 
 
 

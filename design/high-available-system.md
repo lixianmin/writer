@@ -20,9 +20,9 @@ classDef RootNode fill:#ff0,stroke:#333,stroke-width:4px
 classDef EmphasizeNode fill:#ccf,stroke:#f66,stroke-width:2px
 classDef TodoNode fill:#ccf,stroke:#f66,stroke-width:2px, stroke-dasharray: 5, 5
 
-Struture(1.架构)
-class Struture RootNode
-Struture --> AvaidSinglePoint(避免单点)
+Architecture(1.架构)
+class Architecture RootNode
+Architecture --> AvaidSinglePoint(避免单点)
 class AvaidSinglePoint TodoNode
 AvaidSinglePoint --> 分组隔离
 分组隔离  --> 异步化

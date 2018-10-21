@@ -17,10 +17,10 @@
 | cmd + 7           | Structure              |
 | cmd + o           | open class             |
 | cmd + shift + F12 | 切换主编辑区域全屏显示 |
+| cmd + 鼠标单击    | 转到reference          |
 | shift + F6        | rename                 |
 | double shift      | search anywhere        |
 
-#### 
 ----
 #### 设置
 
