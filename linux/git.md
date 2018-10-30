@@ -1,4 +1,4 @@
-
+​	
 
 
 
@@ -16,6 +16,7 @@ git checkout master | 切换到master分支
 git checkout -b hotfix  | 新建一个hotfix分支并checkout
 git checkout -- .   | discard本地所有unstagged files
 git clone http://.. | clone一个git目录到本地
+git diff dev ^master | 查询dev有，而mater没有的修改 
 git gc              | 清空无用文件，解决格式错误
 git merge hotfix    | 假定当前在master分支，则该命令将hotfix分支上的内容合并到master中
 git pull            | pull
