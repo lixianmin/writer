@@ -73,7 +73,7 @@ go func() {
 
 1. 如果是一次性的通知
 2. 如果是N对1的情况
-3. 支持在多个goroutine中调用wg.Wai()
+3. **Add()和Wait()必须在同一个 goroutine中**，否则可能panic
 
 ```go
 var wg sync.WaitGroup
@@ -94,20 +94,28 @@ wg.Wait()
 
 ##### sync.RWMutex
 
-1. 在**读取数据的频率远远大于写数据的频率**的场合可以考虑使用RWMutex，例如控制同一个map在不同goroutine中的read/write的时候：
+1. 在**读取数据的频率远远大于写数据的频率**的场合可以考虑使用RWMutex，例如控制同一个map在不同goroutine中的read/write的时候
+2. **组合锁**模式：可以考虑定义一个结构体并组合一个sync.RWMutex，这样可以将sync.RWMutex与被加锁的数据紧密关联到一起，并且用起来很简洁，但是此时**注意使用结构体指针**，以防止无意中使用了结构体副本
+
+
 
 ```go
-var lock sync.RWMutex
+type User struct{
+    m map[int]*User
+    sync.RWMutex
+}
 
-func fetchUser (userID int64) *User {
-    lock.RLock()
-    var user, ok = map[userID]
-    lock.RUnlock()
+var users = &User{m:make(map[int]*User, 8)}
+
+func fetchUser (userID int) *User {
+    users.RLock()
+    var user, ok = users.m[userID]
+    users.RUnlock()
+    
     if !ok {
-        user = newUser()
-        lock.Lock()
-        map[userID] = user
-        lock.Unlock()
+        users.Lock()
+        users.m[userID] = newUser()
+        users.Unlock()
     }
     
     return user
