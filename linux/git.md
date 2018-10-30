@@ -15,6 +15,7 @@ git branch -d hotfix| 删除hotfix分支
 git checkout master | 切换到master分支
 git checkout -b hotfix  | 新建一个hotfix分支并checkout
 git checkout -- .   | discard本地所有unstagged files
+git cherry-pick commit-id | 将commit-id提交到当前分支 
 git clone http://.. | clone一个git目录到本地
 git diff dev ^master | 查询dev有，而mater没有的修改 
 git gc              | 清空无用文件，解决格式错误
