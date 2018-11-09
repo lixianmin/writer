@@ -145,4 +145,4 @@
 #### 0x03 References
 
 1. [Index Merge Optimization](https://dev.mysql.com/doc/refman/8.0/en/index-merge-optimization.html)
-2. 
+2. [Redis 教程](http://www.runoob.com/redis/redis-tutorial.html)

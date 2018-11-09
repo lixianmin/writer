@@ -22,36 +22,36 @@ classDef TodoNode fill:#ccf,stroke:#f66,stroke-width:2px, stroke-dasharray: 5, 5
 
 Architecture(1.架构)
 class Architecture RootNode
-Architecture --> AvaidSinglePoint(避免单点)
-class AvaidSinglePoint TodoNode
-AvaidSinglePoint --> 分组隔离
-分组隔离  --> 异步化
-异步化    --> 异地容灾
+Architecture --> AvaidSinglePoint(避免单点/不停服)
+class AvaidSinglePoint EmphasizeNode
+AvaidSinglePoint --> ScaleOut(横向扩展)
+class ScaleOut EmphasizeNode
+ScaleOut--> 分组隔离
+分组隔离  --> Asynchronized(异步化)
+class Asynchronized EmphasizeNode
+Asynchronized  --> 异地容灾
 
 Code(2.编码)
 class Code RootNode
 Code --> CatchException(异常捕获)
 class CatchException EmphasizeNode
-CatchException --> Threading(异步IO)
-class Threading EmphasizeNode
-Threading --> TimeoutProcess(超时处理)
+CatchException --> TimeoutProcess(超时处理)
 class TimeoutProcess EmphasizeNode
 TimeoutProcess --> CurrentLimitingProtection(限流保护)
-CurrentLimitingProtection --> BuiltinDebugger(内置调试器)
-class BuiltinDebugger EmphasizeNode
 
 Test(3.测试)
 class Test RootNode
 Test --> UnitTest(单元测试)
+class UnitTest TodoNode
 UnitTest --> CoverageTest(覆盖率测试)
-class CoverageTest TodoNode
-CoverageTest --> 自动化对比测试
-自动化对比测试 --> beta测试
+CoverageTest --> AutoCompareTest(自动化对比测试)
+class AutoCompareTest EmphasizeNode
+AutoCompareTest --> beta测试
 
 Publish(4.发布)
 class Publish RootNode
 Publish --> GatedLaunch(灰度发布)
-class GatedLaunch TodoNode
+class GatedLaunch EmphasizeNode
 GatedLaunch --> 分批发布
 分批发布 --> RollbackMechanism(回滚机制)
 class RollbackMechanism EmphasizeNode
@@ -67,8 +67,12 @@ OverloadProtection --> 自动降级
 
 Fault(6.故障)
 class Fault RootNode
-Fault --> FaultLocation(故障定位)
-FaultLocation --> FastRecover(快速恢复)
+Fault --> BuiltinDebugger(内置调试器)
+class BuiltinDebugger EmphasizeNode
+BuiltinDebugger --> CrashLog(崩溃日志)
+class CrashLog EmphasizeNode
+CrashLog --> FaultLocate(故障定位)
+FaultLocate --> FastRecover(快速恢复)
 ```
 
 
