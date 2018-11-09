@@ -60,7 +60,17 @@ git stash apply stash@{2}   | 按名字apply
 
 
 ---
-#### 如何回滚代码
+#### 如何回滚dev分支上的一批代码
+
+1. git checkout dev，切换到dev分支
+2. git checkout -b kotlin，将dev分支内容复制一份并新建取个新名字kotlin
+3. git reset --hard 2f83e3，将dev强制重置到2f83e3提交，后续的提交会被删除
+4. git push -f，强制提交，覆盖远端的数据
+5. git checkout kotlin，切换到kotlin分支
+6. git push origin kotlin，将kotlin分支推送到远端
+7. 现在可以在kotlin分支上开发了
+
+
 
 git reset --hard xxxx 是重置代码到某个版本，但如果想回滚代码的话，需要使用git revert，另外，可以使用git rebase -i 在交互界面里把一些revert的操作合并到一个里面提交
 
