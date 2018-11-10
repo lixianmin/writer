@@ -22,14 +22,12 @@ classDef TodoNode fill:#ccf,stroke:#f66,stroke-width:2px, stroke-dasharray: 5, 5
 
 Architecture(1.架构)
 class Architecture RootNode
-Architecture --> AvaidSinglePoint(避免单点/不停服)
-class AvaidSinglePoint EmphasizeNode
+Architecture --> DesignForFailure(Design For Failure)
+class DesignForFailure EmphasizeNode
+DesignForFailure --> AvaidSinglePoint(避免单点/不停服)
 AvaidSinglePoint --> ScaleOut(横向扩展)
-class ScaleOut EmphasizeNode
-ScaleOut--> 分组隔离
-分组隔离  --> Asynchronized(异步化)
-class Asynchronized EmphasizeNode
-Asynchronized  --> 异地容灾
+ScaleOut --> NonblockingIO(Non blocking IO)
+class NonblockingIO EmphasizeNode
 
 Code(2.编码)
 class Code RootNode
@@ -74,6 +72,10 @@ class CrashLog EmphasizeNode
 CrashLog --> FaultLocate(故障定位)
 FaultLocate --> FastRecover(快速恢复)
 ```
+
+
+
+
 
 
 
@@ -159,3 +161,4 @@ FaultLocate --> FastRecover(快速恢复)
 
 1. [准备Plan B：如何设计兜底方案？--- 如何设计一个秒杀系统](https://blog.csdn.net/u014231523/article/details/83005971)
 2. [A/B测试和灰度发布的关系](http://www.appadhoc.com/blog/ab-testing-and-grey-release/)
+3. [百亿级微信红包的高并发资金交易系统设计方案](http://www.infoq.com/cn/articles/2017hongbao-weixin?utm_campaign=infoq_content&utm_source=infoq&utm_medium=feed&utm_term=global)
