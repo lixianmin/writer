@@ -18,10 +18,12 @@ git checkout -- .   | discard本地所有unstagged files
 git cherry-pick commit-id | 将commit-id提交到当前分支 
 git clone http://.. | clone一个git目录到本地
 git diff dev ^master | 查询dev有，而mater没有的修改 
+git  diff HEAD  ^efe03951 | 查询当前分支从efe03951开始的改动 
 git gc              | 清空无用文件，解决格式错误
 git merge hotfix    | 假定当前在master分支，则该命令将hotfix分支上的内容合并到master中
 git pull            | pull
 git push            | push
+git push origin HEAD:test -f | 将当前分支的内容强推到远程的test分支上 
 **git rebase -i targetBase** | 将targetBase拿过来，将当前分支上的修改在targetBase的基础上重新应用一遍 
 git remote -v       | 查看远程的url地址
 git remote set-url origin [url] | 重新设置remote地址 
