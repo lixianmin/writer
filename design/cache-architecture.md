@@ -1,5 +1,21 @@
 
 
+----
+
+#### Redis缓存 vs. 程序内存
+
+1. redis缓存因为是独立进程，当服务器重启的时候，redis缓存还在
+2. redis缓存支持查看命令，可以查看当前数据状态
+3. redis缓存可以被多个服务器进程同时访问
+4. redis缓存可以处理几个GB的数据量，实践中使用了GC语言处理GB级的heap性能欠佳
+5. redis可以根据需要装数据保存在磁盘上
+6. Redis不仅仅是一个简单的缓存：它提供了各种数据结构，各种缓存逐出策略，阻塞队列，pub / sub，原子性，Lua脚本等等
+7. Redis可以使用主/从机制做数据备份，从而实现高可用性
+
+
+
+基本上，如果您需要您的应用程序在共享相同数据的多个节点上扩展，则需要像Redis(或任何其他远程键/值存储)之类的东西
+
 
 
 ----
@@ -16,6 +32,10 @@
 
 
 
+参考方案：通过异步更新策略轮询数据库去保证最终一致性，通过订阅redis通知保证实时性
+
+
+
 ---
 
 #### References
@@ -23,4 +43,5 @@
 1. [为什么分布式一定要有Redis？](https://studygolang.com/articles/15064)
 2. [AutoLoadCache](https://github.com/qiujiayu/AutoLoadCache)
 3. [每秒千万级别的量是重生还是炼狱?](https://mp.weixin.qq.com/s?__biz=MzI2NDA0NDM1MA==&mid=2650105193&idx=1&sn=a4066b2994b59e78de846137344228c5&chksm=f2b36f38c5c4e62efc91687c2d29e9f8e40368d660de85d6e01018525e7a2f160152a35869c1)
+4. [Redis cache vs using memory directly](https://stackoverflow.com/questions/19477821/redis-cache-vs-using-memory-directly)
 
