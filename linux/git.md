@@ -51,6 +51,14 @@ git stash apply stash@{2}   | 按名字apply
 
 
 
+----
+
+#### 强推到release
+
+1. git push origin master:release -f
+
+
+
 ---
 #### rebase代码流程
 目标：将master分支上的代码合并到lixianmin这个分支上
