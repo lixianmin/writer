@@ -45,6 +45,33 @@
 
 ----
 
+#### sync.Once
+
+1. atomic速度快，但只能管得了自己，对别的代码没有帮助。**各人自扫门前雪**
+2. Mutex速度慢，但可以形成一个临界区，临界区中的代码也可以得到同步
+
+```go
+func (o *Once) Do(f func()) {
+    // 1. 这里为什么使用atomic操作，如果换成直接判断o.done == 1 行不行？
+    // 	> 这部分的代码不受mutex保护，因此如果想o.done的操作立即被其它协程看到的话，需要使用atomic操作
+	if atomic.LoadUint32(&o.done) == 1 {
+		return
+	}
+	// Slow-path.
+	o.m.Lock()
+	defer o.m.Unlock()
+    // 代码访问到这里是由mutex保护的，是互斥的，因此o.done == 0可以直接使用，不必使用atomic操作
+	if o.done == 0 {
+		defer atomic.StoreUint32(&o.done, 1)
+		f()
+	}
+}
+```
+
+
+
+----
+
 #### 同步方案解析
 
 
@@ -141,7 +168,13 @@ func test(){
 
 
 
+---
 
+#### References
+
+1. [golang 核心开发者 Dmitry Vyukov(1.1 调度器作者) 关于性能剖析 ](https://my.oschina.net/evilunix/blog/371958)
+2. [如何实现超高并发的无锁缓存？](https://www.jianshu.com/p/2ce951bf5951)
+3. 
 
 
 

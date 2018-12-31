@@ -29,7 +29,7 @@ int binSearch (T data[], int left, int right, T key)
     // 查找不成功时如果需要将其插入的话，则无论j==right+1还是data[j]!=key，实际上j实际指向插入的位置
 	if (j == right + 1 || data[j] != key)
     {
-        return -1;
+        return ~j;
     }
     
     // 查找成功时，j指向key在data[]中第一次出现的位置
