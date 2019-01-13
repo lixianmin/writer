@@ -52,12 +52,45 @@
    | having | group by的分类条件 |
    | on     | join的连接条件     |
 
-
 ​    
+
+3. 没有则插入/存在则更新
+
+```mysql
+
+// 方式一：此种方式下，如果旧值是存在的，则只更新update中设置的那一部分，其它的保持旧值
+INSERT INTO t1(a,b,c) VALUES (1,2,3)
+ON DUPLICATE KEY UPDATE c=c+1;
+
+// 方式二：此种方式下，如果旧值是存在的，则会先把旧值删除，再插入一条新的，因此如果VALUES()列中没有对应的值，则会设置为默认值
+REPLACE INTO test VALUES (1, 'Old', '2014-08-20 18:47:00');
+
+```
+
+
+
+4. 通过一张表更新另一张表
+
+```mysql
+// 方式一：
+update t1, (select * from xxx where xxx) t2
+set t1.name = t2.name
+where t1.id = t2.id;
+
+
+// 方式二：
+update t1 inner join t2
+on t1.id = t2.id
+set t1.name = t2.name
+where xxx
+```
+
+
 
 ------
 
 #### 0x03 References
 
 1. [Index Merge Optimization](https://dev.mysql.com/doc/refman/8.0/en/index-merge-optimization.html)
-2. 
+2. [INSERT ... ON DUPLICATE KEY UPDATE Syntax](https://dev.mysql.com/doc/refman/8.0/en/insert-on-duplicate.html)
+3. 
