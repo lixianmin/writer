@@ -87,10 +87,32 @@ where xxx
 
 
 
+---
+
+#### 0x04 事务隔离级别
+
+
+
+| 隔离级别 | Dirty Read | NonRepeatable Read | Phantom Read |
+| -------- | ---------- | ------------------ | ------------ |
+|      未提交读（Read uncommitted）  |      √                         | √        |             √             |
+|       已提交读（Read committed）      |    x    |                     √             |          √       |
+|       可重复读（Repeatable read）       |   x   |                   x                |     √          |
+|        可串行化（Serializable ）    |          x  |                      x      |             x          |
+
+
+
+1. 未提交读(Read Uncommitted)：允许脏读，也就是可能读取到其他会话中未提交事务修改的数据
+2. 提交读(Read Committed)：只能读取到已经提交的数据，Oracle等多数数据库默认都是该级别 (不重复读)
+3. **可重复读(Repeated Read)**：可重复读。在同一个事务内的查询都是事务开始时刻一致的，InnoDB默认级别。在SQL标准中，该隔离级别消除了不可重复读，但是还存在**幻读**（第一个事务对一个表中的数据进行了修改，这种修改涉及到表中的全部数据行。同时，第二个事务也修改这个表中的数据，这种修改是向表中插入一行新数据。那么，以后就会发生操作第一个事务的用户发现表中还有没有修改的数据行，就好象发生了幻觉一样）
+4. 串行读(Serializable)：完全串行化的读，每次读都需要获得表级共享锁，读写相互都会阻塞
+
+
+
 ------
 
-#### 0x03 References
+#### 0x09 References
 
 1. [Index Merge Optimization](https://dev.mysql.com/doc/refman/8.0/en/index-merge-optimization.html)
 2. [INSERT ... ON DUPLICATE KEY UPDATE Syntax](https://dev.mysql.com/doc/refman/8.0/en/insert-on-duplicate.html)
-3. 
+3. [MySQL 四种事务隔离级的说明](https://www.cnblogs.com/zhoujinyi/p/3437475.html)
