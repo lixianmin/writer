@@ -14,7 +14,8 @@ git branch -va      | 显示所有的分支信息
 git branch -d hotfix| 删除hotfix分支
 git checkout master | 切换到master分支
 git checkout -b hotfix  | 新建一个hotfix分支并checkout
-git fetch origin<br>git checkout test | 拉取远程的test分支 
+git checkout -b hotfix remotes/origin/hotfix | 拉取远程hotfix分支 
+git fetch origin<br>git checkout hotfix | 拉取远程的hotfix分支 
 git checkout -- .   | discard本地所有unstagged files
 git cherry-pick commit-id | 将commit-id提交到当前分支 
 git clone http://.. | clone一个git目录到本地
@@ -48,6 +49,14 @@ git stash           | stash当前变更
 git stash list      | 打印stash列表
 git stash apply     | apply最后一个stash
 git stash apply stash@{2}   | 按名字apply
+
+
+
+----
+
+#### 强推到release
+
+1. git push origin master:release -f
 
 
 

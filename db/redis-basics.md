@@ -10,14 +10,15 @@
 
 
 
-| Command             | Description         |
-| ------------------- | ------------------- |
-| dbsize              | key总数             |
-| expire key seconds  | 设置key过期时间     |
-| keys *              | 查看所有keys        |
-| object encoding key | 测试编码            |
-| ttl key             | 测试key剩余存活时间 |
-| type key            | 测试类型            |
+| Command             | Description             |
+| ------------------- | ----------------------- |
+| dbsize              | key总数                 |
+| expire key seconds  | 设置key过期时间         |
+| info memory         | 查询redis的内存占用情况 |
+| keys *              | 查看所有keys            |
+| object encoding key | 测试编码                |
+| ttl key             | 测试key剩余存活时间     |
+| type key            | 测试类型                |
 
 
 
