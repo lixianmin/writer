@@ -13,9 +13,7 @@
 
 -----
 
-#### 0x02 Transactions
-
-##### Isolation Level
+#### 0x02 Isolation Level
 
 隔离级别定义了同步事务之间是如何处理同一个key。
 
@@ -25,7 +23,9 @@
 
 
 
-##### Concurrency Mode
+----
+
+#### 0x03 Concurrency Mode
 
 Ignite支持两种并发模型：悲观和乐观。
 
@@ -46,6 +46,20 @@ Ignite支持两种并发模型：悲观和乐观。
   4. 乐观模式只有使用SERIALIZABLE隔离级别时才有可能失败，否则都会成功
 
 
+
+----
+
+#### 0x03 原子化模式（事务机制）
+
+Ignite中支持两种不同的事务机制，一个二阶段提交的，一个是快照隔离的。
+
+**快照隔离**的事务机制，即配置为TRANSACTIONAL_SNAPSHOT原子化模式的缓存，同时支持SQL事务以及键-值事务，这提供了多版本并发控制的机制（MVCC）。但这个在2.7版本中还不完善，不建议使用。
+
+TRANSACTIONAL_SNAPSHOT只支持**默认的并发模型（悲观）和默认的隔离级别（可重复读）**
+
+
+
+----
 
 ##### CacheAtomicityMode.ATOMIC
 
