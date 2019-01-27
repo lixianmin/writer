@@ -54,7 +54,7 @@ try (Transaction tx = ignite.transactions().txStart(TransactionConcurrency.PESSI
 只建议使用Serializable的乐观事务：
 
 ```java
-while (true) {
+for (int i= 0; i< 10; i++) {
     try (Transaction tx = ignite.transactions().txStart(TransactionConcurrency.OPTIMISTIC, TransactionIsolation.SERIALIZABLE)) {
 
         Account acct = cache.get(acctId);
