@@ -6,7 +6,7 @@
 
 1. redis-cli 客户端
 2. 很多方法都带一个key参数，这个应该理解为OO中的this
-3. range类操作在redis中的区间都是左闭右闭的
+3. range类操作在redis中的区间都是**左闭右闭**的
 
 
 
