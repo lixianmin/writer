@@ -24,7 +24,15 @@ The B quadrant requires a knowledge of both systems and people.
 
 
 
-
-
 如何才能拥有被动收入？
+
+
+
+---
+
+Franchises and network marketing took away the hard part of developing your own system. You acquire the rights to a proven system, and then your only job is to develop your people.
+
+
+
+
 
