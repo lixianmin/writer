@@ -6,10 +6,11 @@
 
 1. MySQL的字符集请指定为[utf8mb4](https://dev.mysql.com/doc/refman/5.6/en/charset-unicode-utf8mb4.html)以支持完整的中文字符集；
 2. mysql -uroot -p12345678；
-3. sql命令直接输入，**以";"或"\G"结束**并执行；
-4. **判断相等时只使用一个"="**；
-5. alter user 'root'@'localhost' identified by '12345678'; 修改密码；可以设置空密码
-6. explain xxx; 查询分析
+3. mysql -uroot -p123456 -h 192.168.1.88 -D mydb;
+4. sql命令直接输入，**以";"或"\G"结束**并执行；
+5. **判断相等时只使用一个"="**；
+6. alter user 'root'@'localhost' identified by '12345678'; 修改密码；可以设置空密码
+7. explain xxx; 查询分析
 
 
 
@@ -30,31 +31,35 @@
 
 #### 0x02 常见操作
 
-1. 增删改查（crud）操作
+##### 1. 增删改查（crud）
 
-   ```sql
-   insert into table_name [(column1, ...)] values (value1, ...)
-   update table_name set column1= value1 where [condition]
-   select from table_name where [condition] group by [] having [] order by [] desc
-   delete from table_name where [condition]
-   
-   alter table tbl_name add index [index_name] (column_list);
-   alter table tbl_name add unique (column_list);
-   show index from tbl_name;
-   alter table tabl_name drop index index_name;
-   ```
 
-2. 条件语句
 
-   | Name   | Notice             |
-   | ------ | ------------------ |
-   | where  | select的查询条件   |
-   | having | group by的分类条件 |
-   | on     | join的连接条件     |
+```sql
+insert into table_name [(column1, ...)] values (value1, ...)
+update table_name set column1= value1 where [condition]
+select from table_name where [condition] group by [] having [] order by [] desc
+delete from table_name where [condition]
+
+alter table tbl_name add index [index_name] (column_list);
+alter table tbl_name add unique (column_list);
+show index from tbl_name;
+alter table tabl_name drop index index_name;
+```
+
+
+
+##### 2. 条件语句
+
+| Name   | Notice             |
+| ------ | ------------------ |
+| where  | select的查询条件   |
+| having | group by的分类条件 |
+| on     | join的连接条件     |
 
 ​    
 
-3. 没有则插入/存在则更新
+##### 3. 没有则插入/存在则更新
 
 ```mysql
 
@@ -69,7 +74,7 @@ REPLACE INTO test VALUES (1, 'Old', '2014-08-20 18:47:00');
 
 
 
-4. 通过一张表更新另一张表
+##### 4. 基于一张表更新另一张表
 
 ```mysql
 // 方式一：
@@ -83,6 +88,24 @@ update t1 inner join t2
 on t1.id = t2.id
 set t1.name = t2.name
 where xxx
+```
+
+
+
+##### 5. 设计时考虑预留字段
+
+有些表，比如user_extend_info，几乎可以肯定后期会加入新的字段，但是在前期并不确定是有哪一些，因此应考虑加入varchar()类型的预留字段，后面可以在comment中加注释用于明确字段的作用
+
+
+
+##### 6. 定期清理旧数据
+
+1. insert、update、delete操作会返回被操作的行数
+2. 按时间跨度进行delete表，有可能单次操作表行数过多，因此需要加limit参数
+
+```sql
+// 反复调用以下语句，直到返回值 < 1000
+delete from user_event where create_time < ? limit 1000
 ```
 
 

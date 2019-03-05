@@ -54,7 +54,7 @@ git stash apply stash@{2}   | 按名字apply
 
 ----
 
-#### 强推到release
+#### 强推本地master到远程release
 
 1. git push origin master:release -f
 
