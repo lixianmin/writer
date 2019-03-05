@@ -7,7 +7,8 @@
 #### 0x01 sqlite3命令行
 
 1. mac中terminal自带sqlite3命令；
-2. sql命令直接输入，以";"结束并执行；
+2. brew cask install db-browser-for-sqlite 安装可视化工具
+3. sql命令直接输入，以";"结束并执行；
 
 
 
@@ -46,7 +47,7 @@
 
 
 3. 时间
-  使用Integer类型，插入删除时使用str
+    使用Integer类型，插入删除时使用str
 
     ```sql
     -- 选择expiration_date小于今天的数据
@@ -54,7 +55,7 @@
     ```
 
 4. bool
-  创建使用Integer类型，插入时使用0/1
+    创建使用Integer类型，插入时使用0/1
 
   ```sql
   insert into Inventroy(name, nessary) values ('百蕊颗粒', 1)
