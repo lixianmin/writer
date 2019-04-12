@@ -9,8 +9,9 @@
 1. 构造函数，其中的参数如果**加了val就是public只读**的，如果**加了var就是public可写**的，如果**两个都不加，就是私有**变量
 2. class内定义的成员变量默认是public的，需要自己补private
 3. kotlin中的==相当于java中的equals，是结构相等的玩法，而要判断引用相等的话使用===
-4. lateinit，在kotlin中，一个非可选值必须在编译时赋初始值，**否则编译器会报错**，而lateinit就是告诉编译器说：虽然我没有赋初值，但我不是忘记了，等会儿再说，我会记得的。
-5. kotlin的类型定义喜欢两个关键词一组，比如`data class, enum class, inner class, sealed class`
+4. 1..10是闭区间，等价于 [1, 10]，在ruby中也是这样子的
+5. lateinit，在kotlin中，一个非可选值必须在编译时赋初始值，**否则编译器会报错**，而lateinit就是告诉编译器说：虽然我没有赋初值，但我不是忘记了，等会儿再说，我会记得的。
+6. kotlin的类型定义喜欢两个关键词一组，比如`data class, enum class, inner class, sealed class`
 
 
 
@@ -112,7 +113,7 @@ drawSquare(x= 10, y=10, wi=true)
 
 -----
 
-#### 使用区间
+#### 使用区间	
 
 ```kotlin
 for (i in 1..100) 		// [1, 100]
