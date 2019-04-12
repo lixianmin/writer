@@ -45,7 +45,7 @@ ENTRYPOINT ["./exchange-ws-golang.bin"]
 |    命令                              |    描述           |
 | -------------------------------- | ------------- |
 | docker build -t exchange-ws.image . | build image   |
-| docker run -p 2745:2745 exchange-ws.image | 运行image     |
+| docker run -p 2745:2745 exchange-ws.bin | 运行image     |
 |                                  |               |
 | docker images                    | 显示所有image |
 | docker rmi image-id              | 删除image     |
