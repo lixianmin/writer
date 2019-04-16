@@ -23,14 +23,6 @@
 
 
 
-##### 上传json数据到es
-
-```shell
-curl -H 'Content-Type: application/x-ndjson'  -s -XPOST localhost:9200/_bulk --data-binary @user_behaviour.json
-```
-
-
-
 ##### 创建仪表盘流程
 
 在Visualize中创建并保存，在Dashboard中加入并使用
@@ -49,7 +41,11 @@ curl -H 'Content-Type: application/x-ndjson'  -s -XPOST localhost:9200/_bulk --d
 2. 在timelion中创建次留的表：
 
 ```shell
-.es(index=user_behaviour,  timefield=create_time,  q='retain_days: >=1', metric=cardinality:user_name.keyword).bars()
+# 次留数量，其中 1553597349000是毫秒时间戳：
+.es(index=user_behaviour,  timefield=create_time,  q='retain_days:>=1 AND register_time:>1553597349000' , metric=cardinality:user_name.keyword).bars()
+
+# 次留的留存率：
+.es(index=user_behaviour,  timefield=create_time, q='retain_days:>=1 AND retain_days:<=1' , metric=cardinality:user_name.keyword).bars().label('retain days1').divide(.es(index=user_behaviour,  timefield=create_time,  offset=-1d,  q='retain_days:>=0 AND retain_days:<=0' , metric=cardinality:user_name.keyword))
 ```
 
 
@@ -61,6 +57,7 @@ curl -H 'Content-Type: application/x-ndjson'  -s -XPOST localhost:9200/_bulk --d
 1. 查询条件里不能有**空格**，一点儿空格都不能用，比如metric='avg:FlightTimeMin'，写成 metric='avg: FlightTimeMin'就查不出来了
 2. 在测试时，需要**选取时间区间**，有时候表达式是对的，但是时间区间内没有数据，就会看不到结果
 3. string类型一般是不能进行aggregate操作的，比如user_name，但user_name.keyword可以
+4. timelion的数据是不能导出的， 但其它的Visualize，都可以通过菜单栏的Inspect，打开数据页面后下载之
 
 
 
