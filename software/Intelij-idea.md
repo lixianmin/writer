@@ -19,6 +19,7 @@
 | ctrl + r | 运行程序 |
 | shift + F6 | rename              |
 | double shift  | search anywhere     |
+| ctrl+alt+o | 重新整理import |
 
 ---
 #### 技巧
