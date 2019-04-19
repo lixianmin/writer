@@ -1,11 +1,10 @@
-
 ---
 
 #### 0x01 上传至文档svn中的handover目录
 
 每一个项目都有文档svn，用于交流项目相关的文档，比如echo项目的文档svn的名称为echo\_document。这个svn根目录下有一个handover目录（如果没有则创建），离职人员需要在handover目录中创建一个以自己姓名为名字的目录，将交接的文档资料上传到该目录下。比如，假定一个名为lixianmin的同学近期需要离职，则上传文档以后的基本目录结构应该是如下样子：
 
-```
+```java
 echo_document/handover/lixianmin/project1/*.*
              /other-project-documents
 ```
