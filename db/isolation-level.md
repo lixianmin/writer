@@ -47,6 +47,10 @@
 
 
 
+1. 事务开启有两种方式，start transaction与start transation with consistent snapshot，其中后者只在RR隔离级别中使用，在RC隔离级别下退化为start transaction；
+2. 默认autocommit = 1，此时单条sql语句是自动提交的，如果设置autocommit=0，则需要手动commit，否则update/delete/insert无效；
+3. 在RR事务中，select语句默认是不拿锁的，使用select … lock in share mode会拿到s锁（shared lock），使用select … for update会拿到x锁（eXclusive lock），这些锁都是到事务结束才释放；
+
 
 
 ---
@@ -54,4 +58,6 @@
 #### 0x09 References
 
 1. [浅谈事务隔离级别](https://zhuanlan.zhihu.com/p/34742600)
-2. 
+2. [REPEATABLE-READ and READ-COMMITTED Transaction Isolation Levels](https://www.percona.com/blog/2012/08/28/differences-between-read-committed-and-repeatable-read-transaction-isolation-levels/)
+3. [互联网项目中mysql应该选什么事务隔离级别](https://zhuanlan.zhihu.com/p/59061106)
+
