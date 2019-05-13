@@ -24,6 +24,19 @@
 
 
 
+##### 0. Basics
+
+
+
+| 语句              |                |
+| ----------------- | -------------- |
+| select version(); | PostgreSQL版本 |
+|                   |                |
+|                   |                |
+|                   |                |
+
+
+
 ##### 1. Create table
 
 ```mysql
