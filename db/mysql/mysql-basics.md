@@ -25,6 +25,11 @@
 | show databases; | 显示db列表 |
 | show engines; | 显示存储引擎信息 |
 | show index from til_name; | 显示表的索引情况 |
+|  |  |
+| select @@autocommit; | 是否自动commit |
+| select @@version; | 显示db版本 |
+|  |  |
+| set session transaction isolation level read committed; | 修改当前会话的隔离级别 |
 | source filepath.sql; | 导入sql文件 |
 | use db_name; | 切换到db |
 

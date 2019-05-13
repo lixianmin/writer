@@ -47,9 +47,9 @@
 
 
 
-1. 事务开启有两种方式，start transaction与start transation with consistent snapshot，其中后者只在RR隔离级别中使用，在RC隔离级别下退化为start transaction；
+1. 事务开启有两种方式，start transaction与start transaction with consistent snapshot，其中后者只在RR隔离级别中使用，在RC隔离级别下退化为start transaction；
 2. 默认autocommit = 1，此时单条sql语句是自动提交的，如果设置autocommit=0，则需要手动commit，否则update/delete/insert无效；
-3. 在RR事务中，select语句默认是不拿锁的，使用select … lock in share mode会拿到s锁（shared lock），使用select … for update会拿到x锁（eXclusive lock），这些锁都是到事务结束才释放；
+3. 在RR事务中，默认情况下select语句是不拿锁的，它只读出了consistent read view中的数据罢了，因此RR中的普通select不会阻止其它事务对同一行的update操作。使用select … lock in share mode会拿到s锁（shared lock），使用select … for update会拿到x锁（eXeclusive lock），这些锁一旦拿到都是到事务结束才释放；
 
 
 
@@ -60,5 +60,7 @@
 1. [浅谈事务隔离级别](https://zhuanlan.zhihu.com/p/34742600)
 2. [REPEATABLE-READ and READ-COMMITTED Transaction Isolation Levels](https://www.percona.com/blog/2012/08/28/differences-between-read-committed-and-repeatable-read-transaction-isolation-levels/)
 3. [互联网项目中mysql应该选什么事务隔离级别](https://zhuanlan.zhihu.com/p/59061106)
-2. [数据库的读锁和写锁在业务上的应用场景总结](https://www.cnblogs.com/itZhy/p/8417763.html)
-3. [About READ UNCOMMITTED](https://falseisnotnull.wordpress.com/2018/02/06/about-read-uncommitted/)
+4. [数据库的读锁和写锁在业务上的应用场景总结](https://www.cnblogs.com/itZhy/p/8417763.html)
+5. [About READ UNCOMMITTED](https://falseisnotnull.wordpress.com/2018/02/06/about-read-uncommitted/)
+6. [08 | 事务到底是隔离的还是不隔离的？](https://time.geekbang.org/column/article/70562)
+
