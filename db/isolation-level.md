@@ -60,4 +60,5 @@
 1. [浅谈事务隔离级别](https://zhuanlan.zhihu.com/p/34742600)
 2. [REPEATABLE-READ and READ-COMMITTED Transaction Isolation Levels](https://www.percona.com/blog/2012/08/28/differences-between-read-committed-and-repeatable-read-transaction-isolation-levels/)
 3. [互联网项目中mysql应该选什么事务隔离级别](https://zhuanlan.zhihu.com/p/59061106)
-
+2. [数据库的读锁和写锁在业务上的应用场景总结](https://www.cnblogs.com/itZhy/p/8417763.html)
+3. [About READ UNCOMMITTED](https://falseisnotnull.wordpress.com/2018/02/06/about-read-uncommitted/)

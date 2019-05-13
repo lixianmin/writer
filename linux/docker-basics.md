@@ -59,12 +59,13 @@ ENTRYPOINT ["./exchange-ws-golang.bin"]
 
 
 
-| 命令                   | 描述       |
-| ---------------------- | ---------- |
-| docker-compose up -d   | 启动docker |
-| docker-compose logs -f | 打印日志   |
-|                        |            |
-|                        |            |
+| 命令                               | 描述                    |
+| ---------------------------------- | ----------------------- |
+| docker-compose up -d               | 启动docker              |
+| docker-comopose start/stop/restart | 启动/停止/重启container |
+| docker-compose logs -f             | 打印日志                |
+|                                    |                         |
+|                                    |                         |
 
 
 

@@ -10,7 +10,8 @@
 4. sql命令直接输入，**以";"或"\G"结束**并执行；
 5. **判断相等时只使用一个"="**；
 6. alter user 'root'@'localhost' identified by '12345678'; 修改密码；可以设置空密码
-7. explain xxx; 查询分析
+7. explain xxx; 查询分析；
+8. innoDB支持自适应hash索引，默认开启；另外还有空间索引、全文索引；
 
 
 
@@ -22,6 +23,8 @@
 | show create procedure proc_name \G | 显示创建procedure语句 |
 | show create table tbl_name; | 显示创建table的语句 |
 | show databases; | 显示db列表 |
+| show engines; | 显示存储引擎信息 |
+| show index from til_name; | 显示表的索引情况 |
 | source filepath.sql; | 导入sql文件 |
 | use db_name; | 切换到db |
 
@@ -63,11 +66,12 @@ alter table tabl_name drop index index_name;
 
 ```mysql
 
-// 方式一：此种方式下，如果旧值是存在的，则只更新update中设置的那一部分，其它的保持旧值
+# 方式一：此种方式下，如果旧值是存在的，则只更新update中设置的那一部分，其它的保持旧值
 INSERT INTO t1(a,b,c) VALUES (1,2,3)
 ON DUPLICATE KEY UPDATE c=c+1;
 
-// 方式二：此种方式下，如果旧值是存在的，则会先把旧值删除，再插入一条新的，因此如果VALUES()列中没有对应的值，则会设置为默认值
+# 方式二：此种方式下，如果旧值是存在的，则会先把旧值删除，再插入一条新的，因此如果VALUES()列中没有对应的值，则会设置为默认值
+# replace的语法与insert是一模一样的，对同一条数据，如果有unique key要求的话，insert会插不进去，而replace则会替换它 
 REPLACE INTO test VALUES (1, 'Old', '2014-08-20 18:47:00');
 
 ```

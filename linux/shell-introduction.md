@@ -54,6 +54,9 @@ help
 # 建立当前目录下file.txt文件的软链接到桌面
 ln -s \`pwd\`/file.txt ~/Desktop
 
+# 查看80端口占用进程
+lsof -i:80
+
 # 加了行号的cat
 nl a.txt
 

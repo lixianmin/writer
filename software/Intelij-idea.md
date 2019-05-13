@@ -1,7 +1,7 @@
 
 
 ---
-#### 快捷键
+#### 0x01 快捷键
 
 
 | Hotkeys   | Description         |
@@ -22,7 +22,7 @@
 | ctrl+alt+o | 重新整理import |
 
 ---
-#### 技巧
+#### 0x02 技巧
 1. 激活：https://zhile.io/2018/08/17/jetbrains-license-server-crack.html
 
 2. 找不到源代码的话，可以看看是否有对应类的Impl实现，往往可以反编译一份出来
@@ -34,6 +34,37 @@
 4. http://plugins.jetbrains.com/ 插件下载
 
 ----
-#### 设置
+#### 0x03 设置
 
 1. Editor -> General -> Auto Import，设置自动导入
+2. kotlin compiler中的target VM设置为1.8
+3. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

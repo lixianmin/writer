@@ -38,3 +38,4 @@
    ```shell
    cat panda.log | grep -C 5 redis
    ```
+
