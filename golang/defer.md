@@ -31,6 +31,7 @@ defer wg.Done()
 1. defer中的函数参数在调用到的那一刻确定
 
 ```go
+// 输出0
 func a() {
     i := 0
     defer fmt.Println(i)
@@ -42,6 +43,7 @@ func a() {
 2. defer栈：LIFO
 
 ```go
+// 输出3、2、1、0
 func b() {
     for i := 0; i < 4; i++ {
         defer fmt.Print(i)
@@ -49,9 +51,10 @@ func b() {
 }
 ```
 
-3. defer函数的执行发生在reture之后，因此defer函数可以修改**命名的函数返回值**
+3. defer函数的执行发生在return之后，因此defer函数可以修改**命名的函数返回值**
 
 ```go
+// 最终返回 2
 func c() (i int) {
     defer func() { i++ }()
     return 1
