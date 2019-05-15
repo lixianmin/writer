@@ -59,25 +59,49 @@ alter table tabl_name drop index index_name;
 
 ##### 2. 条件语句
 
-| Name   | Notice             |
-| ------ | ------------------ |
-| where  | select的查询条件   |
-| having | group by的分类条件 |
-| on     | join的连接条件     |
+| Name   | Notice                               |
+| ------ | ------------------------------------ |
+| where  | select的查询条件                     |
+| having | group by的分类条件，可以使用聚合函数 |
+| on     | join的连接条件                       |
 
 ​    
 
-##### 3. 没有则插入/存在则更新
+##### 3. 花样插入
+
+
 
 ```mysql
+# 1. 如果primary/unique key重复了，则插入失败
+# 2. 凡insert语句，无论成败都会导致自增id+1
+insert into t(id, v) values(1, 2)
 
-# 方式一：此种方式下，如果旧值是存在的，则只更新update中设置的那一部分，其它的保持旧值
-INSERT INTO t1(a,b,c) VALUES (1,2,3)
-ON DUPLICATE KEY UPDATE c=c+1;
+## 1. 如果primary/unique key重复了，则直接忽略返回
+## 2. 凡insert语句，无论成败都会导致自增id+1
+insert ignore into t(id, v) values(1, 2)
 
-# 方式二：此种方式下，如果旧值是存在的，则会先把旧值删除，再插入一条新的，因此如果VALUES()列中没有对应的值，则会设置为默认值
-# replace的语法与insert是一模一样的，对同一条数据，如果有unique key要求的话，insert会插不进去，而replace则会替换它 
-REPLACE INTO test VALUES (1, 'Old', '2014-08-20 18:47:00');
+# 1. 依据primary/unique key：无则插入，有则更新
+# 2. 等价于：
+#	if (exists old)
+#		update
+#	else
+#		insert
+#
+# 3. 当它是insert的时候，因为是插入，因此会导致自增id+1；
+# 4. 当它是update的时候，因为是修改，因此不会修改id。普通update也只修改需要set的一部分，其它的不变
+# 5. 这条语句拿的是x锁，同时可以根据表中存在的数据执行update（这一点replace into做不到），因此特别适合于并发事务之间用于设置初始化条件 (比如like, friend表的并发维护)
+insert into t(id, v) values (1,2) on duplicate key update v=v+1;
+
+# 1. 依据primary/unique key：无则插入，有则替换
+# 2. 等价于：
+#	if (exists old) 
+#		delete old
+#	insert new
+#
+# 3. 因此只要在values(..)中未列出来的值，都会使用default value
+# 4. 语法结构上，replace与insert一模一样的
+# 5. 因为replace一定会调用insert，因此必然会导致自增id+1
+replace into t(id, v) values (1, 2);
 
 ```
 
@@ -112,9 +136,22 @@ where xxx
 1. insert、update、delete操作会返回被操作的行数
 2. 按时间跨度进行delete表，有可能单次操作表行数过多，因此需要加limit参数
 
-```sql
-// 反复调用以下语句，直到返回值 < 1000
+```mysql
+# 反复调用以下语句，直到返回值 < 1000
 delete from user_event where create_time < ? limit 1000
+```
+
+
+
+#####  7. 清空table
+
+```mysql
+# truncate是DDL语句，会重置整个表，包括auto_increament到1，无法回滚
+truncate t;
+
+# delete是DML语句，就是正常的表数据维护，在事务中可以回滚
+delete from t;
+
 ```
 
 
