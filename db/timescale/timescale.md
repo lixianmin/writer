@@ -16,10 +16,16 @@
 
 ```sql
 
--- 将condition表转化为hypertable
--- 计算chunk_time_interval的公式为： total_memory * 0.25/data_per_day，0.24是指只占用系统25%的内存，比如内存 16GB，一天收数据量为2G，则 chunk_time_interval = 16*0.25/2=2天
-SELECT create_hypertable('conditions', 'time', chunk_time_interval => interval '1 day');
+create table t (id serial, 
+				uuid bigint not null, 
+				create_time timestamp not null default now(),
+				primary key (id, create_time),
+				unique(uuid, create_time)
+			   );
 
+-- 1. 如果要在hypertable上使用unique或primary key的话，则需要在创建这两类索引的字段中加上create_time，否则创建hypertable会失败
+-- 2. 计算chunk_time_interval的公式为： total_memory * 0.25/data_per_day，0.24是指只占用系统25%的内存，比如内存 16GB，一天收数据量为2G，则 chunk_time_interval = 16*0.25/2=2天
+select create_hypertable('t', 'create_time', chunk_time_interval => interval '1 weeks');
 
 -- 1. 按5分钟统计载客数量
 -- 2. count(*)是聚集函数，因此它所count的是每一个bucket中的数据
@@ -120,5 +126,6 @@ SELECT attach_tablespace('disk4', 'tradelog');
 
 #### 0x09 References
 
-1. [API References](https://docs.timescale.com/v1.2/api#analytics)
-2. 
+1. [[TimescaleDB] API References](https://docs.timescale.com/v1.2/api#analytics)
+2. [[TimescaleDB] Indexing Data](https://docs.timescale.com/v1.3/using-timescaledb/schema-management#indexing) 
+3. 
