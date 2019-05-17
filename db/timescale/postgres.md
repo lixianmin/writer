@@ -28,12 +28,15 @@
 
 
 
-| 语句                      |                |
-| ------------------------- | -------------- |
-| select version();         | PostgreSQL版本 |
-| select * from pg_indexes; | 查询索引情况   |
-|                           |                |
-|                           |                |
+| 语句                            |                 |
+| ------------------------------- | --------------- |
+| select version();               | PostgreSQL版本  |
+|                                 |                 |
+| select pg_cancel_backend(4850); | 按pid杀死锁连接 |
+| select * from pg_indexes;       | 查询索引情况    |
+| select * from pg_stat_activity; | 死锁查询        |
+|                                 |                 |
+|                                 |                 |
 
 
 
@@ -41,7 +44,7 @@
 
 ```mysql
 
-CREATE TABLE cities (
+create table cities (
 	name text NOT NULL, -- 
     postal_code VARCHAR(9) CHECK (postal_code <> ''), -- 约束值不能是空字符串
     country_code CHAR(2) REFERENCES counties, -- 外键约束 
@@ -57,7 +60,36 @@ CREATE TABLE venues(
 
 
 
-##### 2. Insert
+##### 2. Select
+
+```mysql
+
+-- 1. where子句中出现的表名字必须 出现 在from子句中
+-- 2. random()返回[0, 1)间的随机数
+with t as (
+	select min(id) as min_id, max(id) as max_id from conditions
+)
+select * from conditions c, t where c.id > t.min_id + (t.max_id - t.mid_id) * random() limit 3;
+
+-- 1. 窗口函数，带over(partition by leverage)
+select time_bucket('1 day', create_time)     as time,
+       leverage                              as 杠杆倍数,
+       count(*)                              as 开仓用户数,
+       count(*) * 1.0 / sum(count(*)) over() as open_ratio
+from contract_position
+where $__timeFilter(create_time)
+  and contract = '$contract'
+group by 1, 2;
+
+-- 显式锁
+select * from t limit 10 for share;
+select * from t limit 10 for update;
+
+```
+
+
+
+##### 3. Insert
 
 ```mysql
 INSERT INTO venuse(name, postal_code, country_code)

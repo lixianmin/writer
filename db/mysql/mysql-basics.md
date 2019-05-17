@@ -27,9 +27,10 @@
 | show index from til_name; | 显示表的索引情况 |
 |  |  |
 | select @@autocommit; | 是否自动commit |
+| select @@tx_isolation; | 查询会话隔离级别 |
 | select @@version; | 显示db版本 |
 |  |  |
-| set session transaction isolation level read committed; | 修改当前会话的隔离级别 |
+| set tx_isolation = 'read-commited'; | 修改会话隔离级别 |
 | source filepath.sql; | 导入sql文件 |
 | use db_name; | 切换到db |
 
