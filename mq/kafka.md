@@ -31,11 +31,11 @@ kafka-topics --zookeeper 172.20.20.120:2181  --describe --topic __consumer_offse
 kafka-topics --zookeeper 172.20.20.120:2181  --delete --topic users
 
 # 消息处理
-kafka-console-producer --broker-list 172.20.20.120:9090 --topic users
-kafka-console-consumer --bootstrap-server 172.20.20.120:9090 --topic users --from-beginning
+kafka-console-producer --broker-list 172.20.20.120:9092 --topic users
+kafka-console-consumer --bootstrap-server 172.20.20.120:9092 --topic users --from-beginning
 
 # 查看某group的offset
-kafka-consumer-groups --bootstrap-server 172.20.20.120:9090 --describe --group user-behaviour
+kafka-consumer-groups --bootstrap-server 172.20.20.120:9092 --describe --group user-behaviour
 
 ```
 
