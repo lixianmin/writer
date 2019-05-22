@@ -18,6 +18,21 @@
 
 
 
+|                      |                          |      |
+| -------------------- | ------------------------ | ---- |
+| \c coinbene_risk     | 切换数据库               |      |
+| \d contract_position | 显示表信息               |      |
+| \db+                 | 显示所有的表空间         |      |
+| \dn+                 | 列出schema               |      |
+| \dt contract*        | 显示匹配的表名称         |      |
+| \du                  | 列出所有的数据用户和角色 |      |
+| \l                   | 列出当前的数据库         |      |
+|                      |                          |      |
+
+
+
+
+
 ----
 
 #### 0x02 SQL语句
@@ -28,19 +43,30 @@
 
 
 
-| 语句                            |                 |
-| ------------------------------- | --------------- |
-| select version();               | PostgreSQL版本  |
-|                                 |                 |
-| select pg_cancel_backend(4850); | 按pid杀死锁连接 |
-| select * from pg_indexes;       | 查询索引情况    |
-| select * from pg_stat_activity; | 死锁查询        |
-|                                 |                 |
-|                                 |                 |
+| 语句                            |                      |
+| ------------------------------- | -------------------- |
+| select version();               | PostgreSQL版本       |
+|                                 |                      |
+| select pg_cancel_backend(4850); | 按pid杀死锁连接      |
+| select * from pg_indexes;       | 查询索引情况         |
+| select * from pg_stat_activity; | 死锁查询             |
+| select * from pg_tablespace;    | 查询当前的tablespace |
+|                                 |                      |
 
 
 
-##### 1. Create table
+##### 1. Create Database
+
+```mysql
+
+
+-- 修改数据库的时区
+alter database coinbene_archive set timezone = 'Asia/Shanghai';
+```
+
+
+
+##### 2. Create table
 
 ```mysql
 
@@ -60,7 +86,7 @@ CREATE TABLE venues(
 
 
 
-##### 2. Select
+##### 3. Select
 
 ```mysql
 
@@ -89,7 +115,7 @@ select * from t limit 10 for update;
 
 
 
-##### 3. Insert
+##### 4. Insert
 
 ```mysql
 INSERT INTO venuse(name, postal_code, country_code)
@@ -102,7 +128,7 @@ RETURNING venue_id; -- 插入的同时可以返回一些数据
 
 
 
-##### 8. 聚合函数
+##### 9. 聚合函数
 
 聚合表示统计，将数据按group by分组，每一个分组返回的只是本组的统计信息，因此select后面只能带聚合函数（以及用于分组的那个变量），而不能返回普通的表行的数值。
 
@@ -120,7 +146,7 @@ HAVING COUNT(*) >= 2 AND venue_id IS NOT NULL;
 
 
 
-##### 9. 时间
+##### 10. 时间
 
 ```mysql
 
@@ -158,7 +184,7 @@ DROP INDEX events_title;
 
 
 
-
+---
 
 
 
