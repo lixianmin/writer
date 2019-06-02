@@ -18,7 +18,7 @@ git checkout -- .   | discard本地所有unstagged files
 git cherry-pick commit-id | 将commit-id提交到当前分支 
 git clone http://.. | clone一个git目录到本地
 git diff dev ^master | 查询dev有，而mater没有的修改 
-git  diff HEAD  ^efe03951 | 查询当前分支从efe03951开始的改动 
+git diff HEAD  ^efe03951 | 查询当前分支从efe03951开始的改动 
 git gc              | 清空无用文件，解决格式错误
 git merge hotfix    | 假定当前在master分支，则该命令将hotfix分支上的内容合并到master中
 git pull            | pull
