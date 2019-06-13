@@ -16,7 +16,7 @@
 | varchar(n)      | 限制最大长度为n的变长字符串 |
 | text            | unlimited length字符串      |
 
-
+ws
 
 |                      |                          |      |
 | -------------------- | ------------------------ | ---- |
@@ -26,8 +26,8 @@
 | \dn+                 | 列出schema               |      |
 | \dt contract*        | 显示匹配的表名称         |      |
 | \du                  | 列出所有的数据用户和角色 |      |
-| \l                   | 列出当前的数据库         |      |
-|                      |                          |      |
+| \l+                  | 列出当前的数据库         |      |
+| \x                   | 打开/关闭竖行显示        |      |
 
 
 
@@ -43,22 +43,34 @@
 
 
 
-| 语句                            |                      |
-| ------------------------------- | -------------------- |
-| select version();               | PostgreSQL版本       |
-|                                 |                      |
-| select pg_cancel_backend(4850); | 按pid杀死锁连接      |
-| select * from pg_indexes;       | 查询索引情况         |
-| select * from pg_stat_activity; | 死锁查询             |
-| select * from pg_tablespace;    | 查询当前的tablespace |
-|                                 |                      |
+1. 每张表都有一个叫ctid的东西，可以用作临时id，但这个并不是稳定的id，可能会变化
+2. 
+
+
+
+| 语句                                                         |                      |
+| ------------------------------------------------------------ | -------------------- |
+| select version();                                            | PostgreSQL版本       |
+|                                                              |                      |
+| select pg_cancel_backend(4850);                              | 按pid杀死锁连接      |
+| select * from pg_indexes;q                                   | 查询索引情况         |
+| select * from pg_stat_activity;                              | 死锁查询             |
+| select * from pg_tablespace;                                 | 查询当前的tablespace |
+| select count(*) as max_count, a.pid,  b.query from pg_locks a inner join pg_stat_activity b on a.pid = b.pid  group by a.pid, b.query order by max_count desc limit 10; | 查询占锁最多的query  |
 
 
 
 ##### 1. Create Database
 
 ```mysql
-
+CREATE DATABASE coinbene_archive
+  WITH
+  OWNER = postgres
+  ENCODING = 'UTF8'
+  LC_COLLATE = 'en_US.utf8'
+  LC_CTYPE = 'en_US.utf8'
+  TABLESPACE = pg_default
+  CONNECTION LIMIT = 100;
 
 -- 修改数据库的时区
 alter database coinbene_archive set timezone = 'Asia/Shanghai';
@@ -118,11 +130,15 @@ select * from t limit 10 for update;
 ##### 4. Insert
 
 ```mysql
+-- 插入的同时可以返回一些数据
 INSERT INTO venuse(name, postal_code, country_code)
 VALUES ('Voodoo Donuts', '97205', 'us')
-RETURNING venue_id; -- 插入的同时可以返回一些数据
+RETURNING venue_id;
 
-
+-- 防止重复插入
+INSERT INTO t (id, name)
+VALUES (123, 'apple')
+ON CONFLICT (id) DO NOTHING
 
 ```
 

@@ -28,7 +28,7 @@ defer wg.Done()
 
 #### defer使用原则
 
-1. defer中的函数参数在调用到的那一刻确定
+1. defer中的函数参数在调用到的那一刻确定 （defer是closure）
 
 ```go
 // 输出0
@@ -40,7 +40,7 @@ func a() {
 }
 ```
 
-2. defer栈：LIFO
+2. defer栈：LIFO （defer是closure）
 
 ```go
 // 输出3、2、1、0
