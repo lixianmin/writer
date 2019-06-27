@@ -25,6 +25,7 @@
 | show databases; | 显示db列表 |
 | show engines; | 显示存储引擎信息 |
 | show index from til_name; | 显示表的索引情况 |
+| show global status like 'Thread%'; | 查询线程状态 |
 |  |  |
 | select @@autocommit; | 是否自动commit |
 | select @@tx_isolation; | 查询会话隔离级别 |
@@ -110,7 +111,7 @@ replace into t(id, v) values (1, 2);
 ```mysql
 # 1. select语句能初始化seesion variables，比如：select @rowid:=0
 # 2. from语句先于select语句执行，所不同的是：from只执行一次，而select每行执行一次
-# 3. 执行顺序： where > from > select
+# 3. 执行顺序： FROM > WHERE > GROUP BY > HAVING > SELECT 的字段 > DISTINCT > ORDER BY > LIMIT
 # 4. from语句中可以嵌套select语句
 # 5. @rowid是会话变量，在整个会话中是全局变量，可以被后面的其它语句多次查询或修改；(select @rowid:= 0)的作用是在每次调用下面的sql时初始化@rowid:=0，否则在多次调用之间@rowid会累加
 select @rowid:=@rowid+1 as rowid from account, (select @rowid:= 0) as init limit 10;

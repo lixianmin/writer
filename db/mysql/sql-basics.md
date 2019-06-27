@@ -9,7 +9,7 @@
 2. select count(*) as cnt, left(city, 3) as pref ...，所以as操作可不是重命名，而是变量定义；
 3. 各种连接join方式：
 
-<img src="https://raw.githubusercontent.com/lixianmin/writer/master/db/images/sql-joins-vis-rep-1.png" style="zoom:50%" />
+<img src="https://raw.githubusercontent.com/lixianmin/writer/master/db/images/sql-joins-vis-rep-1.png" style="zoom:80%" />
 
 ---
 

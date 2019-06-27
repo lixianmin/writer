@@ -27,6 +27,7 @@ ws
 | \dt contract*        | 显示匹配的表名称         |      |
 | \du                  | 列出所有的数据用户和角色 |      |
 | \l+                  | 列出当前的数据库         |      |
+| \timing              | 打开查询时间             |      |
 | \x                   | 打开/关闭竖行显示        |      |
 
 
@@ -53,10 +54,11 @@ ws
 | select version();                                            | PostgreSQL版本       |
 |                                                              |                      |
 | select pg_cancel_backend(4850);                              | 按pid杀死锁连接      |
-| select * from pg_indexes;q                                   | 查询索引情况         |
+| select * from pg_indexes;                                    | 查询索引情况         |
 | select * from pg_stat_activity;                              | 死锁查询             |
 | select * from pg_tablespace;                                 | 查询当前的tablespace |
 | select count(*) as max_count, a.pid,  b.query from pg_locks a inner join pg_stat_activity b on a.pid = b.pid  group by a.pid, b.query order by max_count desc limit 10; | 查询占锁最多的query  |
+| select relname, pg_size_pretty(pg_relation_size(oid)) from pg_class where relname like '%table_name%' order by relname; | 查询表的索引大小     |
 
 
 
@@ -121,7 +123,9 @@ group by 1, 2;
 
 -- 显式锁
 select * from t limit 10 for share;
-select * from t limit 10 for update;
+
+-- nowait：当无法获取行所时直接返回error，可用于秒杀场景，提高并发度
+select * from t limit 10 for update nowait;
 
 ```
 
