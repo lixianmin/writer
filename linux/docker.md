@@ -4,7 +4,7 @@
 
 ---
 
-#### 安装并启动
+#### 0x01 安装并启动
 
 1. brew cask install docker，500M，直接下载：https://download.docker.com/mac/stable/Docker.dmg
 2. 在  Perferences... -> Daemon -> Registry mirrors中添加镜像https://registry.docker-cn.com， 并重启
@@ -38,17 +38,17 @@ ENTRYPOINT ["./exchange-ws-golang.bin"]
 
 
 ----
-#### 常用命令
+#### 0x02 常用命令
 
 
+
+##### docker basics
 
 |    命令                              |    描述           |
 | -------------------------------- | ------------- |
 | docker build -t exchange-ws.image . | build image   |
+| docker info | 打印docker信息 |
 | docker run -p 2745:2745 exchange-ws.bin | 运行image     |
-|                                  |               |
-| docker images                    | 显示所有image |
-| docker rmi image-id              | 删除image     |
 |                                  |               |
 | docker ps -a                     | 显示所有进程  |
 | docker rm [container-id]         | 删除容器      |
@@ -59,31 +59,69 @@ ENTRYPOINT ["./exchange-ws-golang.bin"]
 
 
 
-| 命令                               | 描述                    |
-| ---------------------------------- | ----------------------- |
-| docker-compose up -d               | 启动docker              |
-| docker-comopose start/stop/restart | 启动/停止/重启container |
-| docker-compose logs -f             | 打印日志                |
-|                                    |                         |
-|                                    |                         |
+##### docker-compose
+
+```shell
+# 启动docker
+docker-compose up -d
+
+# 启动/停止/重启container
+docker-comopose start/stop/restart
+
+# 打印日志
+docker-compose logs -f
+```
 
 
 
+##### docker images
+
+```bash
+# 删除指定id的image
+docker rmi image-id
+
+# 删除kline2的那些没有用的images
+docker images  | grep kline2 | awk '{ if($2 == "<none>") system("docker rmi "$3) }'
+```
 
 
-1. 删除kline2的那些没有用的images
 
-   ```shell
-   docker images  | grep kline2 | awk '{ if($2 == "<none>") system("docker rmi "$3) }'
-   ```
+##### docker network
 
-2.
+```shell
+# 测试hadoop-net这个网络是否存在，如果不存在则创建之 
+if ! docker network inspect hadoop-net &>/dev/null
+then
+  # --driver overly 创建一个overlay网络，这样可以形成一个跨主机网络群组，命名为hadoop-net
+  # --driver bridge 创建一个单机网络，只有自己可以访问
+  docker network create --driver overlay hadoop-net || error_exit "初始化 overlay 网络失败"
+fi
+```
 
 
+
+##### docker swarm
+
+```bash
+# 打印帮助信息
+docker swarm help
+
+# 在0.0.0.0:2377端口监听
+docker swarm init --listen-addr 0.0.0.0 > /dev/null
+
+# 1. 生成join-token到文件中，如果出错，则将错误发送到/dev/null
+# 2. manger代表是主节点，worker代表是从节点， -q代表只输出token不打印其它信息
+# 3. 当if后接shell命令时，由于返回0代表着程序正常退出，因此0判定为true，其它1/2..判定为false
+# 4. 在其它情况下，if [n]; then...if，无论n=0/1/2..都返回true
+if docker swarm join-token manager -q > ../config/swarm_token 2> /dev/null
+then
+	echo 1
+fi
+```
 
 ---
 
-#### references
+#### 0x09 references
 
 1. [macOS 安装 Docker](https://yeasy.gitbooks.io/docker_practice/install/mac.html)
 2. [如何使用Docker部署Go Web应用程序](http://www.infoq.com/cn/articles/how-to-deploy-a-go-web-application-with-docker)

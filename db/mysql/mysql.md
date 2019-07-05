@@ -130,6 +130,8 @@ select * from information_schema.processlist where info != 'null' order by time 
 # 查询哪些表是大表，可以归档
 select * from information_schema.tables order by table_rows desc;
 
+select * from information_schema.tables where table_schema = 'coinbene_exchange';
+
 ```
 
 

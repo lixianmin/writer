@@ -48,6 +48,15 @@ max_connections = 1000
 # 默认是UCT，我们改成 PRC 或 Asia/Shanghai
 log_timezone = 'PRC'
 timezone = 'PRC'
+
+# 默认256，改这个是因为spot_trade_detail建了9000个分区, drop table竟然失败
+max_locks_per_transaction = 2048
+
+# 需要打开一系列的日志配置
+logging_collector = on
+log_directory = 'log'
+......
+
 ```
 
 

@@ -111,6 +111,15 @@ trade_time >= '${last_h2_day} ${last_h2}' and trade_time < '${last_h1_day} ${las
 
 
 
+##### 彻底删除表
+
+1. dataworks中的侧边栏，进入"数据管理"
+2. 顶层菜单栏，点击"我的数据"
+3. 点击"我管理的数据"
+4. 找到对应的表，删除
+
+
+
 ----
 
 #### 0x09 References
