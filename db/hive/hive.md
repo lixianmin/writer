@@ -8,23 +8,21 @@
 
 
 
-|                                                           |                                                     |
-| --------------------------------------------------------- | --------------------------------------------------- |
-| /config/env                                               | 只有ubuntu （hive65）那个包里有，不是说没有打成功么 |
-|                                                           |                                                     |
-| docker-compose.yml在哪，docker 启动命令是什么             |                                                     |
-| yuanxulei/hadoop:2.6.0-cdh5.15.0                          | 这个里没有hive: hive64, hive65, hive66, hive67      |
-| yuanxulei/hue:3.9.0-sqoop1.4.6-hive1.1.0-cdh5.15.0-ubuntu | 这个里hive指令， hive65                             |
-|                                                           |                                                     |
-|                                                           |                                                     |
-|                                                           |                                                     |
+|                     |                    |
+| ------------------- | ------------------ |
+| rsync -avz .. /data | 这一句好像没有用吧 |
+|                     |                    |
+|                     |                    |
 
 
 
 1. `yum install tig` ，或 `apt-get instal tig`
-2. 数据存储位置：/data/hadoop
-3. import_all.sh脚本是在docker里面执行的， ubuntu那个docker
-4. Ambari
+2. 项目位置：/root/hive
+3. 数据位置：/data/hadoop
+4. import_all.sh脚本是在docker里面执行的， ubuntu那个docker
+5. Ambari
+6. 01_setup.sh等部署脚本都是hadoop主节点xl-slave021上执行的，执行的当前目录是/data/scripts
+7. docker service create的时候通过mount做的文件映射关系
 
 
 

@@ -44,5 +44,14 @@ grafana中查询是支持自定义变量的：
 #### 0x03 显示格式
 
 1. 表单里数字以Number格式显示时，可能会变成科学计数法，如果想显示全，可以考虑改成String
+2. 时间那一列的格式，需要手动把`Time`改为`time`，否则显示怪怪的
+
+
+
+---
+
+#### 0x09 References
+
+1. [Using MySQL in Grafana](https://grafana.com/docs/features/datasources/mysql/)
 2. 
 
