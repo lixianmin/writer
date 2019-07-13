@@ -109,6 +109,11 @@ replace into t(id, v) values (1, 2);
 ##### 4. 查
 
 ```mysql
+
+# 1.FROM > WHERE > GROUP BY > HAVING > SELECT 的字段 > DISTINCT > ORDER BY > LIMIT，这个优先级顺序中， from, where, group by, having它们的顺序与在select语句中出现的顺序是一致的
+# 2. where作用于每一行，而having作用于每一个分组
+select * from t where.. group by ... having
+
 # 1. select语句能初始化seesion variables，比如：select @rowid:=0
 # 2. from语句先于select语句执行，所不同的是：from只执行一次，而select每行执行一次
 # 3. 执行顺序： FROM > WHERE > GROUP BY > HAVING > SELECT 的字段 > DISTINCT > ORDER BY > LIMIT
@@ -180,6 +185,21 @@ where xxx
 
 
 
+#####  8. 字段尽量设置not null
+
+MySQL可以在含有null的列上使用索引，包括普通的等值查询和范围查询，但针对null字段本身有一些特殊的处理方式需要注意：
+
+1. 对null值不能使用=, <, >这样的运算符，判断列是否为null需要使用is null
+2. 对null做算术运算的结果都是null
+3. count时不会包含null的行
+4. null比空字符串占用更多的存储空间
+
+
+
+因此，不建议在列上允许为null，最好限制not null，并设置一个默认值，比如0和''空字符串，如果是timestamp类型，可以设置成'1970-01-01 08:00:01' （注意东8区）这样的特殊值。
+
+
+
 ------
 
 #### 0x09 References
@@ -188,4 +208,4 @@ where xxx
 2. [INSERT ... ON DUPLICATE KEY UPDATE Syntax](https://dev.mysql.com/doc/refman/8.0/en/insert-on-duplicate.html)
 3. [MySQL 四种事务隔离级的说明](https://www.cnblogs.com/zhoujinyi/p/3437475.html)
 4. [Mysql show processlist 排查问题](https://www.cnblogs.com/duhuo/p/5678286.html)
-5. 
+5. [IS NULL Optimization](https://dev.mysql.com/doc/refman/5.7/en/is-null-optimization.html)
