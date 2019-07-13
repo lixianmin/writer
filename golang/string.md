@@ -9,7 +9,7 @@
 3. 支持 !=, ==, <, >, +, +=操作符
 4. s[0]返回byte而不是rune
 5. s[start:end]返回子串，其内部依旧指向原字节数组
-6. 在**作为map[string]的key和for range迭代**时，编译器会优化以避免复制操作
+6. 在**作为map[string]T的key和for range迭代**时，编译器会优化以避免复制操作
 7. bytes.Buffer相当于其它语言中StringBuffer
 8. 
 
