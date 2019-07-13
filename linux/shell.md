@@ -71,10 +71,17 @@ man -k ruby
 # 将stdout的输出内容place到clipboard（剪贴板）中
 pbcopy < file
 
+# -s	将数据显示为一行，而不是多行
+# -d:	将数据合并为一行时使用:分隔，而不是使用tab或space
+# -		从stdin读取一次数据
+ls | paste -sd:
+
 # 查看网卡流量: 1s一次，一共2次
 sar -n DEV 1 2
-# 持续显示文件末尾新添加的数据
-tail -f logfile.out
+
+# tail
+tail -f logfile.out		# 持续显示文件末尾新添加的数据
+tail -n +2 file.in		# 跳过2行，显示文件后面的数据
 
 # 将dir_name中的文件压缩打包，不包含.svn目录
 tar cjvpf a.tar.gz dir_name --exclude .svn

@@ -2,7 +2,31 @@
 
 ---
 
-#### 0x01 事务隔离级别
+#### 0x01  MVCC (Multi Version CC)
+
+
+
+在MVCC下，读操作分为**快照读**与**当前读**。
+
+普通的select语句，无论是RC还是RR隔离级别下，都是快照读（consistent read view），不需要加锁，因此也不会跟其它的update, insert等语句冲突。但在Serailizable隔离级别下，普通的Select也是当前读，需要加读锁。
+
+而**当前读**的情况包括：
+
+| SQL语句                      | 锁类型 |
+| ---------------------------- | ------ |
+| select …. lock in share mode | s锁    |
+| select … for update          | x锁    |
+| Insert...                    | x锁    |
+| update                       | x锁    |
+| delete                       | x锁    |
+
+所有的锁，拿到后都是需要等到事务结束才释放。
+
+
+
+----
+
+#### 0x02 LBCC (Lock Based CC)
 
 
 
@@ -15,13 +39,6 @@
 
 
 
-当多个clients使用不同的隔离级别操作同一数据的时候，不同的隔离锁都能有条不紊的正常工作，所不同的是：
-
-1. 强隔离锁排他性更强，隔离性更好，更难获得，性能越差；
-2. 弱隔离锁排他性更差，隔离性更差，也更容易获得，性能越好。
-
-
-
 未提交读是一个没用的东西，对我们有用的事务隔离级别有三种：ReadCommited, RepeatableRead与Serializable：
 
 1. **读锁即共享锁，写锁即排他锁**，在这里是可以互换的。大家都是成年人，这一点还是要先达成共识
@@ -30,6 +47,10 @@
 4. 就是**因为使用了行级锁，所以才会出现幻读的现象**，因为你只锁定**所有行**这个概念只是当前的所有行，未来有新插入的行时，“所有行”的个数已经变了。
 
 
+
+----
+
+0x3 
 
 | 隔离级别                     | Dirty Read | NonRepeatable Read | Phantom Read |
 | ---------------------------- | ---------- | ------------------ | ------------ |
@@ -49,7 +70,6 @@
 
 1. 事务开启有两种方式，start transaction与start transaction with consistent snapshot，其中后者只在RR隔离级别中使用，在RC隔离级别下退化为start transaction；
 2. 默认autocommit = 1，此时单条sql语句是自动提交的，如果设置autocommit=0，则需要手动commit，否则update/delete/insert无效；
-3. 在RR事务中，默认情况下select语句是不拿锁的，它只读出了consistent read view中的数据罢了，因此RR中的普通select不会阻止其它事务对同一行的update操作。使用select … lock in share mode会拿到s锁（shared lock），使用select … for update会拿到x锁（eXeclusive lock），这些锁一旦拿到都是到事务结束才释放；
 
 
 
@@ -57,10 +77,11 @@
 
 #### 0x09 References
 
-1. [浅谈事务隔离级别](https://zhuanlan.zhihu.com/p/34742600)
-2. [REPEATABLE-READ and READ-COMMITTED Transaction Isolation Levels](https://www.percona.com/blog/2012/08/28/differences-between-read-committed-and-repeatable-read-transaction-isolation-levels/)
-3. [互联网项目中mysql应该选什么事务隔离级别](https://zhuanlan.zhihu.com/p/59061106)
-4. [数据库的读锁和写锁在业务上的应用场景总结](https://www.cnblogs.com/itZhy/p/8417763.html)
-5. [About READ UNCOMMITTED](https://falseisnotnull.wordpress.com/2018/02/06/about-read-uncommitted/)
-6. [08 | 事务到底是隔离的还是不隔离的？](https://time.geekbang.org/column/article/70562)
+1. [MySQL 加锁处理分析]([http://hedengcheng.com/?p=771](http://hedengcheng.com/?p=771))
+2. [浅谈事务隔离级别](https://zhuanlan.zhihu.com/p/34742600)
+3. [REPEATABLE-READ and READ-COMMITTED Transaction Isolation Levels](https://www.percona.com/blog/2012/08/28/differences-between-read-committed-and-repeatable-read-transaction-isolation-levels/)
+4. [互联网项目中mysql应该选什么事务隔离级别](https://zhuanlan.zhihu.com/p/59061106)
+5. [数据库的读锁和写锁在业务上的应用场景总结](https://www.cnblogs.com/itZhy/p/8417763.html)
+6. [About READ UNCOMMITTED](https://falseisnotnull.wordpress.com/2018/02/06/about-read-uncommitted/)
+7. [08 | 事务到底是隔离的还是不隔离的？](https://time.geekbang.org/column/article/70562)
 
