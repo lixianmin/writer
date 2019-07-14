@@ -32,7 +32,8 @@ desc t;
 # 对于分区表，查询时必须where中加上分区条件，否则拒绝查询
 select * from account_history where ds = 20190616 limit 10;
 
-
+# 查看分区列表
+Show PARTITIONS account_record;
 ```
 
 

@@ -100,6 +100,35 @@ fi
 
 
 
+##### docker service
+
+```shell
+# 列出service
+# --filter "name=xxx"，按名称过滤
+# --format 使用Golang模板打印输出，下例只会输出name列
+if [ -z $(docker service ls --filter "name=$name"  --format "{{.Name}}") ]
+then
+    echo "开始创建第 $i 个节点(共 $nodeNum 个) $name ..."
+    docker service create \
+      --name $name \
+      --hostname $name \
+      --constraint node.hostname==$hostname \
+      --network hadoop-net \
+      --replicas 1 \
+      --endpoint-mode dnsrr \
+      # type=bind，意味着绑定一个已存在的目录/文件（由src指定）到容器中
+      --mount type=bind,src=/etc/localtime,dst=/etc/localtime \
+      --mount type=bind,src=/data/config/hadoop/,dst=/config/hadoop \
+      --mount type=bind,src=/data/hadoop/hdfs/,dst=/tmp/hadoop-root \
+      --mount type=bind,src=/data/hadoop/logs/,dst=/usr/local/hadoop/logs \
+      --mount type=bind,src=/data/hadoop/submit/,dst=/submit \
+      yuanxulei/hadoop:2.6.0-cdh5.15.0 || error_exit "创建 $name 失败"
+    echo "创建 $name 成功"
+fi
+```
+
+
+
 ##### docker swarm
 
 ```bash
