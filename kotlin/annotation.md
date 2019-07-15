@@ -12,6 +12,7 @@
 | --------------------------- | ---- |
 | @ApiOperation | 用于Swagger构建API文档 |
 | @ApiParam | 用于Swagger构建API文档 |
+| @Aspect | 把当前类标记为一个切面供容器读取 |
 | @GetMapping | 组合注解，等价于@RequestMapping(method = RequestMethod.GET)，将http get请求映射到特定的处理方法上 |
 | @Interface                        | 用于声明一个注解                                             |
 | @Override                    | 表明这是一个override方法                                    |
@@ -30,17 +31,18 @@
 
 
 
-| 注解        | 描述                                                         |
-| ----------- | ------------------------------------------------------------ |
-| @Autowired  | 按照type注入                                                 |
-| @Bean       | 方法级注解，被表注方法的返回值是一个Bean。该方法也可以有其它**依赖的Bean参数** |
-| @Component  | 泛指组件，当组件不好归类的时候使用这个注解                   |
-| @Controller | 标注控制层组件                                               |
-| @Qualifier  | @Autowired按照type注入，当相同type的bean不止一个时，用@Qualifier传入name确定 |
-| @Repository | 标注DB访问组件                                               |
-| @Resource   | 默认根据name注入，其次按照type搜索                           |
-| @Service    | 标注业务层组件                                               |
-|             |                                                              |
+| 注解              | 描述                                                         |
+| ----------------- | ------------------------------------------------------------ |
+| @Autowired        | 按照type注入                                                 |
+| @Bean             | 方法级注解，被表注方法的返回值是一个Bean。该方法也可以有其它**依赖的Bean参数** |
+| @Component        | 泛指组件，当组件不好归类的时候使用这个注解                   |
+| @Controller       | 标注控制层组件                                               |
+| @ControllerAdvice | 配合@ExceptionHandler统一处理controller层的异常              |
+| @Qualifier        | @Autowired按照type注入，当相同type的bean不止一个时，用@Qualifier传入name确定 |
+| @Repository       | 标注DB访问组件                                               |
+| @Resource         | 默认根据name注入，其次按照type搜索                           |
+| @Service          | 标注业务层组件                                               |
+|                   |                                                              |
 
 
 
@@ -53,6 +55,21 @@
 | @Select | ibatis中把方法影射为数据库操作 |
 |         |                                |
 |         |                                |
+
+
+
+---
+
+#### 0x04 元注解
+
+
+
+| 注解                                | 描述                                                      |
+| ----------------------------------- | --------------------------------------------------------- |
+| @Document                           | 说明该注解将被包含在javadoc中                             |
+| @Inherited                          | 说明子类可以继承父类中的该注解                            |
+| @Retention(RetentionPolicy.RUNTIME) | 注解会在class字节码文件中存在，在运行时可以通过反射获取到 |
+| @Target(ElementType.METHOD)         | 注解的目标是方法                                          |
 
 
 
