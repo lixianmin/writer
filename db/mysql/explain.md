@@ -4,7 +4,7 @@
 
 ---
 
-#### 0x01 EXPLAIN Output Columns
+#### 0x01 Explain输出列
 
 
 
@@ -26,4 +26,32 @@
 
 
 1. possible_keys如果为NULL的话，说明无索引可用，这时就需要去调整查询语句，或者新建索引了
-2. 
+
+
+
+
+
+| Extra字段             | 描述                                                     |
+| --------------------- | -------------------------------------------------------- |
+| Using filesort        | 文件排序                                                 |
+| Using index           | 覆盖索引，无需回表                                       |
+| Using index condition | 条件下推                                                 |
+| Using temporary       | 临时表，常见于**排序和分组**                             |
+| Using where           | 后过滤(Post filter)，发生于MySQL服务器层，而不是innodb层 |
+|                       |                                                          |
+|                       |                                                          |
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

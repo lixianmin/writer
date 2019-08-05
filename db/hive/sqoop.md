@@ -27,6 +27,24 @@
 # 当希望并发导入的时候，可以使用 -m4 这种指定并发度，此时默认情况下使用primary key并发导入数据，然而有时候table并没有主键，此时只能手动指定一个带索引的列以支持并发导入
 # 如果一个表既没有primary key也没有手动指定split-by，则会导入失败，需要手动指定 -m1 串行导入
 --split-by <column>
+
+
+# 大表导入
+sqoop import \
+      --connect $jdbcConn \
+      --username $mysqlUsername \
+      --password-file /coinbene_exchange-password-file \
+      --table ${table} \
+      --hive-database ${database} \
+      # 指定表所在的数据库，如果不指定，则会放到default库
+      --hcatalog-database ${database} \
+      --hcatalog-table ${table} ${create_hcatalog_table} \
+      --hcatalog-storage-stanza "stored as orc tblproperties ('orc.compress'='SNAPPY')" \
+      --hcatalog-partition-keys dt \
+      --hcatalog-partition-values ${big_table_partition_time} \
+      -m4 --split-by ${split_by} \
+      --where "${split_by} > '${last_time}' and ${split_by} <= '${big_table_select_upper_limit}'" \
+      || error_exit "导入 ${table} 失败"
 ```
 
 

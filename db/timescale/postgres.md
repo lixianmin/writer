@@ -16,7 +16,7 @@
 | varchar(n)      | 限制最大长度为n的变长字符串 |
 | text            | unlimited length字符串      |
 
-ws
+
 
 |                      |                          |      |
 | -------------------- | ------------------------ | ---- |
@@ -86,46 +86,15 @@ alter database coinbene_archive set timezone = 'Asia/Shanghai';
 
 create table cities (
 	name text NOT NULL, -- 
-    postal_code VARCHAR(9) CHECK (postal_code <> ''), -- 约束值不能是空字符串
-    country_code CHAR(2) REFERENCES counties, -- 外键约束 
-    PRIMARY KEY(country_code, postal_code) -- 联合主键
+  postal_code VARCHAR(9) CHECK (postal_code <> ''), -- 约束值不能是空字符串
+  country_code CHAR(2) REFERENCES counties, -- 外键约束 
+  PRIMARY KEY(country_code, postal_code) -- 联合主键
 );
 
 CREATE TABLE venues(
 	venue_id SERIAL PRIMARY KEY,	-- 自增id
-    type char(7) CHECK (type in ('public', 'private')) DEFAULT 'public'
+  type char(7) CHECK (type in ('public', 'private')) DEFAULT 'public'
 );
-
-```
-
-
-
-##### 3. Select
-
-```mysql
-
--- 1. where子句中出现的表名字必须 出现 在from子句中
--- 2. random()返回[0, 1)间的随机数
-with t as (
-	select min(id) as min_id, max(id) as max_id from conditions
-)
-select * from conditions c, t where c.id > t.min_id + (t.max_id - t.mid_id) * random() limit 3;
-
--- 1. 窗口函数，带over(partition by leverage)
-select time_bucket('1 day', create_time)     as time,
-       leverage                              as 杠杆倍数,
-       count(*)                              as 开仓用户数,
-       count(*) * 1.0 / sum(count(*)) over() as open_ratio
-from contract_position
-where $__timeFilter(create_time)
-  and contract = '$contract'
-group by 1, 2;
-
--- 显式锁
-select * from t limit 10 for share;
-
--- nowait：当无法获取行所时直接返回error，可用于秒杀场景，提高并发度
-select * from t limit 10 for update nowait;
 
 ```
 
@@ -143,6 +112,10 @@ RETURNING venue_id;
 INSERT INTO t (id, name)
 VALUES (123, 'apple')
 ON CONFLICT (id) DO NOTHING
+
+-- 从另一个表中选取数据并插入到新表中
+insert into mobile_device(device_id) 
+select distinct(device_id) from user_behaviour;
 
 ```
 
@@ -206,7 +179,152 @@ DROP INDEX events_title;
 
 ---
 
+#### 0x04 Select
 
+##### 01. 常用
+
+```mysql
+-- 1. where子句中出现的表名字必须 出现 在from子句中
+-- 2. random()返回[0, 1)间的随机数
+with t as (
+	select min(id) as min_id, max(id) as max_id from conditions
+)
+select * from conditions c, t where c.id > t.min_id + (t.max_id - t.mid_id) * random() limit 3;
+
+-- 1. 窗口函数，带over(partition by leverage)
+select time_bucket('1 day', create_time)     as time,
+       leverage                              as 杠杆倍数,
+       count(*)                              as 开仓用户数,
+       count(*) * 1.0 / sum(count(*)) over() as open_ratio
+from contract_position
+where $__timeFilter(create_time)
+  and contract = '$contract'
+group by 1, 2;
+
+-- 显式锁
+select * from t limit 10 for share;
+
+-- nowait：当无法获取行所时直接返回error，可用于秒杀场景，提高并发度
+select * from t limit 10 for update nowait;
+
+```
+
+
+
+##### 02 交易手续费排名前800
+
+```mysql
+-- 从trade_detail中查询交易手续费排名前800的人
+-- 手续费分buy_fee与sell_fee费，需要分别统计后再加起来
+-- 由quote_asset不一样，需要按汇率折算后统一排名
+with buyers as (
+  select buy_user_id, sum(
+  case
+  	when quote_asset = 'BTC' then buy_fee * 10040
+  	when quote_asset = 'ETH' then buy_fee * 220
+  	when quote_asset = 'USDT' then buy_fee
+  	else 0
+  end
+) as total_buy_fee from spot_trade_detail where trade_time >= '2019-01-01' group by buy_user_id order by total_buy_fee desc limit 800
+),
+
+sellers as (
+  select sell_user_id, sum(
+  case
+  	when quote_asset = 'BTC' then sell_fee * 10040
+  	when quote_asset = 'ETH' then sell_fee * 220
+  	when quote_asset = 'USDT' then sell_fee
+  	else 0
+  end
+) as total_sell_fee from spot_trade_detail where trade_time >= '2019-01-01' group by sell_user_id order by total_sell_fee desc limit 800
+)
+-- 因为使用了full join，因此会存在buy_user_id为null或sell_user_id为null的情况，因此需要使用coalesce()函数，参数1为null的时候就选第2个参数；sum中通过类似的方式将null的fee转为0值
+select coalesce(buy_user_id, sell_user_id) as user_id, sum(coalesce(total_buy_fee, 0) + coalesce(total_sell_fee, 0)) as total_fee from buyers full join sellers on buy_user_id = sell_user_id group by user_id order by total_fee desc limit 800;
+```
+
+
+
+取每小时的手续费
+
+```mysql
+with big as (
+  select
+    td.quote_asset,
+    td.buy_fee,
+    td.sell_fee,
+    cd.buy_fee as cd_buy_fee,
+    cd.sell_fee as cd_sell_fee
+  from spot_trade_detail td inner join spot_coni_discount cd
+  	on cd.id = concat(buy_order_id, sell_order_id)
+  where td.trade_time >= '2019-08-01 00:00:00'
+    and td.trade_time < '2019-08-02 01:00:00'
+    and cd.create_time >= (timestamp '2019-08-01 00:00:00' - interval '30 minute')
+    and cd.create_time < (timestamp '2019-08-02 01:00:00' + interval '30 minute')
+)
+
+(
+  select
+    quote_asset,
+    sum(case when cd_buy_fee < 0 then buy_fee else 0 end) as buy_fee,
+    sum(case when cd_sell_fee < 0 then sell_fee else 0 end) as sell_fee
+  from big
+  group by quote_asset
+ )
+ union
+ (
+   select
+     'CONI',
+     sum(case when cd_buy_fee >= 0 then cd_buy_fee else 0 end),
+     sum(case when cd_sell_fee >= 0 then cd_sell_fee else 0 end)
+   from big
+ );
+
+```
+
+
+
+```mysql
+with
+td as (
+	select *
+  from spot_trade_detail
+  where trade_time >= '2019-07-01 00:00:00' and trade_time < '2019-07-01 01:00:00'
+),
+cd as (
+  select *
+  from spot_coni_discount
+  where create_time >= (timestamp '2019-07-01 00:00:00' - interval '30 minute') and create_time < (timestamp '2019-07-01 01:00:00' + interval '30 minute')
+),
+price_map as (
+	(
+    select 
+    substr(trade_pair, 1, length(trade_pair) -4 ) as base_asset,
+    min(actual_price) as actual_price
+    from td
+    where quote_asset = 'USDT'
+    group by trade_pair
+  )
+  union
+  (
+  	select 'USDT', 1
+  )
+)
+
+select
+td.trade_pair,
+sum(case when cd.buy_fee < 0 then td.buy_fee else 0 end) as buy_fee,
+sum(case when cd.sell_fee < 0 then td.sell_fee else 0 end) as sell_fee,
+sum(amount) as amount,
+sum(quantity) as quantity,
+avg(td.actual_price) as actual_price,
+sum(amount) * pm.actual_price as usdt_price,
+sum(amount) / sum(quantity) as avg_price
+
+from td inner join price_map pm on td.quote_asset = pm.base_asset
+	 inner join cd on cd.id = concat(td.buy_order_id,sell_order_id)
+group by td.trade_pair, pm.actual_price
+order by td.trade_pair;
+```
 
 
 
