@@ -1,15 +1,11 @@
 
 
-
-
 ---
 
 #### 0x01 安装并启动
 
 1. brew cask install docker，500M，直接下载：https://download.docker.com/mac/stable/Docker.dmg
 2. 在  Perferences... -> Daemon -> Registry mirrors中添加镜像https://registry.docker-cn.com， 并重启
-
-
 
 
 
@@ -81,7 +77,8 @@ docker-compose logs -f
 docker rmi image-id
 
 # 删除kline2的那些没有用的images
-docker images  | grep kline2 | awk '{ if($2 == "<none>") system("docker rmi "$3) }'
+# docker images  | grep kline2 | awk '{ if($2 == "<none>") system("docker rmi "$3) }'
+docker image prune
 ```
 
 
@@ -103,6 +100,15 @@ fi
 ##### docker service
 
 ```shell
+# 列出service的id和name
+docker service ls
+
+# 热更新docker的image，其中hadoop-node21是服务name
+docker service update --image yuanxulei/hadoop:2.6.0-cdh5.15.0  hadoop-node021
+
+# 强制重启service，使用服务的id或name都可以
+docker service udpate --force p52aylu6i0tx
+
 # 列出service
 # --filter "name=xxx"，按名称过滤
 # --format 使用Golang模板打印输出，下例只会输出name列
@@ -146,7 +152,45 @@ if docker swarm join-token manager -q > ../config/swarm_token 2> /dev/null
 then
 	echo 1
 fi
+
+# 打印docker的manager状态，其中leader是主节点，reachable是可达的manger节点，显示为空的是worker节点
+docker node ls
+docker node promote hostname	# 升级为manager节点
+docker node demote hostname 	# 降级为worker节点
 ```
+
+
+
+-----
+
+#### 0x03 时区
+
+1.  到目前为止仍然没有搞清楚时区的规则
+2. `--env TZ=Asia/Shanghai`，在sqoop把时间信息从mysql(datetime)导出到hive(bigint)时，发生了-8小时的问题，在某个docker中加入这个好使了；但是加入这个之后，发现某些docker中执行date返回的时间信息错了，不知道什么原因
+3. `--mount type=bind,src=/etc/localtime,dst=/etc/localtime ` 这个应该可以把service中的date时间映射到东8区，但是加入TZ环境变量后消息了，原因不详细
+
+
+
+-----
+
+#### 0x04 在centos中安装docker
+
+
+
+```shell
+sudo yum install -y yum-utils device-mapper-persistent-data  lvm2
+
+sudo yum-config-manager    --add-repo    https://download.docker.com/linux/centos/docker-ce.repo
+
+sudo yum -y install docker-ce docker-ce-cli containerd.io 
+
+sudo pip install docker-compose
+
+systemctl enable docker && systemctl start docker
+
+```
+
+
 
 ---
 
