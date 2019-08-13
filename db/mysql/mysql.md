@@ -2,16 +2,18 @@
 
 ------
 
-#### 0x01 mysql命令行
+#### 0x01 shell command
 
 1. MySQL的字符集请指定为[utf8mb4](https://dev.mysql.com/doc/refman/5.6/en/charset-unicode-utf8mb4.html)以支持完整的中文字符集；
-2. mysql -uroot -p12345678；
+2. `mysql -uroot -p12345678；` -p与密码之间不允许有空格，只能在.sh文件使用；命令行中不能带密码
 3. mysql -uroot -p123456 -h 192.168.1.88 -D mydb;
 4. sql命令直接输入，**以";"或"\G"结束**并执行；
 5. **判断相等时只使用一个"="**；
 6. alter user 'root'@'localhost' identified by '12345678'; 修改密码；可以设置空密码
 7. explain xxx; 查询分析；
 8. innoDB支持自适应hash索引，默认开启；另外还有空间索引、全文索引；
+9. **datetime类型比较时一定要使用跟定义时一样的精度，否则会被四舍五入**，比如之前定义的是秒级精度，而比较时使用的是 '2019-06-26 23:59:59.499999' 会被砍为  '2019-06-26 23:59:59'，而 '2019-06-26 23:59:59.500000'会被进位为  '2019-06-27 00:00:00'；
+10. 
 
 
 
@@ -37,9 +39,67 @@
 
 
 
+---
+
+#### 0x02 create table
+
+```mysql
+create temporary table t(id int primary key, a int, index(a)) engine=innodb;
+```
+
+
+
+---
+
+#### 0x03 select
+
+
+```mysql
+
+# 1.FROM > WHERE > GROUP BY > HAVING > SELECT 的字段 > DISTINCT > ORDER BY > LIMIT，这个优先级顺序中， from, where, group by, having它们的顺序与在select语句中出现的顺序是一致的
+# 2. where作用于每一行，而having作用于每一个分组
+select * from t where.. group by ... having
+
+# 1. select语句能初始化seesion variables，比如：select @rowid:=0
+# 2. from语句先于select语句执行，所不同的是：from只执行一次，而select每行执行一次
+# 3. 执行顺序： FROM > WHERE > GROUP BY > HAVING > SELECT 的字段 > DISTINCT > ORDER BY > LIMIT
+# 4. from语句中可以嵌套select语句
+# 5. @rowid是会话变量，在整个会话中是全局变量，可以被后面的其它语句多次查询或修改；(select @rowid:= 0)的作用是在每次调用下面的sql时初始化@rowid:=0，否则在多次调用之间@rowid会累加
+select @rowid:=@rowid+1 as rowid from account, (select @rowid:= 0) as init limit 10;
+
+# limit通常放在最后，除非遇到了for update
+select * from account limit 10 for update;
+
+# 自增id是异步落库的，导致数值上偏小的id在磁盘位置上却可能偏后，因此：
+# 1. 如果想让结果按主键排序，必须加上order by id
+# 2. 如果依赖自增id同步数据，则需要注意不能取当下时间的最大id值，需要考虑一个时间差，以确保这些id落库
+select * from account_history where create_time < now() - interval 30 minute order by id;
+
+# 查询哪些线程是比较慢的，发现以后可以 kill id杀死它；
+select * from information_schema.processlist where info != 'null' order by time desc;
+
+# 查询哪些表是大表，可以归档
+select * from information_schema.tables order by table_rows desc;
+
+select * from information_schema.tables where table_schema = 'coinbene_exchange';
+
+```
+
+
+
+##### 2. join优化
+
+```mysql
+# 由于join语句发生在from中，时间在where之间，因此where条件对表的过滤并不会对join时刻的表起作用，如果被驱动表很大的话，可能会导致join时间过长
+```
+
+
+
+
+
 ------
 
-#### 0x02 常见操作
+#### 0x03 常见操作
 
 ##### 1. 增删改查（crud）
 
@@ -106,38 +166,6 @@ replace into t(id, v) values (1, 2);
 
 ```
 
-##### 4. 查
-
-```mysql
-
-# 1.FROM > WHERE > GROUP BY > HAVING > SELECT 的字段 > DISTINCT > ORDER BY > LIMIT，这个优先级顺序中， from, where, group by, having它们的顺序与在select语句中出现的顺序是一致的
-# 2. where作用于每一行，而having作用于每一个分组
-select * from t where.. group by ... having
-
-# 1. select语句能初始化seesion variables，比如：select @rowid:=0
-# 2. from语句先于select语句执行，所不同的是：from只执行一次，而select每行执行一次
-# 3. 执行顺序： FROM > WHERE > GROUP BY > HAVING > SELECT 的字段 > DISTINCT > ORDER BY > LIMIT
-# 4. from语句中可以嵌套select语句
-# 5. @rowid是会话变量，在整个会话中是全局变量，可以被后面的其它语句多次查询或修改；(select @rowid:= 0)的作用是在每次调用下面的sql时初始化@rowid:=0，否则在多次调用之间@rowid会累加
-select @rowid:=@rowid+1 as rowid from account, (select @rowid:= 0) as init limit 10;
-
-# limit通常放在最后，除非遇到了for update
-select * from account limit 10 for update;
-
-# 自增id是异步落库的，导致数值上偏小的id在磁盘位置上却可能偏后，因此：
-# 1. 如果想让结果按主键排序，必须加上order by id
-# 2. 如果依赖自增id同步数据，则需要注意不能取当下时间的最大id值，需要考虑一个时间差，以确保这些id落库
-select * from account_history where create_time < now() - interval 30 minute order by id;
-
-# 查询哪些线程是比较慢的，发现以后可以 kill id杀死它；
-select * from information_schema.processlist where info != 'null' order by time desc;
-
-# 查询哪些表是大表，可以归档
-select * from information_schema.tables order by table_rows desc;
-
-select * from information_schema.tables where table_schema = 'coinbene_exchange';
-
-```
 
 
 ##### 5. 删
@@ -197,6 +225,19 @@ MySQL可以在含有null的列上使用索引，包括普通的等值查询和�
 
 
 因此，不建议在列上允许为null，最好限制not null，并设置一个默认值，比如0和''空字符串，如果是timestamp类型，可以设置成'1970-01-01 08:00:01' （注意东8区）这样的特殊值。
+
+
+
+##### 9. 时间函数
+
+```mysql
+# 时间格式化
+select date_format(now(), '%Y-%m-%d %H:00:00');
+
+# 时间差
+select date_sub(now(), interval 1 hour);
+select date_add(now(), interval 1 day);
+```
 
 
 

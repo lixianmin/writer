@@ -27,6 +27,7 @@ echo "hello" >&2
 <       | 重定向标准输入
 >       | 重定向标准输出
 2>      | 重定向标准错误输出
+2>&1 | 重定向标准错误输出到标准输出 
 
 ----
 #### 0x02 shell特殊变量
@@ -55,8 +56,15 @@ echo "hello" >&2
 #### 0x03 常用shell指令
 
 ```shell
+# 查看linux发生版
+cat /etc/*release
+
 # cd支持glob方式
 cd *07  # 进入17-01-07目录
+
+# 时间格式化
+date -d -1hour '+%Y%m%d'
+date -d "${start_time} CST +1 day" "+%Y-%m-%d %H:%M:%S"
 
 # m按兆输出，d深度为2，r逆序，n按字符串中的数字的值排序
 du -md 2 | sort -rn

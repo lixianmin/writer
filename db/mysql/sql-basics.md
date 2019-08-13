@@ -7,7 +7,8 @@
 
 1. varchar(10)就是new StringBuilder(10)，而char(10)就是new char[10];
 2. select count(*) as cnt, left(city, 3) as pref ...，所以as操作可不是重命名，而是变量定义；
-3. 各种连接join方式：
+3. where字句中使用到的表，**必须在from中出现**，这在使用通用表表达式时容易忽略；
+4. 各种连接join方式：
 
 <img src="https://raw.githubusercontent.com/lixianmin/writer/master/db/images/sql-joins-vis-rep-1.png" style="zoom:80%" />
 

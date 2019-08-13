@@ -6,7 +6,7 @@
 
 ---
 
-
+#### 0x01 hive项目相关
 
 |                     |                    |
 | ------------------- | ------------------ |
@@ -26,28 +26,31 @@
 
 
 
-
-
 ----
 
-hdfs指令
-
-```bash
-# 从本机或hdfs上的文件拷贝到到hdfs中
-hdfs dfs -put /from/local/file /to/hdfs/filename
-hdfs dfs -put hdfs:///hive/file /to/hdfs/filename
-
-```
-
-
-
-hive指令
+#### 0x02 hive命令
 
 ```bash
 # -e 从命令行拿到sql语句
 # -f 从数据库拿到sql语句
 # -S silent mode
 hive -e "CREATE DATABASE IF NOT EXISTS $database;" -S
+```
+
+
+
+----
+
+#### 0x03 sql
+
+```mysql
+# 可以删除分区
+alter table account_record drop if exists partition (dt = 20190726);
+
+# hive中我们使用string记录时间，而时间精度到0.1s，因此如果要使用精度为时分秒的比较，一定要使用.0结尾的字符串，否则会遗漏数据；只比较年月日则不存在这样的问题
+select * from account_record where create_time >= '2019-07-26'
+select * from account_record where create_time >= '2019-07-26 00:00:00.0'
+
 ```
 
 
