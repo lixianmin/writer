@@ -13,15 +13,16 @@
 | @ApiOperation | 用于Swagger构建API文档 |
 | @ApiParam | 用于Swagger构建API文档 |
 | @Aspect | 把当前类标记为一个切面供容器读取 |
+| @EnableTransactionManagement | 开启注解事务管理，为@Transactional做准备 |
 | @GetMapping | 组合注解，等价于@RequestMapping(method = RequestMethod.GET)，将http get请求映射到特定的处理方法上 |
 | @Interface                        | 用于声明一个注解                                             |
 | @Override                    | 表明这是一个override方法                                    |
 | @PostMapping | 组合注解，将http post请求映射到特定的处理方法上 |
-|  |  |
 | @RequestHeader | 表明参数来源于http请求中的header部分 |
 | @RequestParam | 表明参数来源于http请求中的param部分 |
+| @ResponseBody | 将controller中方法返回的对象通过系统配置的HttpMessageConverter转化为指定格式之后，写入到response对象的body区，大抵相当于： response.getWriter().write(JSON.toJSON(user).toString()); |
 | @Throws(IOException::class)  | 告诉编译器该方法抛出了异常。因为kotlin中没有checked exception，此注解用于java中调用此方法因编译出错 |
-|                             ||
+|                              |                                                              |
 
 
 
