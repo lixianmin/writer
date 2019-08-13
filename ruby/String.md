@@ -88,3 +88,4 @@ gsub        | 替换全部匹配的位置
 'Is SHELL your preferred shell?'.sub(/[[:upper:]]{2,}/, ENV)
  #=> "Is /bin/bash your preferred shell?"
 ```
+
