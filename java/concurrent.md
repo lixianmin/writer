@@ -17,8 +17,8 @@
 |                       | Add         | Remove       | Examine       | 描述                                                         |
 | --------------------- | ----------- | ------------ | ------------- | ------------------------------------------------------------ |
 | Throws **e**xceptions | add()       | remov**e**() | **e**lement() | e is **e**xception, e is **e**lement()                       |
-| Special **o**bject    | **o**ffer() | **po**ll()   | **p**eek()    | o is special **o**bject, o is **o**ffer, o is p**o**ll, p is **p**oll, p is **p**eek |
-| Blocks                | pu**t**()   | **t**ake()   |               | t is **t**ons, blocks everything.                            |
+| Special **o**bject    | **o**ffer() | **po**ll()   | **p**eek()    | poll是轮询，自然是没有就返回了；而offer是提议，自然不一定成功 |
+| Blocks                | pu**t**()   | **t**ake()   |               | take是拿，如果没有，自然是拿不动，自然会block；而put是放，如果没有位置，自然放不下 |
 | Time**o**ut           | **o**ffer() | p**o**ll     |               | o is time**o**ut, o is **o**ffer, o is p**o**ll              |
 
 
