@@ -9,11 +9,12 @@
 3. mysql -uroot -p123456 -h 192.168.1.88 -D mydb;
 4. sql命令直接输入，**以";"或"\G"结束**并执行；
 5. **判断相等时只使用一个"="**；
-6. alter user 'root'@'localhost' identified by '12345678'; 修改密码；可以设置空密码
-7. explain xxx; 查询分析；
-8. innoDB支持自适应hash索引，默认开启；另外还有空间索引、全文索引；
-9. **datetime类型比较时一定要使用跟定义时一样的精度，否则会被四舍五入**，比如之前定义的是秒级精度，而比较时使用的是 '2019-06-26 23:59:59.499999' 会被砍为  '2019-06-26 23:59:59'，而 '2019-06-26 23:59:59.500000'会被进位为  '2019-06-27 00:00:00'；
-10. 
+6. 可以使用`select *, id from account`这种方法，不能使用`select id, * from account`
+7. alter user 'root'@'localhost' identified by '12345678'; 修改密码；可以设置空密码
+8. explain xxx; 查询分析；
+9. innoDB支持自适应hash索引，默认开启；另外还有空间索引、全文索引；
+10. **datetime类型比较时一定要使用跟定义时一样的精度，否则会被四舍五入**，比如之前定义的是秒级精度，而比较时使用的是 '2019-06-26 23:59:59.499999' 会被砍为  '2019-06-26 23:59:59'，而 '2019-06-26 23:59:59.500000'会被进位为  '2019-06-27 00:00:00'；
+11. 
 
 
 
@@ -70,6 +71,9 @@ select @rowid:=@rowid+1 as rowid from account, (select @rowid:= 0) as init limit
 # limit通常放在最后，除非遇到了for update
 select * from account limit 10 for update;
 
+# 获取上一次insert生成的主键id；只要是使用同一个链接就可以
+SELECT LAST_INSERT_ID();
+
 # 自增id是异步落库的，导致数值上偏小的id在磁盘位置上却可能偏后，因此：
 # 1. 如果想让结果按主键排序，必须加上order by id
 # 2. 如果依赖自增id同步数据，则需要注意不能取当下时间的最大id值，需要考虑一个时间差，以确保这些id落库
@@ -83,6 +87,10 @@ select * from information_schema.tables order by table_rows desc;
 
 select * from information_schema.tables where table_schema = 'coinbene_exchange';
 
+
+# 查询某个时间段账户的余额（需要去hive）
+select id, user_id, total_balance_before, create_time from account_record a where a.id in (select max(id) from account_record where create_time < '2019-08-10' group by user_id) limit 100; 
+
 ```
 
 
@@ -90,10 +98,8 @@ select * from information_schema.tables where table_schema = 'coinbene_exchange'
 ##### 2. join优化
 
 ```mysql
-# 由于join语句发生在from中，时间在where之间，因此where条件对表的过滤并不会对join时刻的表起作用，如果被驱动表很大的话，可能会导致join时间过长
+# 由于join语句发生在from中，时间在where之间，因此where条件对表的过滤并不会对join时刻的表起作用，如果被驱动表很大的话，可能会导致join时间过长；这时可以考虑先通过在子查询中使用where过滤表行数；
 ```
-
-
 
 
 
