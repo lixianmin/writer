@@ -21,8 +21,7 @@
 
 | Command            | Description                                                  |
 | ------------------ | ------------------------------------------------------------ |
-| desc table_name; | 显示table结构                                       |
-| show columns from tbl_name like 'abc%'; | 显示table结构 |
+| 1. desc tbl_name;<br />2. show columns from tbl_name; | 显示table结构                                       |
 | show create procedure proc_name \G | 显示创建procedure语句 |
 | show create table tbl_name; | 显示创建table的语句 |
 | show databases; | 显示db列表 |

@@ -16,6 +16,7 @@ git checkout -b hotfix remotes/origin/hotfix | 拉取远程hotfix分支
 git fetch origin<br>git checkout hotfix | 拉取远程的hotfix分支 
 git checkout -- .   | discard本地所有unstagged files
 git cherry-pick commit-id | 将commit-id提交到当前分支 
+git clean -xdf | 清除所有不被跟踪的文件和目录 
 git clone http://.. | clone一个git目录到本地
 git diff dev ^master | 查询dev有，而mater没有的修改 
 git diff HEAD  ^efe03951 | 查询当前分支从efe03951开始的改动 
