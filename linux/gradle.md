@@ -14,6 +14,9 @@ gradle clean
 # 检查依赖并编译打包jar包，跳过"测试"
 gradle build -x test 
 
+# 打包并发布
+./gradlew build publish
+
 # 运行jar包
 java -Denv=DEV -jar build/libs/xxx.jar
 ```

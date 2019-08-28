@@ -53,6 +53,7 @@
 | ------------------------------------------------------------ | -------------------- |
 | select version();                                            | PostgreSQL版本       |
 |                                                              |                      |
+| SELECT pid, now()-pg_stat_activity.query_start AS duration, query, state  FROM pg_stat_activity WHERE now() - pg_stat_activity.query_start > interval '1 minutes'; | 查询耗时最长的进程   |
 | select pg_cancel_backend(4850);                              | 按pid杀死锁连接      |
 | select * from pg_indexes;                                    | 查询索引情况         |
 | select * from pg_stat_activity;                              | 死锁查询             |
