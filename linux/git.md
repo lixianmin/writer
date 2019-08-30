@@ -20,6 +20,8 @@ git clean -xdf | 清除所有不被跟踪的文件和目录
 git clone http://.. | clone一个git目录到本地
 git diff dev ^master | 查询dev有，而mater没有的修改 
 git diff HEAD  ^efe03951 | 查询当前分支从efe03951开始的改动 
+git difftool master dev | 使用difftool查看master如何转成dev 
+git difftool master | 使用difftool查看master如何转成当前分支 
 git gc              | 清空无用文件，解决格式错误
 git merge hotfix    | 假定当前在master分支，则该命令将hotfix分支上的内容合并到master中
 git pull            | pull
