@@ -5,12 +5,12 @@
 #### 0x01 shell command
 
 1. MySQL的字符集请指定为[utf8mb4](https://dev.mysql.com/doc/refman/5.6/en/charset-unicode-utf8mb4.html)以支持完整的中文字符集；
-2. `mysql -uroot -p12345678；` -p与密码之间不允许有空格，只能在.sh文件使用；命令行中不能带密码
+2. `mysql -uroot -p123456；` -p与密码之间不允许有空格，只能在.sh文件使用；命令行中不能带密码
 3. mysql -uroot -p123456 -h 192.168.1.88 -D mydb;
 4. sql命令直接输入，**以";"或"\G"结束**并执行；
 5. **判断相等时只使用一个"="**；
 6. 可以使用`select *, id from account`这种方法，不能使用`select id, * from account`
-7. alter user 'root'@'localhost' identified by '12345678'; 修改密码；可以设置空密码
+7. `alter user 'root'@'localhost' identified by '123456';` 修改密码；可以设置空密码
 8. explain xxx; 查询分析；
 9. innoDB支持自适应hash索引，默认开启；另外还有空间索引、全文索引；
 10. **datetime类型比较时一定要使用跟定义时一样的精度，否则会被四舍五入**，比如之前定义的是秒级精度，而比较时使用的是 '2019-06-26 23:59:59.499999' 会被砍为  '2019-06-26 23:59:59'，而 '2019-06-26 23:59:59.500000'会被进位为  '2019-06-27 00:00:00'；
