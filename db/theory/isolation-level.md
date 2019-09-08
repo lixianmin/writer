@@ -52,12 +52,21 @@
 
 0x3 
 
-| 隔离级别                     | Dirty Read | NonRepeatable Read | Phantom Read |
+| 隔离级别                     | Dirty Read | Nonrepeatable Read | Phantom Read |
 | ---------------------------- | ---------- | ------------------ | ------------ |
-| 未提交读（Read uncommitted） | √          | √                  | √            |
-| 已提交读（Read committed）   | x          | √                  | √            |
+| 读未提交（Read uncommitted） | √          | √                  | √            |
+| 读已提交（Read committed）   | x          | √                  | √            |
 | 可重复读（Repeatable read）  | x          | x                  | √            |
 | 可串行化（Serializable ）    | x          | x                  | x            |
+
+
+
+| 数据库     | 读未提交 | 读已提交 | 可重复读 | 可串行化 |
+| ---------- | -------- | -------- | -------- | -------- |
+| MySQL      | √        | √        | √        | √        |
+| Oracle     | x        | √        | x        | √        |
+| PostgreSQL | x        | √        | √        | √        |
+| SQLite     | √        | x        | x        | √        |
 
 
 
