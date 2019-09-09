@@ -158,6 +158,31 @@ GROUP BY hour;
 
 
 
+##### 11. 账户维护
+
+给大家一个线上的timescaledb数据库的只读连接账户，用于测试和只读项目上线：
+
+用户名：risk_readonly
+
+密码： cRqA8BJVE7X9vO5H
+
+
+
+```mysql
+CREATE ROLE risk_readonly WITH LOGIN PASSWORD 'cRqA8BJVE7X9vO5H' NOSUPERUSER INHERIT NOCREATEDB NOCREATEROLE NOREPLICATION VALID UNTIL 'infinity';
+
+GRANT CONNECT ON DATABASE coinbene_archive TO risk_readonly;
+GRANT CONNECT ON DATABASE coinbene_risk TO risk_readonly;
+GRANT CONNECT ON DATABASE qps_data TO risk_readonly;
+
+
+GRANT USAGE ON SCHEMA public TO risk_readonly;
+GRANT SELECT ON ALL TABLES IN SCHEMA public TO risk_readonly;
+GRANT SELECT ON ALL SEQUENCES IN SCHEMA public TO risk_readonly;
+```
+
+
+
 ----
 
 #### 0x03 索引
