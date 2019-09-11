@@ -15,6 +15,30 @@ git clone https://github.com/wurstmeister/kafka-docker.git
 
 
 
+centos安装kafkacat
+
+```shell
+# 前置条件
+yum install cmake doxygen
+yum install gcc-c++  cyrus-sasl-devel.x86_64
+yum install curl-devel
+
+# 参考：https://medium.com/@frank.munz/kafkacat-on-amazonlinux-centos-d7ded88042e8
+sudo yum update -y
+sudo yum install git -y
+# make sure you have the necessary dev tools avail, 
+# or run the ff command:
+sudo yum group install “Development Tools” -y
+git clone https://github.com/edenhill/kafkacat.git
+cd kafkacat/
+./bootstrap.sh
+./kafkacat -h
+```
+
+
+
+
+
 ----
 
 #### 0x02 shell
