@@ -23,7 +23,7 @@ git diff HEAD  ^efe03951 | 查询当前分支从efe03951开始的改动
 git difftool master dev | 使用difftool查看master如何转成dev 
 git difftool master | 使用difftool查看master如何转成当前分支 
 git gc              | 清空无用文件，解决格式错误
-git merge hotfix    | 假定当前在master分支，则该命令将hotfix分支上的内容合并到master中
+git merge master    | 开发时我们往往从master分支切一个dev.risk出来，开发完成的时候往往master已经更新了，此时该命令将master分支上的改动重新合并到dev.risk中，然后dev.risk就可以考虑发版了 
 git pull            | pull
 git push            | push
 **git push origin --delete review** | 删除远程的名字为review的分支 
