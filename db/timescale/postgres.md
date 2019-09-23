@@ -324,9 +324,7 @@ cd as (
 ),
 price_map as (
 	(
-    select 
-    substr(trade_pair, 1, length(trade_pair) -4 ) as base_asset,
-    min(actual_price) as actual_price
+    select base_asset, min(actual_price) as actual_price
     from td
     where quote_asset = 'USDT'
     group by trade_pair
