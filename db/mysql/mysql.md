@@ -87,6 +87,15 @@ select * from information_schema.tables order by table_rows desc;
 select * from information_schema.tables where table_schema = 'coinbene_exchange';
 
 
+# 查询最近一次该user_id的修改记录
+select
+	rec.id, rec.user_id, rec.create_time
+from
+	account_record rec, 
+	(select max(id) max_id from account_record where create_time >= date_sub(now(), interval 60 minute) group by user_id) max_ids
+where
+	rec.id = max_ids.max_id
+
 # 查询某个时间段账户的余额（需要去hive）
 select id, user_id, total_balance_before, create_time from account_record a where a.id in (select max(id) from account_record where create_time < '2019-08-10' group by user_id) limit 100; 
 
