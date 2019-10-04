@@ -92,6 +92,21 @@ git reset --hard xxxx 是重置代码到某个版本，但如果想回滚代码�
 
 
 ---
+
+#### 永久删除文件和历史记录
+
+
+
+```shell
+git filter-branch --force --index-filter 'git rm --cached --ignore-unmatch software/Intelij-idea.md' --prune-empty --tag-name-filter cat -- --all
+
+git push --all --force
+```
+
+
+
+---
+
 #### tig [vim版]
 
 

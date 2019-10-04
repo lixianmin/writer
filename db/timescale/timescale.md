@@ -8,11 +8,17 @@
 
 
 
-| 命令                                              | 描述     |      |
-| ------------------------------------------------- | -------- | ---- |
-| select * from timescaledb_information.hypertable; | 查表大小 |      |
-|                                                   |          |      |
-|                                                   |          |      |
+| 命令                                                 | 描述     |      |
+| ---------------------------------------------------- | -------- | ---- |
+| select * from timescaledb_information.hypertable;    | 查表大小 |      |
+| SELECT * FROM show_tablespaces('spot_trade_detail'); | 查表空间 |      |
+|                                                      |          |      |
+
+
+
+1. user_id类的，建立hash索引，要快很多；
+2. `select create_hypertable('spot_trade_detail', 'trade_time', chunk_time_interval => interval '4 weeks');`  如果不能确定interval为多少的话，就选一个月吧，否则分表太多，读不动；
+3. `create index spot_trade_detail_hash_buy_sell_order_id ON spot_trade_detail using hash((buy_order_id||sell_order_id));` 表达式索引是个好东西；
 
 
 
@@ -83,7 +89,11 @@ COMMENT ON COLUMN "public"."tradelog"."d" IS '方向：b | s';
 ALTER TABLE public.tradelog OWNER to postgres;
 
 -- 按照时间和交易对分片  1周，300个chunks
+<<<<<<< HEAD
 SELECT create_hypertable('tradelog', 'ts', chunk_time_interval => interval '1 weeks');
+=======
+SELECT create_hypertable('tradelog', 'ts', chunk_time_interval => interval '4 weeks');
+>>>>>>> 8b4ee714c23c79ce64b32cfdb8afdba74c8668ff
 SELECT add_dimension('tradelog', 'tp', number_partitions => 300);
 
 -- attach 多个磁盘，暂时4个

@@ -45,8 +45,7 @@
 
 
 1. 每张表都有一个叫ctid的东西，可以用作临时id，但这个并不是稳定的id，可能会变化
-2. 
-
+2. 使用hash索引有可能导入insert时cpu飙升到100%
 
 
 | 语句                                                         |                                                  |
@@ -324,9 +323,13 @@ cd as (
 ),
 price_map as (
 	(
+<<<<<<< HEAD
     select 
     substr(trade_pair, 1, length(trade_pair) -4 ) as base_asset,
     min(actual_price) as actual_price
+=======
+    select base_asset, min(actual_price) as actual_price
+>>>>>>> 8b4ee714c23c79ce64b32cfdb8afdba74c8668ff
     from td
     where quote_asset = 'USDT'
     group by trade_pair

@@ -35,6 +35,9 @@
 |  |  |
 | **set tx_isolation = 'read-commited';**<br />set transaction_isolation='read-committed'; (MySQL 8.0) | 修改会话隔离级别 |
 | set @@ tx_isolation = 'read-commited';**<br />set @@transaction_isolation='read-committed'; (MySQL 8.0) | 修改下一次事务的隔离级别 |
+| select @@tx_isolation; | 查询会话隔离级别 |
+| select @@version; | 显示db版本 |
+|  |  |
 | source filepath.sql; | 导入sql文件 |
 | use db_name; | 切换到db |
 
@@ -88,6 +91,18 @@ select * from information_schema.tables order by table_rows desc;
 select * from information_schema.tables where table_schema = 'coinbene_exchange';
 
 
+<<<<<<< HEAD
+=======
+# 查询最近一次该user_id的修改记录
+select
+	rec.id, rec.user_id, rec.create_time
+from
+	account_record rec, 
+	(select max(id) max_id from account_record where create_time >= date_sub(now(), interval 60 minute) group by user_id) max_ids
+where
+	rec.id = max_ids.max_id
+
+>>>>>>> 8b4ee714c23c79ce64b32cfdb8afdba74c8668ff
 # 查询某个时间段账户的余额（需要去hive）
 select id, user_id, total_balance_before, create_time from account_record a where a.id in (select max(id) from account_record where create_time < '2019-08-10' group by user_id) limit 100; 
 

@@ -70,7 +70,7 @@ ORDER BY 1
 #### 0x04 Tips
 
 1. 如果有多个开发环境间需要创建一样的panel的话，可以使用Panel JSON功能；
-2. 权限控制：每一个Dashboards(Folder)设置中，可以通过把Viewer删除 + Team的方式进行权限控制；
+2. 权限控制：每一个Dashboards(Folder)设置中，可以通过把**Viewer删除 + Team的方式**进行权限控制；
 3. 时间面板中，可以设置成间隔性自动刷新；
 4. Explorer可以进行简单查询统计，但是不支持导出CSV；
 5. 直接Edit SQL的方式往往更灵活一些；
