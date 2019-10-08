@@ -89,12 +89,8 @@ COMMENT ON COLUMN "public"."tradelog"."d" IS '方向：b | s';
 ALTER TABLE public.tradelog OWNER to postgres;
 
 -- 按照时间和交易对分片  1周，300个chunks
-<<<<<<< HEAD
-SELECT create_hypertable('tradelog', 'ts', chunk_time_interval => interval '1 weeks');
-=======
 SELECT create_hypertable('tradelog', 'ts', chunk_time_interval => interval '4 weeks');
->>>>>>> 8b4ee714c23c79ce64b32cfdb8afdba74c8668ff
-SELECT add_dimension('tradelog', 'tp', number_partitions => 300);
+-- SELECT add_dimension('tradelog', 'tp', number_partitions => 300);
 
 -- attach 多个磁盘，暂时4个
 SELECT attach_tablespace('disk2', 'spot_trade_detail');

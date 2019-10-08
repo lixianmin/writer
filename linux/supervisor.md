@@ -27,6 +27,14 @@ autorestart=true
 
 
 
+mac supervisor 解决 http://localhost:9001 refused connection
+
+ ```shell
+ sudo ln -sv /usr/local/etc/supervisord.ini /etc/supervisord.conf
+ ```
+
+
+
 ---
 
 #### References
