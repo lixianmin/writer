@@ -97,11 +97,12 @@ SELECT create_hypertable('tradelog', 'ts', chunk_time_interval => interval '4 we
 SELECT add_dimension('tradelog', 'tp', number_partitions => 300);
 
 -- attach 多个磁盘，暂时4个
-SELECT attach_tablespace('disk2', 'tradelog');
-SELECT attach_tablespace('disk3', 'tradelog');
-SELECT attach_tablespace('disk4', 'tradelog');
+SELECT attach_tablespace('disk2', 'spot_trade_detail');
+SELECT attach_tablespace('disk3', 'spot_trade_detail');
+SELECT attach_tablespace('disk4', 'spot_trade_detail');
 
--- 查看tablespaces select show_tablespaces('tradelog');
+-- 查看tablespaces
+select show_tablespaces('spot_trade_detail');
 
 ```
 
