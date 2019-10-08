@@ -1,11 +1,42 @@
 
 
+安装：
+
+```shell
+# 安装supervisor
+brew install supervisor
+
+# mac supervisor 解决 http://localhost:9001 refused connection
+sudo ln -sv /usr/local/etc/supervisord.ini /etc/supervisord.conf
 
 
-1. 使用brew install supervisor没有搞定
-2. 使用pip install supervisor --user 安装成功
-3. 将*.ini配置文件放到/usr/local/etc/supervisor.d目录下面
-4. btc-trade.ini这样的文件名是没有问题的，但是在ini文件内部，只能使用[program:btctrade]这样的名字
+```
+
+
+
+修改配置文件，vim /etc/supervisord.conf ，找到如下部分： 把前面的注释去掉
+
+```ini
+[inet_http_server]        ; inet (TCP) server disabled by default
+port=127.0.0.1:9001       ; ip_address:port specifier, *:port for all iface
+username=user            ; default is no username (open server)
+password=123             ; default is no password (open server)
+```
+
+
+
+```shell
+# 重启supervisor
+brew services restart supervisor
+
+supervisorctl
+# 进入控制台后，运行help, status等指令检查是否正确启动
+```
+
+
+
+1. 将*.ini配置文件放到/usr/local/etc/supervisor.d目录下面
+2. btc-trade.ini这样的文件名是没有问题的，但是在ini文件内部，只能使用[program:btctrade]这样的名字
 
 
 
@@ -27,17 +58,9 @@ autorestart=true
 
 
 
-mac supervisor 解决 http://localhost:9001 refused connection
-
- ```shell
- sudo ln -sv /usr/local/etc/supervisord.ini /etc/supervisord.conf
- ```
-
-
-
 ---
 
 #### References
 
 1. **http://supervisord.org/**
-2. 
+2. [mac 安装和使用 supervisor --过程](http://blog.sina.com.cn/s/blog_ac47d6b30102xsfm.html)
