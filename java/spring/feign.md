@@ -12,14 +12,14 @@
 
 risk-execute-inner:
 	ribbon:
-		ConnectTimeout: 2000
-    ReadTimeout: 3000
+		ConnectTimeout: 500
+		ReadTimeout: 1000
     
     # Max number of retries on the same server (excluding the first try)
-    MaxAutoRetries: 1
+		MaxAutoRetries: 1
     
     # Max number of next servers to retry (excluding the first server)
-    MaxAutoRetriesNextServer: 2
+		MaxAutoRetriesNextServer: 2
     
     # false代表着只有get操作会被retry
     # true 代表着post操作也会被retry
