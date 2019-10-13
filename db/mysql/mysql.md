@@ -77,6 +77,10 @@ select * from account limit 10 for update;
 # 获取上一次insert生成的主键id；只要是使用同一个链接就可以
 SELECT LAST_INSERT_ID();
 
+# 这样的，LAST_INSERT_ID(xx)的作用就是传入什么，记一下，然后原值返回
+UPDATE child_codes SET counter_field = LAST_INSERT_ID(counter_field + 1);
+SELECT LAST_INSERT_ID();
+
 # 自增id是异步落库的，导致数值上偏小的id在磁盘位置上却可能偏后，因此：
 # 1. 如果想让结果按主键排序，必须加上order by id
 # 2. 如果依赖自增id同步数据，则需要注意不能取当下时间的最大id值，需要考虑一个时间差，以确保这些id落库
@@ -91,8 +95,6 @@ select * from information_schema.tables order by table_rows desc;
 select * from information_schema.tables where table_schema = 'coinbene_exchange';
 
 
-<<<<<<< HEAD
-=======
 # 查询最近一次该user_id的修改记录
 select
 	rec.id, rec.user_id, rec.create_time
@@ -102,7 +104,6 @@ from
 where
 	rec.id = max_ids.max_id
 
->>>>>>> 8b4ee714c23c79ce64b32cfdb8afdba74c8668ff
 # 查询某个时间段账户的余额（需要去hive）
 select id, user_id, total_balance_before, create_time from account_record a where a.id in (select max(id) from account_record where create_time < '2019-08-10' group by user_id) limit 100; 
 
