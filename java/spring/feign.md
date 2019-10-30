@@ -20,6 +20,8 @@ risk-execute-inner:
     
     # Max number of next servers to retry (excluding the first server)
 		MaxAutoRetriesNextServer: 2
+		
+		retryableStatusCodes: 500
     
     # false代表着只有get操作会被retry
     # true 代表着post操作也会被retry
