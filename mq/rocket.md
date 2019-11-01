@@ -8,6 +8,9 @@
 
 1. group：逻辑概念，不同的group可以消费同一个topic下的所有消息
 2. queue：物理概念，同一个topic下不同的queue之消息是互斥的，rocket的queue等价于kafka中的partition，简记为 PQ
+3. 优先级：区分优先级只能使用不同的topic，不能使用不同的tag
+   1. 同一个consumer订阅不同的tag以最后一次订阅的那个为准
+   2. 即使在同一个项目中创建两个不同的consumer，订阅同一个topic的不同tag好像也不行，会收不到消息，这非常奇怪。曾尝试创建完成不同的properties对象，也只能收到部分消息
 
 
 

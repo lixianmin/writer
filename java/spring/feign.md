@@ -21,6 +21,7 @@ risk-execute-inner:
     # Max number of next servers to retry (excluding the first server)
 		MaxAutoRetriesNextServer: 2
 		
+		# 通过设置这个参数，如果被调用接口返回HttpStatus=500，则调用方会主动重试
 		retryableStatusCodes: 500
     
     # false代表着只有get操作会被retry
