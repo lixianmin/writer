@@ -58,6 +58,10 @@ autorestart=true
 
 
 
+运行的时候如果报：[unix:///var/run/supervisor.sock no such file](https://superuser.com/questions/1069276/unix-var-run-supervisor-sock-no-such-file)，尝试先运行supervisord，然后再运行supervisorctl
+
+
+
 ---
 
 #### References

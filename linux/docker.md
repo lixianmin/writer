@@ -107,7 +107,7 @@ docker service ls
 docker service update --image yuanxulei/hadoop:2.6.0-cdh5.15.0  hadoop-node021
 
 # 强制重启service，使用服务的id或name都可以
-docker service udpate --force p52aylu6i0tx
+docker service update --force p52aylu6i0tx
 
 # 列出service
 # --filter "name=xxx"，按名称过滤

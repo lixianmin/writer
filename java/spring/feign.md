@@ -12,14 +12,16 @@
 
 risk-execute-inner:
 	ribbon:
-		ConnectTimeout: 500
-		ReadTimeout: 1000
+		ConnectTimeout: 200
+		ReadTimeout: 500
     
     # Max number of retries on the same server (excluding the first try)
-		MaxAutoRetries: 1
+    # 0的含义就是本机不重试，直接到下一台机器去重试
+		MaxAutoRetries: 0
     
     # Max number of next servers to retry (excluding the first server)
-		MaxAutoRetriesNextServer: 2
+    # nextServer重试一次
+		MaxAutoRetriesNextServer: 1
 		
 		# 通过设置这个参数，如果被调用接口返回HttpStatus=500，则调用方会主动重试
 		retryableStatusCodes: 500
