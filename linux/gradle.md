@@ -25,6 +25,9 @@ gradle install
 
 # 运行jar包
 java -Denv=DEV -jar build/libs/xxx.jar
+
+# 打印依赖关系
+./gradlew dependencyInsight  --dependency jedis
 ```
 
 

@@ -60,6 +60,32 @@
 | select * from pg_tablespace;                                 | 查询当前的tablespace                             |
 | select count(*) as max_count, a.pid,  b.query from pg_locks a inner join pg_stat_activity b on a.pid = b.pid  group by a.pid, b.query order by max_count desc limit 10; | 查询占锁最多的query                              |
 | select relname, pg_size_pretty(pg_relation_size(oid)) from pg_class where relname like '%table_name%' order by relname; | 查询表的索引大小                                 |
+|                                                              |                                                  |
+
+
+
+``` mysql
+-- 查询当前数据库下所有的大表，按从大到小排序
+
+SELECT table_schema || '.' || table_name 
+AS table_full_name, pg_size_pretty(pg_total_relation_size('"' ||table_schema || '"."' || table_name || '"')) AS size
+FROM 
+information_schema.tables
+ORDER BY
+    pg_total_relation_size('"' || table_schema || '"."' || table_name || '"')
+DESC limit 30;
+
+
+SELECT table_schema || '.' || table_name 
+AS table_full_name, pg_size_pretty(pg_total_relation_size('"' ||table_schema || '"."' || table_name || '"')) AS size, tablespace
+FROM 
+information_schema.tables
+where table_schema = 'public'
+ORDER BY
+    pg_total_relation_size('"' || table_schema || '"."' || table_name || '"')
+DESC limit 30;
+
+```
 
 
 
@@ -323,13 +349,7 @@ cd as (
 ),
 price_map as (
 	(
-<<<<<<< HEAD
-    select 
-    substr(trade_pair, 1, length(trade_pair) -4 ) as base_asset,
-    min(actual_price) as actual_price
-=======
     select base_asset, min(actual_price) as actual_price
->>>>>>> 8b4ee714c23c79ce64b32cfdb8afdba74c8668ff
     from td
     where quote_asset = 'USDT'
     group by trade_pair

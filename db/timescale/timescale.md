@@ -97,8 +97,11 @@ SELECT attach_tablespace('disk2', 'spot_trade_detail');
 SELECT attach_tablespace('disk3', 'spot_trade_detail');
 SELECT attach_tablespace('disk4', 'spot_trade_detail');
 
+SELECT attach_tablespace('disk2', 'spot_order_request_detail_his');
+
 -- 查看tablespaces
 select show_tablespaces('spot_trade_detail');
+select show_tablespaces('spot_order_request_detail_his');
 
 ```
 

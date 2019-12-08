@@ -35,7 +35,7 @@ supervisorctl
 
 
 
-1. 将*.ini配置文件放到/usr/local/etc/supervisor.d目录下面
+1. 将*.ini配置文件放到/usr/local/etc/supervisor.d目录下面（阿里云在 /etc/supervisord.d 下面）
 2. btc-trade.ini这样的文件名是没有问题的，但是在ini文件内部，只能使用[program:btctrade]这样的名字
 
 

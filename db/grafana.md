@@ -8,7 +8,7 @@
 
 1. brew services restart grafana
 2. 启动后，本机地址为： http://localhost:3000
-3. 默认的用户名密码是 admin : admin，密码在第一次登陆时会被要求强制修改
+3. 默认的用户名密码是 admin : admin，密码在第一次登陆时会被要求强制修改，改为igmqttss
 4. 安装Zabbix插件
 
 
@@ -78,10 +78,30 @@ ORDER BY 1
 
 
 
+----
+
+#### 0x05 重置密码
+
+```mysql
+find / -name "grafana.db"
+
+sqlite3 /usr/local/var/lib/grafana/grafana.db
+#.tables查看有那些表
+.tables
+#select查看表里面的内容
+select * from user;
+#使用update更新密码
+update user set password = '59acf18b94d7eb0694c61e60ce44c110c7a683ac6a8f09580d626f90f4a242000746579358d77dd9e570e83fa24faa88a8a6', salt = 'F3FAxVm33R' where login = 'admin';
+#修改完成后退出
+.exit
+```
+
+
+
 ---
 
 #### 0x09 References
 
 1. [Using MySQL in Grafana](https://grafana.com/docs/features/datasources/mysql/)
-2. 
+2. [Grafana 重置admin密码](https://blog.51cto.com/kexiaoke/2119814)
 
