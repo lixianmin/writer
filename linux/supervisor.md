@@ -9,7 +9,6 @@ brew install supervisor
 # mac supervisor 解决 http://localhost:9001 refused connection
 sudo ln -sv /usr/local/etc/supervisord.ini /etc/supervisord.conf
 
-
 ```
 
 

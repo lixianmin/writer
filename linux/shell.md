@@ -106,6 +106,9 @@ sar -n DEV 1 2
 # -t 默认情况下使用ssh执行远程命令并不会分配伪终端，但有些命令需要基于屏幕输入输出进行交互，此时可以使用-t参数分配一个伪终端，直到ssh命令执行结束
 ssh root@xl-slave022 -t 'docker exec $(docker ps --filter "name=sqoop" --format "{{.ID}}") bash /scripts/import_all.sh'
 
+# systemctl
+systemctl start mysqld
+systemctl enable mysqld	# 加入开机自启动
 
 # tail
 tail -f logfile.out		# 持续显示文件末尾新添加的数据

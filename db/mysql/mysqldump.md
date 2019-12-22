@@ -27,6 +27,9 @@
 # 需手动输入密码： staging_db_read
 mysqldump --single-transaction -h rr-6welgnc4q0p22134x.mysql.japan.rds.aliyuncs.com -u staging_db_read -p coinbene_exchange trade_detail > trade_detail_2019-07-22.sql
 
+# 导出coinbene_data数据，如果mysqldump是5.7，要导出8.0的数据，则需要加--column-statistics=0参数
+mysqldump --column-statistics=0 -h dev-mysql.mysql.rds.aliyuncs.com -uroot -p4KkkZ7qja3OWju78rrkH  coinbene_data > db.sql
+
 # 只导出表结构
 mysqldump --single-transaction -h rr-6welgnc4q0p22134x.mysql.japan.rds.aliyuncs.com -u staging_db_read -p --no-data coinbene_exchange trade_detail > trade_detail_table.sql
 

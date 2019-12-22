@@ -6,6 +6,15 @@
 1. HEAD表示当前版本， HEAD^是前一个版本，HEAD^^是前前一个版本, 或者用 HEAD@{5}这样的格式
 2. git config --global pull.rebase true 设置[pull下的rebase=true
 
+
+
+```shell 
+git config --global user.email "lixianmin@live.cn"
+git config --global user.name "lixianmin"
+```
+
+
+
 命令 | 详解
 ---|---
 git branch -va      | 显示所有的分支信息
@@ -18,7 +27,7 @@ git checkout -- .   | discard本地所有unstagged files
 git cherry-pick commit-id | 将commit-id提交到当前分支 
 git clean -xdf | 清除所有不被跟踪的文件和目录 
 git clone http://.. | clone一个git目录到本地
-git config --global credential.helper store | 解决每次都需要输入用户名密码的问题 
+git config --global credential.helper store | 解决**每次都需要输入用户名密码****的问题 
 git diff dev ^master | 查询dev有，而mater没有的修改 
 git diff HEAD  ^efe03951 | 查询当前分支从efe03951开始的改动 
 git difftool master dev | 使用difftool查看master如何转成dev 
