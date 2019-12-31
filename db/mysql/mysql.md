@@ -33,8 +33,8 @@
 | select @@tx_isolation;<br />select @@transaction_isolation; (MySQL 8.0) | 查询会话隔离级别 |
 | select @@version; | 显示db版本 |
 |  |  |
-| **set tx_isolation = 'read-commited';**<br />set transaction_isolation='read-committed'; (MySQL 8.0) | 修改会话隔离级别 |
-| set @@ tx_isolation = 'read-commited';**<br />set @@transaction_isolation='read-committed'; (MySQL 8.0) | 修改下一次事务的隔离级别 |
+| **set tx_isolation = 'read-committed';**<br />set transaction_isolation='read-committed'; (MySQL 8.0) | 修改会话隔离级别 |
+| set @@ tx_isolation = 'read-committed';**<br />set @@transaction_isolation='read-committed'; (MySQL 8.0) | 修改下一次事务的隔离级别 |
 | select @@tx_isolation; | 查询会话隔离级别 |
 | select @@version; | 显示db版本 |
 |  |  |

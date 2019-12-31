@@ -45,6 +45,29 @@ mysql -h staging-mysql.mysql.japan.rds.aliyuncs.com -u root -p coinbene_risk  < 
 
 
 
+
+
+---
+
+#### 0x02 新建数据库结构
+
+
+
+```mysql
+# --column-statistics=0 是8.0新加的参数，5.7是没有，所以需要忽略
+mysqldump --column-statistics=0 -h dev-mysql.mysql.rds.aliyuncs.com -uroot -p4KkkZ7qja3OWju78rrkH  notify_center > db.sql
+
+# 把下面的内容拽入到sequel pro的query窗口中，可以点击continue跳过priviledge权限要求
+mysql -uroot -pXLu6MjqVijQoR8yGJSzo -h staging-mysql.mysql.japan.rds.aliyuncs.com notify_center < db.sql
+
+```
+
+
+
+
+
+
+
 ---
 
 #### 0x09 References

@@ -39,6 +39,9 @@ services:
 
 
 ```ini
+# 最小128KB，修改需重启
+shared_buffers = 8003MB
+
 # 默认位于系统盘上，由于系统盘比较小，所以需要将目录指向独立磁盘；
 data_directory = ‘/data/disk1’
 

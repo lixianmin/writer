@@ -65,25 +65,16 @@
 
 
 ``` mysql
--- 查询当前数据库下所有的大表，按从大到小排序
+-- 查询当前数据库下所有的大表，按从大到小排序，打印：表名，大小，表空间
 
 SELECT table_schema || '.' || table_name 
-AS table_full_name, pg_size_pretty(pg_total_relation_size('"' ||table_schema || '"."' || table_name || '"')) AS size
+AS table_full_name, pg_size_pretty(pg_total_relation_size('"' ||table_schema || '"."' || table_name || '"')) AS size, b.tablespace
 FROM 
-information_schema.tables
+information_schema.tables a inner join pg_tables b on a.table_name = b.tablename
 ORDER BY
     pg_total_relation_size('"' || table_schema || '"."' || table_name || '"')
 DESC limit 30;
 
-
-SELECT table_schema || '.' || table_name 
-AS table_full_name, pg_size_pretty(pg_total_relation_size('"' ||table_schema || '"."' || table_name || '"')) AS size, tablespace
-FROM 
-information_schema.tables
-where table_schema = 'public'
-ORDER BY
-    pg_total_relation_size('"' || table_schema || '"."' || table_name || '"')
-DESC limit 30;
 
 ```
 
