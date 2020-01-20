@@ -62,6 +62,23 @@ ORDER BY 1
 
 1. 表单里数字以Number格式显示时，可能会变成科学计数法，如果想显示全，可以考虑改成String；
 2. 时间那一列的格式，需要手动把`Time`改为`time`，否则显示怪怪的；
+3. 折线的Y轴，默认使用Misc/short格式，数字会显示成5k这样子
+   1. 改为Misc/none，则显示5000
+   2. 选Misc/locale format，则显示5,000这样子
+4. **使用两个Y轴**：则需要在metric的那个带颜色的小bar上单击左键，然后在弹出的面板中选择Y-Axis，然后勾选 Use right y-axis
+5. **动态添加Annotation**：在dashboard settings的annotation标签页中，新加一个annotation，如下语句：
+
+```mysql
+SELECT
+  $__time(t1),
+  cast(delta as varchar(8)) as text,
+  type as tags
+FROM
+  rc.user_trade_asset_balance
+WHERE
+  $__timeFilter(t1) and uid = $user_id and asset = '$asset'
+
+```
 
 
 
