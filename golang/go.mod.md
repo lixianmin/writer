@@ -24,3 +24,13 @@ go mod vendor
 
 
 
+如果刚刚更新的代码，无法在项目中下载下来，则可以修改go.mod文件，在require的路径后面加入git中的commit号。接下来再执行`go mod vendor`
+
+```ruby
+require (
+	github.com/lixianmin/logo 5780d07   // 至少给7位数
+)
+```
+
+
+

@@ -86,7 +86,7 @@
 
 #### 0x09 References
 
-1. [MySQL 加锁处理分析]([http://hedengcheng.com/?p=771](http://hedengcheng.com/?p=771))
+1. [MySQL 加锁处理分析 何登成](https://www.cnblogs.com/tutar/p/5878651.html)
 2. [浅谈事务隔离级别](https://zhuanlan.zhihu.com/p/34742600)
 3. [REPEATABLE-READ and READ-COMMITTED Transaction Isolation Levels](https://www.percona.com/blog/2012/08/28/differences-between-read-committed-and-repeatable-read-transaction-isolation-levels/)
 4. [互联网项目中mysql应该选什么事务隔离级别](https://zhuanlan.zhihu.com/p/59061106)
