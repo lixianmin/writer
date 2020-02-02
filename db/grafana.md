@@ -117,6 +117,19 @@ update user set password = '59acf18b94d7eb0694c61e60ce44c110c7a683ac6a8f09580d62
 
 ---
 
+#### 0x06 解决grafana首次加载app.xxx.js过慢的问题
+
+1. 找到grafana的安装目录。如果是在mac上使用brew安装的话，目录在 /usr/local/Cellar/graffana/6.5.1下面
+2. 找到index.html首页，参考目录：./share/grafana/public/views/index.html
+3. 打开index.html文件，转到最后，找到app.xxxxxx.js文件，这个文件名每次发版本都不一样，参考文件名：public/build/app.1466c91fb81141791878.js
+4. 找到这个app.xxxxxx.js后，将它copy到一个北京本地的服务器上，或者cdn上
+5. 然后修改index.html中的路径地址为 http://cdn.com/i/am/subpath/app.xxxxxx.js
+6. 重启grafana服务，如果是brew，参考命令：brew services restart grafana
+
+
+
+---
+
 #### 0x09 References
 
 1. [Using MySQL in Grafana](https://grafana.com/docs/features/datasources/mysql/)
