@@ -8,7 +8,7 @@
 
 
 
-##### 从一个unbuffered channel中receive操作先行发生于send操作结束
+从一个unbuffered channel中receive操作先行发生于send操作结束，也就是**先接收后发送**：
 
 以下代码确保输出"hello, world"。写a先行发生于receive on c，而receive on c先行发生于send on c结束，而send on c结束先行发生于print(a)
 
@@ -26,6 +26,22 @@ func main() {
 	print(a)
 }
 ```
+
+
+
+等价于以下顺序：
+
+```go
+  // f()
+  a = "hello, world"
+	<-c
+  
+  //
+	c <- 0
+	print(a)
+```
+
+
 
 
 
