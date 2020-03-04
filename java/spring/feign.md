@@ -1,5 +1,43 @@
 
 
+----
+
+#### 0x01 池化
+
+
+
+```yaml
+feign:
+	hystrix:
+		enabled: true
+	httpclient:
+		enabled: true
+		
+		# feign的最大连接数
+		max-connections: 200
+		# 单个路径的最大连接数
+		max-connections-per-route: 50
+		
+	compression:
+		request:
+			enable: true
+			mime-types: text/xml,application/xml,application/json
+			# 只有超过2M的请求数据才会进行压缩
+			min-request-size: 2048
+			
+		response:
+			enable: true
+		
+```
+
+
+
+
+
+----
+
+#### 0x02 重试
+
 高可用需要考虑重试机制，如下配置会在risk-execute-inner这个服务上启用重试：
 
 ```yml
