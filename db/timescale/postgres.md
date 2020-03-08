@@ -126,6 +126,18 @@ INSERT INTO venuse(name, postal_code, country_code)
 VALUES ('Voodoo Donuts', '97205', 'us')
 RETURNING venue_id;
 
+-- 如果冲突则不插入，并且返回对应数据行
+-- 这个方案是先select，如果没有数据的话则insert，但是有可以多个线程同时insert导致插入冲突
+-- 1. 必须使用on conflict do update，经验证on conflict do nothing不能成功返回数据
+-- 2. on conflict(...)中必须填入unique key
+-- 3. returning * 后面必须带全的字段列表，不能只returning id，否则代码中也就只能接收到id
+-- 4. executeAndReturnGeneratedKeys()的参数列表反而可以不写
+insert into trade_step (uid, type, asset, balance, delta, t1, t2) 
+values (?, ?, ?, ?, ?, ?, ?) 
+on conflict(type, t1, uid, asset) do update set type= ? 
+returning *
+
+
 -- 防止重复插入
 INSERT INTO t (id, name)
 VALUES (123, 'apple')
@@ -199,6 +211,27 @@ GRANT SELECT ON ALL SEQUENCES IN SCHEMA public TO risk_readonly;
 
 
 
+##### 12. 数据迁移（Copy）
+
+```shell
+
+
+PGPASSWORD=90-=op[] psql -U postgres -h localhost -d rc -c  "\COPY rc.spot_account_record FROM sar19a.csv CSV"
+
+
+
+for((i=1;i<=39;i++));
+do
+	time PGPASSWORD="90-=op[]" psql -U postgres -h localhost -d rc -c  "\COPY rc.spot_account_record FROM /data/disk3/dump/fout.$i.csv CSV"
+	echo "OK COPY rc.spot_account_record FROM /data/disk3/fout.$i.csv CSV"
+done
+
+```
+
+
+
+
+
 ----
 
 #### 0x03 索引
@@ -247,7 +280,7 @@ group by 1, 2;
 -- 显式锁
 select * from t limit 10 for share;
 
--- nowait：当无法获取行所时直接返回error，可用于秒杀场景，提高并发度
+-- nowait：当无法获取所有行锁时直接返回error，可用于秒杀场景，提高并发度
 select * from t limit 10 for update nowait;
 
 ```
