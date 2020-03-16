@@ -37,7 +37,7 @@ git merge master    | 开发时我们往往从master分支切一个dev.risk出�
 git pull            | pull
 git push            | push
 **git push origin --delete review** | 删除远程的名字为review的分支 
-**git push origin HEAD:test -f** | 将当前分支的内容强推到远程的test分支上。可能需要到gitlab的设置 --> 版本库 --> 保护分支，把相关分支摘出来 
+**git push -f origin head:test** | 将当前分支的内容强推到远程的test分支上。可能需要到gitlab的设置 --> 版本库 --> 保护分支，把相关分支摘出来 
 **git rebase -i targetBase** | 将targetBase拿过来，将当前分支上的修改在targetBase的基础上重新应用一遍 
 git remote -v       | 查看远程的url地址
 git remote set-url origin [url] | 重新设置remote地址 
