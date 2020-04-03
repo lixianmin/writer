@@ -16,7 +16,7 @@
 
 
 1. 除法中，必须加上RoundingMode，否则对于除不尽的情况会抛出ArithmeticException
-2. 使用BigDecimal的字符串构造函数，不要使用double参数的构造函数，否则可能会出现精度丢失
+2. 使用BigDecimal的字符串构造函数，不要使用double参数的构造函数，否则可能会出现精度丢失问题；如果非要使用Double来初始化BigDecimal的话，使用BigDecimal.valueOf()方法；
 
 
 
