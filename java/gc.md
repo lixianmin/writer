@@ -1,5 +1,19 @@
 
 
+----
+
+GCRoot
+
+1. 静态对象
+2. 栈对象
+3. jni对象
+
+
+
+
+
+----
+
 基本的GC算法就三种：
 
 1. 引用计数（reference counting）：
@@ -30,5 +44,7 @@ java的GC综合了上述几种方案的优缺点，是一种分代算法：新�
 
 #### 0x09 References
 
-1. [案例实战：每日上亿请求量的电商系统，JVM年轻代垃圾回收参数如何优化？](https://zhuanlan.zhihu.com/p/76203311)
-2. 
+1. [JVM内存管理，Minor GC和Full GC触发机制总结](https://zhuanlan.zhihu.com/p/82186499)
+2. [案例实战：每日上亿请求量的电商系统，JVM年轻代垃圾回收参数如何优化？](https://zhuanlan.zhihu.com/p/76203311)
+3. 
+
