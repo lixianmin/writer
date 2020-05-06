@@ -6,7 +6,7 @@
 
 | Robot    | Address                                                      |      |
 | -------- | ------------------------------------------------------------ | ---- |
-| 熊猫警长 | https://oapi.dingtalk.com/robot/send?access_token=84f476d5b3fca1ef650727c99f4e2aefe43d710aa9fd187e0e35ff5e1576a1fe |      |
+| 熊猫警长 | https://oapi.dingtalk.com/robot/send?access_token=ed23007fe73228e7d16c99504d1c39bf04c8cf8946d6d3a752ccf50158394650 |      |
 |          |                                                              |      |
 |          |                                                              |      |
 
