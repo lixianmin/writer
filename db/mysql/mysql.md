@@ -21,6 +21,7 @@
 
 | Command            | Description                                                  |
 | ------------------ | ------------------------------------------------------------ |
+| create user 'panda'@'%' identified by 'LmvzpirvR2T6HX';<br/>grant all privileges  on *.*  to "panda"@'%'; | 创建用户 |
 | 1. desc tbl_name;<br />2. show columns from tbl_name; | 显示table结构                                       |
 | show create procedure proc_name \G | 显示创建procedure语句 |
 | show create table tbl_name; | 显示创建table的语句 |
