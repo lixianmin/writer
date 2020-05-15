@@ -4,12 +4,15 @@
 #### 快捷键
 
 
-| hotkey      | description |
-| ----------- | ----------- |
-| alt+F       | 格式化      |
-| cmd+o       | 搜索文件名  |
-| cmd+shift+O | 函数列表    |
-| ctrl+`      | terminal    |
+| hotkey      | description          |
+| ----------- | -------------------- |
+| alt+F       | 格式化               |
+| cmd+o       | 搜索文件名           |
+| cmd+shift+O | 函数列表             |
+| ctrl + `    | terminal             |
+| ctrl + -    | 返回到上一次浏览位置 |
+
+
 
 ----
 #### golang设置
