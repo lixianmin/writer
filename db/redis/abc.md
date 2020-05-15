@@ -10,15 +10,18 @@
 
 
 
-| Command             | Description             |
-| ------------------- | ----------------------- |
-| dbsize              | key总数                 |
-| expire key seconds  | 设置key过期时间         |
-| info memory         | 查询redis的内存占用情况 |
-| keys *              | 查看所有keys            |
-| object encoding key | 测试编码                |
-| ttl key             | 测试key剩余存活时间     |
-| type key            | 测试类型                |
+| Command                              | Description                  |
+| ------------------------------------ | ---------------------------- |
+| dbsize                               | key总数                      |
+| expire key seconds                   | 设置key过期时间              |
+| info memory                          | 查询redis的内存占用情况      |
+| info server                          | 版本号，端口，conf路径等信息 |
+| keys *                               | 查看所有keys                 |
+| object encoding key                  | 测试编码                     |
+| redis-cli shutdown                   | 关闭redis服务器              |
+| redis-server ~/.jumbo/etc/redis.conf | 启动redis服务器              |
+| ttl key                              | 测试key剩余存活时间          |
+| type key                             | 测试类型                     |
 
 
 

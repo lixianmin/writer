@@ -44,6 +44,7 @@
 
 
 
-1. `is_string($name)` 判断是否是字符串
-2. `sprintf('%s/%s.php', CONF_PATH, $name)` 格式化
+1. `explode(':', $key, 3)`将$key按 ':' 进行split，3是limit
+2. `is_string($name)` 判断是否是字符串
+3. `sprintf('%s/%s.php', CONF_PATH, $name)` 格式化
 
