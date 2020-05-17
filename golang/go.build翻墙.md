@@ -11,6 +11,11 @@ go env -w GOSUMDB=off
 
 
 
+```shell
+# 如果go build 找不到远程的repository了，就像okex-coin一样，则可以直接使用vendor中的代码：
+go build -mod vendor
+```
+
 
 
 ----

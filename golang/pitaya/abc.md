@@ -39,7 +39,15 @@
 
 
 
-##### 02 [Group](https://pitaya.readthedocs.io/en/latest/features.html#groups)
+##### 02 Acceptor
+
+1. `acceptor.ListenAndServe()`方法是需要监听的，因此它是阻塞方法，因此它需要单独一个协程运行
+2. `GetConnChan() chan PlayerConn`，当有新用户连接到服务器的时候，返回一个PlayerConn对象
+3. PlayerConn是一个加强版的net.Conn，拥有GetNextMessage()的能力
+
+
+
+##### 03 [Group](https://pitaya.readthedocs.io/en/latest/features.html#groups)
 
 1. group：玩家分组，用于广播消息
 
@@ -57,7 +65,7 @@ pitaya.GroupAddMember(ctx, "room", s.UID())
 
 
 
-##### 03 [Handler](https://pitaya.readthedocs.io/en/latest/API.html#handlers)
+##### 04 [Handler](https://pitaya.readthedocs.io/en/latest/API.html#handlers)
 
 1. handler：协议处理机制，由util.Pcall()通过反射调用
 2. handler分两种：一种是request handler，带返回值；一种是notify handler，无返回值
@@ -85,7 +93,7 @@ pitaya.Register(
 
 
 
-##### 04 [Session](https://pitaya.readthedocs.io/en/latest/features.html#sessions)
+##### 05 [Session](https://pitaya.readthedocs.io/en/latest/features.html#sessions)
 
 1. 客户端会话，支持异步交互
 2. 通常跟uid绑定，个人数据通过session推送到前端

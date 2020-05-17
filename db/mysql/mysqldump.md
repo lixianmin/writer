@@ -21,6 +21,18 @@
 
 
 
+```mysql
+# 备份整个数据库，包括表结构与其中的数据 （需手动输入密码）
+# 需要加--single-transaction，否则会调用lock tables，没有权限
+# -p 后面的是数据库名
+mysqldump --single-transaction -h 127.0.0.1 -u panda -p btc-trade > btc-trade_2020-05-17.sql
+
+# 恢复表结构和数据（需手动输入密码）
+mysql -h 127.0.0.1 -u panda -p btc-trade  < btc-trade_2020-05-17.sql
+```
+
+
+
 ```shell
 # 从库:备份命令，只备份数据，不备份表结构
 # 需要加--single-transaction，否则会调用lock tables，没有权限
