@@ -24,6 +24,7 @@
 ----
 #### 设置
 
-1. Editor -> General -> Auto Import，设置自动导入
-2. Tools -> File Watchers，点击+，加入go fmt，设置文件保存时自动格式化
-3. 代码运行有可能需要设置working directory，位置在 Run -> Edit Configrations -> Go Build -> Working Directory
+1. Appearance & Behaviour -> Appearance -> Use custom font，调整侧边栏字体
+2. Editor -> General -> Auto Import，设置自动导入
+3. Tools -> File Watchers，点击+，加入go fmt，设置文件保存时自动格式化
+4. 代码运行有可能需要设置working directory，位置在 Run -> Edit Configrations -> Go Build -> Working Directory

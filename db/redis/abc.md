@@ -2,7 +2,7 @@
 
 ------
 
-#### 0x01 redis命令行
+#### 0x01 命令行
 
 1. redis-cli 客户端
 2. 很多方法都带一个key参数，这个应该理解为OO中的this
@@ -89,7 +89,7 @@
 
 
 
-##### list应用模式
+##### 01 list应用模式
 
 1. lpush + lpop = stack
 2. lpush + rpop = queue
@@ -144,9 +144,28 @@
 
 
 
+---
+
+#### 0x06 sorted set
+
+1. 有库集合的成员是唯一的，但score(double)可以重复
+2. 
+
+
+
+| Command                                  | Description                       |
+| ---------------------------------------- | --------------------------------- |
+| zadd key score1 member1 [score2 member2] | 添加，或更新成员分数              |
+| zrange key start stop [withscores]       | [start, stop]，-1代表最后一个下标 |
+|                                          |                                   |
+|                                          |                                   |
+
+
+
 ------
 
-#### 0x03 References
+#### 0x09 References
 
-1. [Index Merge Optimization](https://dev.mysql.com/doc/refman/8.0/en/index-merge-optimization.html)
-2. [Redis 教程](http://www.runoob.com/redis/redis-tutorial.html)
+1. [Redis 命令参考](http://redisdoc.com)
+2. [Index Merge Optimization](https://dev.mysql.com/doc/refman/8.0/en/index-merge-optimization.html)
+3. [Redis 教程](http://www.runoob.com/redis/redis-tutorial.html)
