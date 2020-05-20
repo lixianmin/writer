@@ -4,7 +4,7 @@
 
 #### 0x01 命令行
 
-1. redis-cli 客户端
+1. redis-cli -h  127.0.0.1.	  客户端
 2. 很多方法都带一个key参数，这个应该理解为OO中的this
 3. range类操作在redis中的区间都是**左闭右闭**的
 
@@ -148,16 +148,19 @@
 
 #### 0x06 sorted set
 
-1. 有库集合的成员是唯一的，但score(double)可以重复
-2. 
+1. 有库集合的成员是唯一的，但score(double类型)可以重复
+2. rank指排名，或下标：[0, n-1]
+3. score指分数，元素按分数从小到大排序
 
 
 
 | Command                                  | Description                       |
 | ---------------------------------------- | --------------------------------- |
 | zadd key score1 member1 [score2 member2] | 添加，或更新成员分数              |
+| zinterstore dest N key1 key2 keyN        | 计算交集，存储到dest集合中        |
 | zrange key start stop [withscores]       | [start, stop]，-1代表最后一个下标 |
-|                                          |                                   |
+| zRemRangeByRank key start stop           | 移除下标在[start, stop]的成员     |
+| zRemRangeByScore key min max             | 移除score在[min, max]的成员       |
 |                                          |                                   |
 
 
