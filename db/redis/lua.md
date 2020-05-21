@@ -1,14 +1,13 @@
 1. redis.call()可以返回各种类型的数据，比如integer, string等
 2. 但是hget key val返回的，只能是字符串，即使可以使用hincrby设值，那也是字符串
+3. 如果是在redis中script load脚本的话，中间不能突然插入return xx的语句，这会导致加载失败
 
 
 
 ```lua
-
-local prefix = 'bot_tourwords:'
 local maxRoomUser = tonumber(KEYS[1])
-local roomUsersNum = prefix .. KEYS[2]
-local roomName = prefix .. KEYS[3]
+local roomUsersNum = KEYS[2]
+local roomName = KEYS[3]
 
 -- use then old room
 local lastNum = tonumber(redis.call('hget', roomName, 'num'))
