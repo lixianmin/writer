@@ -6,16 +6,22 @@
 
 ##### 01 特性列表
 
-| 特性                                                         | 支持                |      |
-| ------------------------------------------------------------ | ------------------- | ---- |
-| 协议                                                         | ws, tcp             |      |
-| 序列化                                                       | json, protobuf      |      |
-| 心跳保活                                                     | √                   |      |
-| [unity支持](https://github.com/topfreegames/libpitaya/tree/master/unity/PitayaExample) | 需确认使用unity或js |      |
-|                                                              |                     |      |
-| RPC                                                          | nats, grpc          |      |
-| 服务发现                                                     | etcd                |      |
-| cluster                                                      | √                   |      |
+| 特性                                                         | 支持              |      |
+| ------------------------------------------------------------ | ----------------- | ---- |
+| 协议                                                         | ws, tcp           |      |
+| 序列化                                                       | json, protobuf    |      |
+| timer                                                        |                   |      |
+| 心跳保活                                                     | √                 |      |
+| [unity支持](https://github.com/topfreegames/libpitaya/tree/master/unity/PitayaExample) | 需确认用unity或js |      |
+|                                                              |                   |      |
+| RPC                                                          | nats, grpc        |      |
+| 服务发现                                                     | etcd              |      |
+| cluster                                                      | √                 |      |
+
+
+
+1. 怎么搭建开发环境？git，语音，小度
+2. 要不要分服务器？
 
 
 
