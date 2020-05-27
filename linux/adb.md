@@ -3,10 +3,11 @@
 ---
 #### 0x01 adb
 1. adb install -r foo.apk
-2. adb kill-server
-3. adb devices  检查设备是否连接
-4. adb logcat | egrep -i ‘unity|debug|crash'   同时过滤unity, debug, crash时的的日志
-5. adb pull /storage/…/panda.log    下载日志到当前目录
+2. adb shell 通过usb连接设备
+3. adb kill-server
+4. adb devices  检查设备是否连接
+5. adb logcat | egrep -i ‘unity|debug|crash'   同时过滤unity, debug, crash时的的日志
+6. adb pull /storage/…/panda.log    下载日志到当前目录
 
 
 
@@ -37,20 +38,22 @@
     cat /proc/cpuinfo
     cat /proc/meminfo
  dumpsys |grep GLES
-  ```
+   ```
+
+
+5. 取得root权限   
   
-5. 取得root权限
-        
-   
-```shell
-   su
-  ```
-  
+	```shell
+ su
+	```
+
 7. 获取ip
 
-   ```shell
+	```shell
     netcfg
-   ```
+	```
+
+
 
 ---
 #### 0x03 testin日志查看
