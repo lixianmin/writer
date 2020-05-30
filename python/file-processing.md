@@ -2,14 +2,14 @@
 
 ---
 #### 0x01 按行读取
-```
+```python
 for line in open('file.txt'): #默认打开方式为'r'，即只读
     print(line, end='') #注意end=''，字串line本身包括了换行符
 ```
 
 ---
 #### 0x02 随机读取
-```
+```python
 with open('file.txt') as fin:
     print(fin.readline()) #读一行，这包括最后的换行符
 
@@ -19,7 +19,7 @@ print(fin.read())   #读取文件全文
 
 ---
 #### 0x03 写文件
-```
+```python
 with open('file.txt', 'w') as fout:
     fout.write(s)       # 写一行，不带换行符
     print(s, file=fout) #写一行，带换行符
