@@ -4,6 +4,8 @@
 
 #### 0x01 安装并启动
 
+##### 01 macos
+
 1. brew cask install docker，500M，直接下载：https://download.docker.com/mac/stable/Docker.dmg
 2. 在  Perferences... -> Daemon -> Registry mirrors中添加镜像https://registry.docker-cn.com， 并重启
 
@@ -30,6 +32,34 @@ ENTRYPOINT ["./exchange-ws-golang.bin"]
 ```
 
 
+
+##### 02 centos
+
+1. 参考文档： https://docs.docker.com/engine/install/centos/
+
+```shell
+
+sudo yum install -y yum-utils
+sudo yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+
+sudo yum install docker-ce docker-ce-cli containerd.io
+
+# 安装过程中会报错：package docker-ce-3:19.03.10-3.el7.x86_64 requires containerd.io >= 1.2.2-3, but none of the providers can be installe
+
+yum install -y https://download.docker.com/linux/centos/7/x86_64/stable/Packages/containerd.io-1.2.6-3.3.el7.x86_64.rpm
+
+# 然后再执行：
+sudo yum install docker-ce docker-ce-cli containerd.io
+
+# 启动docker
+sudo systemctl start docker
+sudo systemctl enable docker
+
+# 去这个位置查docker-compose的最新版本 https://github.com/docker/compose/releases
+sudo curl -L "https://github.com/docker/compose/releases/download/1.25.5/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+
+sudo chmod +x /usr/local/bin/docker-compose
+```
 
 
 
@@ -58,11 +88,17 @@ ENTRYPOINT ["./exchange-ws-golang.bin"]
 ##### docker-compose
 
 ```shell
+# 编译
+docker-compose build
+
 # 启动docker
 docker-compose up -d
 
 # 启动/停止/重启container
 docker-comopose start/stop/restart
+
+# 停止
+docker-compose down
 
 # 打印日志
 docker-compose logs -f
