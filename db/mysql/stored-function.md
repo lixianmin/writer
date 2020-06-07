@@ -20,6 +20,7 @@ delimiter $$
 
 drop function if exists risk_iskyc$$
 create function risk_iskyc(user_id int, site varchar(16)) returns int
+DETERMINISTIC
 comment '判断是否是kyc用户: 1-> 是， 0-> 否'
 begin
 	declare state int default 0;

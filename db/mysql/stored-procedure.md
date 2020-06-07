@@ -22,6 +22,7 @@ delimiter $$
 
 drop procedure if exists risk_iskyc$$
 create procedure risk_iskyc(in user_id int, in site varchar(16))
+DETERMINISTIC
 comment '判断是否是kyc用户。当site=“BR”时是巴西kyc，其它的走主站'
 begin
 	declare state int default 0;
