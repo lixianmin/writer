@@ -24,7 +24,7 @@
 
 
 
-| 前端          | 后端                                                         |
+| 类型          | 注释                                                         |
 | ------------- | ------------------------------------------------------------ |
 | 前端request   | 1. starx.request("room.join", {}, join)<br />2. func (r \*Room) Join(ctx context.Context, msg []byte)(*JoinResponse, error)<br/>3. 对request请求，服务器是有返回值 |
 | 前端notify    | 1. starx.notify("room.message", {name: xxx, content: xxx})<br />2. func (r *Room) Message(cox context.Context, msg *UserMessage)<br />3. 对notify请求，服务器没有返回值，在服务器代码中这**两种请求的handler方法签名不同** |
