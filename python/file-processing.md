@@ -75,7 +75,7 @@ A Unicode sandwich: bytes on the outside, Unicode on the inside.
 
 python文件读写默认使用系统编码，即locale.getpreferredencoding()，在Windows下为cp936，linux下为utf8。因此在读写文件时最好明确指定文件编码：
 
-```
+```python
 with open('utf8.txt', 'w', encoding= 'utf8') as fout:
     fout.write('此文件使用utf8编码 \n')
     fout.write('结束 \n')
