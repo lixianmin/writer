@@ -24,3 +24,4 @@ go build -mod vendor
 
 1. [go proxy 设置](https://www.jianshu.com/p/e0c878d4ca19)
 2. 
+

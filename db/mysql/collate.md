@@ -1,6 +1,6 @@
 
 
-like查询本身是不
+like查询本身是不区分大小写的
 
 在MySQL中，对于Column Collate其约定的命名方法如下：
 
