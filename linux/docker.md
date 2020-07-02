@@ -59,6 +59,9 @@ sudo systemctl enable docker
 sudo curl -L "https://github.com/docker/compose/releases/download/1.25.5/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 
 sudo chmod +x /usr/local/bin/docker-compose
+
+# 解决 Got permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock
+sudo chmod 666 /var/run/docker.sock
 ```
 
 
@@ -209,21 +212,32 @@ docker node demote hostname 	# 降级为worker节点
 
 -----
 
-#### 0x04 在centos中安装docker
+#### 0x04 docker-compose.yml
 
 
 
-```shell
-sudo yum install -y yum-utils device-mapper-persistent-data  lvm2
+```yml
+version: "3.8"
+services:
+  golang:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: always
+    network_mode: "host"
 
-sudo yum-config-manager    --add-repo    https://download.docker.com/linux/centos/docker-ce.repo
+    # 1. 如果是host模式，其实不用 ports 映射端口，但是不知道为什么，在macos上host模式就是无法映射出端口。在centos上面是成功的。
+    # 2. 但是，如果不使用host模式，那么钉钉消息就发送不出来，使用curl测试也发送不了数据，所以还是使用host模式吧
+    ports:  # 宿主机端口:容器端口
+      - 8441:8441
+      - 8442:8442
+      - 8443:8443
 
-sudo yum -y install docker-ce docker-ce-cli containerd.io 
-
-sudo pip install docker-compose
-
-systemctl enable docker && systemctl start docker
-
+    volumes:
+      # 第一个目录是docker外的主机目录，第二个目录是docker内的目录，相互影射
+      - /data/logs/tour-words:/app/logs:rw
+    environment:
+      ENV: ${ENV:-DEV}
 ```
 
 
