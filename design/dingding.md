@@ -24,6 +24,18 @@
 
 
 
+```shell
+curl 'https://oapi.dingtalk.com/robot/send?access_token=099723d58f70400805e693bc289c9b476f83b4b008596b989c49afbd6804dd28' \
+-H 'Content-Type: application/json' \
+-d '{"msgtype": "text", 
+    "text": {
+         "content": "钉钉机器人群消息测试"
+    }
+  }'
+```
+
+
+
 ----
 
 #### 0x09 References
