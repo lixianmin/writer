@@ -16,3 +16,17 @@ scp -r .  root@180.76.55.113:/root/lixianmin/tour-words
 
 ```
 
+
+
+```shell
+########################################
+
+export ENV=PROD # 根据不同的项目环境，设置为TEST或PROD
+export EDITOR=vim
+
+..()  { cd ..; pwd; ls -h --color; }
+...() { cd ../..; pwd; ls -h --color; }
+
+alias ll='/bin/ls -lh --color'
+```
+
