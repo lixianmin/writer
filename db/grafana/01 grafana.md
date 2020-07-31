@@ -150,6 +150,23 @@ docker run \
 
 
 
+#### 0x08 解决时差问题
+
+mysql通过date_sub() 减去8小时
+
+```mysql
+SELECT
+  date_sub(create_time, interval 8 hour) AS "time",
+  count(distinct(uid)) 日访问数
+FROM player_record
+WHERE
+  $__timeFilter(create_time)
+  group by DAY(create_time)
+ORDER BY create_time
+```
+
+
+
 
 
 ---
