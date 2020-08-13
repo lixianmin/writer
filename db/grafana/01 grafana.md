@@ -6,11 +6,36 @@
 
 #### 0x01 安装
 
+##### 01 直接安装
+
 1. centos上安装，[参考](https://www.fosslinux.com/8328/how-to-install-and-configure-grafana-on-centos-7.htm)，但是下载失败了
 2. brew services restart grafana
 3. 启动后，本机地址为： http://localhost:3000
 4. 默认的用户名密码是 admin : admin，密码在第一次登陆时会被要求强制修改，改为igmqttss
 5. 安装Zabbix插件
+
+
+
+##### 02 使用docker配置grafana
+
+```shell
+#!/bin/bash
+basedir=$(cd `dirname $0`;pwd)
+
+mkdir -p data # creates a folder for your data
+ID=$(id -u)   # saves your user id in the ID variable
+
+docker stop grafana
+docker rm grafana
+docker run \
+       -d --name grafana  -p 3000:3000 \
+       -e "GF_SERVER_ROOT_URL=http://grafana.server.name" \
+       -e "GF_SECURITY_ADMIN_PASSWORD=newpwd" \
+       --user $ID --volume "$PWD/data:/var/lib/grafana" \
+       grafana/grafana grafana
+```
+
+
 
 
 
@@ -129,28 +154,9 @@ update user set password = '59acf18b94d7eb0694c61e60ce44c110c7a683ac6a8f09580d62
 
 
 
-#### 0x07 使用docker配置grafana
+------
 
-```shell
-#!/bin/bash
-basedir=$(cd `dirname $0`;pwd)
-
-mkdir -p data # creates a folder for your data
-ID=$(id -u)   # saves your user id in the ID variable
-
-docker stop grafana
-docker rm grafana
-docker run \
-       -d --name grafana  -p 3000:3000 \
-       -e "GF_SERVER_ROOT_URL=http://grafana.server.name" \
-       -e "GF_SECURITY_ADMIN_PASSWORD=newpwd" \
-       --user $ID --volume "$PWD/data:/var/lib/grafana" \
-       grafana/grafana grafana
-```
-
-
-
-#### 0x08 解决时差问题
+#### 0x07 解决时差问题
 
 mysql通过date_sub() 减去8小时
 
