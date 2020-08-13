@@ -14,12 +14,13 @@ chown -R 1000:1000 /data/jenkins
 docker pull jenkinszh/jenkins-zh:latest
 
 # 运行jenkins
-docker run -d -p 8080:8080 -p 50000:50000 -v /data/jenkins:/var/jenkins_home jenkinszh/jenkins-zh:latest
+docker run -d -p 8080:8080 -p 50000:50000 -v /data/jenkins:/var/jenkins_home -e JAVA_OPTS=-Duser.timezone=Asia/Shanghai jenkinszh/jenkins-zh:latest
 
 # 通过docker exec -it container-id bash 进入docker，查看初始化密码
 # cat /var/jenkins_home/secrets/initialAdminPassword
 cat /data/jenkins/secrets/initialAdminPassword
 
+# http://jenkins-address:8080 打开jenkins
 # 在『自定义Jenkins』页，选择『选择插件来安装』，在『Source code Management』页加入对github支持
 
 # 点击『点击右上角的个人图标』，生成secret text，在github上叫token 
