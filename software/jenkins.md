@@ -23,19 +23,23 @@ cat /data/jenkins/secrets/initialAdminPassword
 # http://jenkins-address:8080 打开jenkins
 # 在『自定义Jenkins』页，选择『选择插件来安装』，在『Source code Management』页加入对github支持
 
-# 点击『点击右上角的个人图标』，生成secret text，在github上叫token 
+# 在github主页，点击『右上角个人图标』，生成token，这个在jenkins中叫secret text 
 1. Settings --> Developer settings --> Personal access tokens -> Generate new token
 2. 选中repo 和 admin:repo_hook
-3. 点击 Generate Token
+3. 点击 Generate Token --> 记住这个token，否则再也找不回来了
+4. 如果使用github的『用户名/密码』的方式访问，则不需要使用这个token
 
 # 转到github的具体项目
 Settings --> Webhooks --> Add Webhook --> 输入刚刚部署jenkins的服务器的IP：
-http://jenkins-address:8080/github-webhook/
+http://jenkins-address:8080/github-webhook/  --> 『注意：最后以/结尾，不能少』
 
 不需要调整Context type或加入Serect等东西
 
 # 配置jenkins
-1. 系统管理 --> 系统设置 --> GitHub --> 添加Github服务器
+1. 首页左边 --> 系统管理 --> 系统配置 --> GitHub --> 添加Github服务器
+	1. 在GitHub Server这一内嵌面板中，『名称』随便填
+	2. API URL就是https://api.github.com，不用改
+	3. 凭据使用Secret text，点击『添加』，类型选『Secret text』，『范围』不改，『Secret』中粘贴在github上生成的personal access token，其它的『ID』『描述』不填
 
 
 # 进入docker，将签名文件公钥copy到远程服务器
@@ -56,8 +60,9 @@ ssh root@192.168.64.5 /root/go/src/github.com/lixianmin/tour-server/build.jenkin
 
 ----
 
-1. [jenkins docker image](https://hub.docker.com/r/jenkinszh/jenkins-zh)
-2. [Docker 安装 Jenkins , 并解决初始安装插件失败](https://www.cnblogs.com/stormlong/p/12784513.html)
-3. [从零开始搭建JENKINS+GITHUB持续集成环境【多图】](https://juejin.im/post/6844903992833605640)
-4. 
+1. [Jenkins与Github集成 webhook配置](https://blog.csdn.net/qq_21768483/article/details/80177920)
+2. [jenkins docker image](https://hub.docker.com/r/jenkinszh/jenkins-zh)
+3. [Docker 安装 Jenkins , 并解决初始安装插件失败](https://www.cnblogs.com/stormlong/p/12784513.html)
+4. [从零开始搭建JENKINS+GITHUB持续集成环境【多图】](https://juejin.im/post/6844903992833605640)
+5. 
 
