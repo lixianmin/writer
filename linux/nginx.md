@@ -5,7 +5,7 @@
 #### 0x01 常用命令
 
 1. yum install nginx
-2. vim /et/nginx/nginx.conf 编辑conf文件
+2. vim /etc/nginx/nginx.conf 编辑conf文件
 
 
 
