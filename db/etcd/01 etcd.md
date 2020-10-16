@@ -17,18 +17,13 @@ brew services start etcd
 
 ```shell
 #!/bin/bash
-# 参考：https://www.artacode.com/posts/etcd/install/
+# 参考：https://hub.docker.com/r/bitnami/etcd/
 
-docker run -d -v /usr/share/ca-certificates/:/etc/ssl/certs -p 4001:4001 -p 2380:2380 -p 2379:2379 \
- --name etcd quay.io/coreos/etcd:latest /usr/local/bin/etcd \
- -name etcd0 \
- -advertise-client-urls http://127.0.0.1:2379,http://127.0.0.1:4001 \
- -listen-client-urls http://0.0.0.0:2379,http://0.0.0.0:4001 \
- -initial-advertise-peer-urls http://127.0.0.1:2380 \
- -listen-peer-urls http://0.0.0.0:2380 \
- -initial-cluster-token etcd-cluster-1 \
- -initial-cluster etcd0=http://127.0.0.1:2380 \
- -initial-cluster-state new
+docker run -d --name etcd-server \
+    --publish 2379:2379 \
+    --publish 2380:2380 \
+    --env ETCD_ADVERTISE_CLIENT_URLS=http://etcd-server:2379 \
+    quay.io/coreos/etcd:v3.4.13
 ```
 
 
@@ -39,10 +34,14 @@ docker run -d -v /usr/share/ca-certificates/:/etc/ssl/certs -p 4001:4001 -p 2380
 #!/bin/bash
 # 参考：https://www.cnblogs.com/itzgr/p/9920897.html
 
+# 使用更新更频繁的bitnami/etcd，无法将volume映射出来，报etcdmain: cannot access data directory错，参考以下链接
+# https://stackoverflow.com/questions/24288616/permission-denied-on-accessing-host-directory-in-docker
+# 等均不能解决，所以最后使用quay.io上的etcd，这个比较奇怪的地方是lastest版本实际上是2018年的，于是指定使用了v3.4.13版本
+
 # mkdir -p /var/log/etcd/			    #建议创建etcd日志保存目录
 # mkdir -p /data/etcd				      #建议创建单独的etcd数据目录
 REGISTRY=quay.io/coreos/etcd			#建议使用此仓库
-ETCD_VERSION=latest				        #设置etcd版本
+ETCD_VERSION=v3.4.13			        #设置etcd版本
 TOKEN=etcd-tour                   #设置唯一集群ID
 CLUSTER_STATE=new				          #置为新建集群
 
@@ -69,14 +68,18 @@ echo 'ip:' $THIS_IP
 docker run -d \
    -p 2379:2379 \
    -p 2380:2380 \
-   --volume=${DATA_DIR}:/etcd-data \
-   --name etcd ${REGISTRY}:${ETCD_VERSION} \
-   /usr/local/bin/etcd \
-   --data-dir=${DATA_DIR} --name ${THIS_NAME} \
-   --initial-advertise-peer-urls http://${THIS_IP}:2380 --listen-peer-urls http://0.0.0.0:2380 \
-   --advertise-client-urls http://${THIS_IP}:2379 --listen-client-urls http://0.0.0.0:2379 \
-   --initial-cluster ${CLUSTER} \
-   --initial-cluster-state ${CLUSTER_STATE} --initial-cluster-token ${TOKEN}
+   --env ALLOW_NONE_AUTHENTICATION=yes \
+   --env ETCD_ADVERTISE_CLIENT_URLS=http://${THIS_IP}:2379 \
+   --env ETCD_LISTEN_CLIENT_URLS=http://0.0.0.0:2379 \
+   --env ETCD_INITIAL_ADVERTISE_PEER_URLS=http://${THIS_IP}:2380 \
+   --env ETCD_LISTEN_PEER_URLS=http://0.0.0.0:2380 \
+   --env ETCD_INITIAL_CLUSTER=${CLUSTER} \
+   --env ETCD_INITIAL_CLUSTER_STATE=${CLUSTER_STATE} \
+   --env ETCD_INITIAL_CLUSTER_TOKEN=${TOKEN} \
+   --env ETCD_NAME=${THIS_NAME} \
+   --env ETCD_DATA_DIR=/data \
+   --volume=${DATA_DIR}:/data \
+   --name etcd ${REGISTRY}:${ETCD_VERSION}
 ```
 
 
