@@ -34,51 +34,11 @@ brew services start kibana
 
 1. 叶子查询直接带\<field\>子节点
 2. \<field\>节点的子节点会有一些参数用于约束叶子查询的行为
+3. 简记为TRIM，分别代表Term, Range, Ids, Match
 
 
 
-##### 01 [match](https://www.elastic.co/guide/en/elasticsearch/reference/7.9/query-dsl-match-query.html)
-
-```json
-GET /_search
-{
-  "query": {
-    "match": {
-      "message": {
-        "query": "this is a test",
-        "operator": "and"
-      }
-    }
-  }
-}
-```
-
-
-
-1.  query参数描述搜索词列表，默认行为与baidu类似，以or关系按评分返回匹配的doc
-2. 如果需要改为and的关系，则需要加一个`"operator":"and"`的参数
-
-
-
-##### 02 [range](https://www.elastic.co/guide/en/elasticsearch/reference/7.9/query-dsl-range-query.html)
-
-```json
-GET /_search
-{
-  "query": {
-    "range": {
-      "timestamp": {
-        "gte": "now-1d/d",
-        "lt": "now/d"
-      }
-    }
-  }
-}
-```
-
-
-
-##### 03 [term](https://www.elastic.co/guide/en/elasticsearch/reference/7.9/query-dsl-term-query.html)
+##### 01 [term](https://www.elastic.co/guide/en/elasticsearch/reference/7.9/query-dsl-term-query.html)
 
 ```json
 GET /_search
@@ -99,10 +59,70 @@ GET /_search
 
 
 
-##### 04 [terms](https://www.elastic.co/guide/en/elasticsearch/reference/7.9/query-dsl-terms-query.html)
+##### 02 [terms](https://www.elastic.co/guide/en/elasticsearch/reference/7.9/query-dsl-terms-query.html)
 
 1. term查询的复数形式
 2. 多个参考值之间是or的关系
+
+
+
+##### 03 [IDs](https://www.elastic.co/guide/en/elasticsearch/reference/7.9/query-dsl-ids-query.html)
+
+```json
+GET /_search
+{
+  "query": {
+    "ids" : {
+      "values" : ["1", "4", "100"]
+    }
+  }
+}
+```
+
+1. 使用_id字段查询
+
+
+
+##### 04 [range](https://www.elastic.co/guide/en/elasticsearch/reference/7.9/query-dsl-range-query.html)
+
+```json
+GET /_search
+{
+  "query": {
+    "range": {
+      "timestamp": {
+        "gte": "now-1d/d",
+        "lt": "now/d"
+      }
+    }
+  }
+}
+```
+
+
+
+
+
+##### 05 [match](https://www.elastic.co/guide/en/elasticsearch/reference/7.9/query-dsl-match-query.html)
+
+```json
+GET /_search
+{
+  "query": {
+    "match": {
+      "message": {
+        "query": "this is a test",
+        "operator": "and"
+      }
+    }
+  }
+}
+```
+
+
+
+1.  query参数描述搜索词列表，默认行为与baidu类似，以or关系按评分返回匹配的doc
+2.  如果需要改为and的关系，则需要加一个`"operator":"and"`的参数
 
 
 

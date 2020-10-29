@@ -146,22 +146,25 @@
 
 ---
 
-#### 0x06 sorted set
+#### [0x06 sorted set](http://redisdoc.com/sorted_set/index.html)
 
-1. 有库集合的成员是唯一的，但score(double类型)可以重复
+1. 有库集合的成员是唯一的，但score (**double类型**) 可以重复
 2. rank指排名，或下标：[0, n-1]
 3. score指分数，元素按分数从小到大排序
 
 
 
-| Command                                  | Description                       |
-| ---------------------------------------- | --------------------------------- |
-| zadd key score1 member1 [score2 member2] | 添加，或更新成员分数              |
-| zinterstore dest N key1 key2 keyN        | 计算交集，存储到dest集合中        |
-| zrange key start stop [withscores]       | [start, stop]，-1代表最后一个下标 |
-| zRemRangeByRank key start stop           | 移除下标在[start, stop]的成员     |
-| zRemRangeByScore key min max             | 移除score在[min, max]的成员       |
-|                                          |                                   |
+| Command                                                      | Description                                                  |             |
+| ------------------------------------------------------------ | ------------------------------------------------------------ | ----------- |
+| [zadd](http://redisdoc.com/sorted_set/zadd.html) key score1 member1 [score2 member2] | 添加成员，或更新成员分数                                     |             |
+| [zcard](http://www.redis.cn/commands/zcard.html) key         | 获取集合（容器）元素个数                                     | O(1)        |
+| [zscore](http://redisdoc.com/sorted_set/zscore.html) key member | 返回member的score值                                          |             |
+| zinterstore dest N key1 key2 keyN                            | 计算交集，存储到dest集合中                                   |             |
+| [zrange](http://redisdoc.com/sorted_set/zrange.html) key start stop [withscores] | 1. [start, stop]，-1代表下标上界  <br />2. withscores会同时返回score | O(log(N)+M) |
+| zrevrange key start stop [withscores]                        | 按score由大到小的序列返回，socre相同的成员按字典逆序排列     |             |
+| zRemRangeByRank key start stop                               | 移除下标在[start, stop]的成员                                |             |
+| zRemRangeByScore key min max                                 | 移除score在[min, max]的成员                                  |             |
+|                                                              |                                                              |             |
 
 
 
