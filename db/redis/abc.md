@@ -2,7 +2,7 @@
 
 ------
 
-#### 0x01 命令行
+#### 01 命令行
 
 1. redis-cli -h  127.0.0.1.	  客户端
 2. 很多方法都带一个key参数，这个应该理解为OO中的this
@@ -27,7 +27,7 @@
 
 ---
 
-#### 0x02 string
+#### 02 string
 
 | Command                                     | Description |
 | ------------------------------------------- | ----------- |
@@ -54,7 +54,7 @@
 
 ----
 
-#### 0x03 hash
+#### 03 hash
 
 
 
@@ -83,7 +83,7 @@
 
 ------
 
-#### 0x04 list
+#### [04 list](http://redisdoc.com/list/index.html)
 
 ​    1. 支持为负数的索引，-1是指倒数第一个元素，这与python类似
 
@@ -98,34 +98,34 @@
 
 
 
-| Command                              | Description                                                  |
-| ------------------------------------ | ------------------------------------------------------------ |
-| blpop key [key ...] timeout          | 1. 如果empty且timeout>0，则等待timeout时间超时返回<br>2. 如果empty且timeout=0，则无限等待<br>3. 如果不empty，则立即返回<br>4. 多个keys时，从左至右遍历keys，一旦有一个键能弹出就立即返回 |
-| brpop key [key ...] timeout          |                                                              |
-| lindex key -1                        | 取下标-1的元素                                               |
-| insert key before\|after pivot value | 在pivot的前面/后面插入value                                  |
-| llen key                             | 长度                                                         |
-| lpop key                             |                                                              |
-| lpush key value [value ...]          |                                                              |
-| lrange key 0 -1                      | 打印所有元素                                                 |
-| lrem key count value                 | 1. count > 0，从左到右删除最多count个元素<br>2. count < 0，从右到左删除最多count个元素<br>3. count == 0，删除所有 |
-| lset key index value                 | 设                                                           |
-| ltrim key start end                  | 只保留[start, end]之间的元素                                 |
-| rpush key value [ value ...]         |                                                              |
-| rpop key                             |                                                              |
+| Command                                                      | Notes                                                        |           |
+| ------------------------------------------------------------ | ------------------------------------------------------------ | --------- |
+| blpop key [key ...] timeout                                  | 1. 如果empty且timeout>0，则等待timeout时间超时返回<br>2. 如果empty且timeout=0，则无限等待<br>3. 如果不empty，则立即返回<br>4. 多个keys时，从左至右遍历keys，一旦有一个键能弹出就立即返回 |           |
+| brpop key [key ...] timeout                                  |                                                              |           |
+| lindex key -1                                                | 取下标-1的元素                                               |           |
+| insert key before\|after pivot value                         | 在pivot的前面/后面插入value                                  |           |
+| llen key                                                     | 长度                                                         |           |
+| lpop key                                                     |                                                              |           |
+| lpush key value [value ...]                                  |                                                              |           |
+| [lrange](http://redisdoc.com/list/lrange.html) key start stop | 1. lrange key 0 -1   返回所有元素<br />2. lrange key 0 10  返回11个元素，区间[start, stop] | O(S+N)    |
+| lrem key count value                                         | 1. count > 0，从左到右删除最多count个元素<br>2. count < 0，从右到左删除最多count个元素<br>3. count == 0，删除所有 |           |
+| [lset](http://redisdoc.com/list/lset.html) key index value   | 1. key[index]=value<br />2. 设置头尾元素的复杂度为 O(1)，其它为O(N) | O(1)/O(N) |
+| ltrim key start end                                          | 只保留[start, end]之间的元素                                 |           |
+| rpush key value [ value ...]                                 |                                                              |           |
+| rpop key                                                     |                                                              |           |
 
 
 
 ----
 
-#### 0x05 set
+#### 05 set
 
 1. 增删改查，并交补差
 
 
 
 
-| Command                        | Description          |
+| Command                        | Notes                |
 | ------------------------------ | -------------------- |
 | sadd key element [element...]  | 增                   |
 | scard key                      | 计算元素个数         |
@@ -146,7 +146,7 @@
 
 ---
 
-#### [0x06 sorted set](http://redisdoc.com/sorted_set/index.html)
+#### [06 sorted set](http://redisdoc.com/sorted_set/index.html)
 
 1. 有库集合的成员是唯一的，但score (**double类型**) 可以重复
 2. rank指排名，或下标：[0, n-1]
@@ -154,7 +154,7 @@
 
 
 
-| Command                                                      | Description                                                  |             |
+| Command                                                      | Notes                                                        |             |
 | ------------------------------------------------------------ | ------------------------------------------------------------ | ----------- |
 | [zadd](http://redisdoc.com/sorted_set/zadd.html) key score1 member1 [score2 member2] | 添加成员，或更新成员分数                                     |             |
 | [zcard](http://www.redis.cn/commands/zcard.html) key         | 获取集合（容器）元素个数                                     | O(1)        |
@@ -168,9 +168,25 @@
 
 
 
+-----
+
+#### [07 HyperLogLog](http://redisdoc.com/hyperloglog/index.html)
+
+
+
+| Command                                                     | Notes                                   |      |
+| ----------------------------------------------------------- | --------------------------------------- | ---- |
+| pfadd key element [element...]                              | 添加任意数量的元素到指定的HyperLogLog中 | O(1) |
+| [pfcount](http://redisdoc.com/hyperloglog/pfcount.html) key | 返回key指定的HyperLogLog的近似基数      | O(1) |
+|                                                             |                                         |      |
+
+
+
+
+
 ------
 
-#### 0x09 References
+#### 09 References
 
 1. [Redis 命令参考](http://redisdoc.com)
 2. [Index Merge Optimization](https://dev.mysql.com/doc/refman/8.0/en/index-merge-optimization.html)
