@@ -12,6 +12,8 @@
 2. 参数可以有默认值 `public static function init($app_name = null)`
 3. 弱类型的语言，返回值不需要写类型，也没法写
 4. self代表是的当前类，所以在static方法中用得较多，可以通过 `new self()`创建对象
+5. `static::m()` 调用的方法m()有可能被子类override；`self::m()` 则一定调用本类中的方法（用于父类怕自己的方法被子类覆盖时）
+6. 
 
 
 
