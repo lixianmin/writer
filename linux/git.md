@@ -1,7 +1,7 @@
 ​	
 
 ---
-#### 基础命令
+#### 01 基础命令
 
 1. HEAD表示当前版本， HEAD^是前一个版本，HEAD^^是前前一个版本, 或者用 HEAD@{5}这样的格式
 2. git config --global pull.rebase true 设置[pull下的rebase=true
@@ -37,7 +37,7 @@ git merge master    | 开发时我们往往从master分支切一个dev.risk出�
 git pull            | pull
 git push            | push
 **git push origin --delete review** | 删除远程的名字为review的分支 
-**git push -f origin head:test** | 将当前分支的内容强推到远程的test分支上。可能需要到gitlab的设置 --> 版本库 --> 保护分支，把相关分支摘出来 
+**git push -f origin head:test** | 将当前分支强推到远程的test分支上。需要到gitlab的设置 --> 版本库 --> 保护分支，把相关分支摘出来 
 **git rebase -i targetBase** | 将targetBase拿过来，将当前分支上的修改在targetBase的基础上重新应用一遍 
 git remote -v       | 查看远程的url地址
 git remote set-url origin [url] | 重新设置remote地址 
@@ -67,14 +67,17 @@ git stash apply stash@{2}   | 按名字apply
 
 ----
 
-#### 强推本地master到远程release
+#### 02 FAQ列表
 
-1. git push origin master:release -f
+##### 01 强推到远程分支
+
+1. `git push origin master:release -f` 强推本地master支持到远程release分支
+2. `git push -f origin head:test`  将当前分支强推到远程的test分支上。需要到gitlab的设置 --> 版本库 --> 保护分支，把相关分支摘出来
 
 
 
 ---
-#### rebase代码流程
+##### 02 rebase代码流程
 目标：将master分支上的代码合并到lixianmin这个分支上
 
 1. git checkout master，切换到master分支
@@ -85,7 +88,7 @@ git stash apply stash@{2}   | 按名字apply
 
 
 ---
-#### 如何回滚dev分支上的一批代码
+##### 03 回滚dev分支代码
 
 1. git checkout dev，切换到dev分支
 2. git checkout -b kotlin，将dev分支内容复制一份并新建取个新名字kotlin
@@ -101,9 +104,7 @@ git reset --hard xxxx 是重置代码到某个版本，但如果想回滚代码�
 
 
 
----
-
-#### 永久删除文件和历史记录
+##### 04 永久删除文件历史记录
 
 
 
@@ -115,9 +116,29 @@ git push --all --force
 
 
 
+##### 05 submodule使用
+
+1. git submodule add git://github.com/lixianmin/rack.git rack
+2. 如果无意之中已经加了一个同名的module，则删除的时候需要到git根目录下的.git/config中移除section，同时到.git/modules中移除目录
+
+
+
+##### 06 git log中文乱码问题
+
+1. `$ echo $LANG;`如果输出结果为空，则执行 `export LANG="zh_CN.UTF-8"`
+2. 如果还不能解决，则尝试修改git config：
+
+```shell
+git config --global i18n.commitencoding utf-8
+git config --global i18n.logoutputencoding utf-8
+export LESSCHARSET=utf-8
+```
+
+
+
 ---
 
-#### tig [vim版]
+#### 03 tig [vim版]
 
 
 命令    | 详解
@@ -133,8 +154,3 @@ vy      | stash view，查看有哪一些stash，A -> apply，P -> pop, ! -> dro
 !       | revert那些unstaged files，这个只能在修改点使用，也就是光标在这里时“@@ -1,212 +1,212 @@”
 tig filepath | 显示同一个文件的所有log
 
----
-#### submodule
-
-1. git submodule add git://github.com/lixianmin/rack.git rack
-2. 如果无意之中已经加了一个同名的module，则删除的时候需要到git根目录下的.git/config中移除section，同时到.git/modules中移除目录
