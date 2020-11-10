@@ -4,7 +4,7 @@
 
 ----
 
-#### 0x01 Basics
+#### 1 Basics
 
 ```shell
 # 启动服务
@@ -30,7 +30,7 @@ brew services start kibana
 
 -----
 
-#### 0x02 叶子查询
+#### 2 叶子查询
 
 1. 叶子查询直接带\<field\>子节点
 2. \<field\>节点的子节点会有一些参数用于约束叶子查询的行为
@@ -54,7 +54,7 @@ GET /_search
 }
 ```
 
-1. 精确匹配字段，一般用于price, price id, username等可以精确匹配的场景
+1. 精确匹配字段，一般用于price, price id, username, appKey等可以精确匹配的场景
 2. 避免对text类型的字段使用term查询。因为es对text类型的字段会做预处理（比如删除标点符号、分词、转换成小写等），所以很难使用term子句精确匹配，建议使用match子句。
 
 
@@ -66,24 +66,7 @@ GET /_search
 
 
 
-##### 03 [IDs](https://www.elastic.co/guide/en/elasticsearch/reference/7.9/query-dsl-ids-query.html)
-
-```json
-GET /_search
-{
-  "query": {
-    "ids" : {
-      "values" : ["1", "4", "100"]
-    }
-  }
-}
-```
-
-1. 使用_id字段查询
-
-
-
-##### 04 [range](https://www.elastic.co/guide/en/elasticsearch/reference/7.9/query-dsl-range-query.html)
+##### 03 [range](https://www.elastic.co/guide/en/elasticsearch/reference/7.9/query-dsl-range-query.html)
 
 ```json
 GET /_search
@@ -100,6 +83,21 @@ GET /_search
 ```
 
 
+
+##### 04 [IDs](https://www.elastic.co/guide/en/elasticsearch/reference/7.9/query-dsl-ids-query.html)
+
+```json
+GET /_search
+{
+  "query": {
+    "ids" : {
+      "values" : ["1", "4", "100"]
+    }
+  }
+}
+```
+
+1. 使用_id字段查询
 
 
 
@@ -121,14 +119,14 @@ GET /_search
 
 
 
-1.  query参数描述搜索词列表，默认行为与baidu类似，以or关系按评分返回匹配的doc
+1.  query参数描述搜索词列表，默认行为与baidu类似，以or关系按评分返回匹配的document
 2.  如果需要改为and的关系，则需要加一个`"operator":"and"`的参数
 
 
 
 -----
 
-#### 0x03 [bool复合查询](https://www.elastic.co/guide/en/elasticsearch/reference/7.9/query-dsl-bool-query.html)
+#### 3 [bool复合查询](https://www.elastic.co/guide/en/elasticsearch/reference/7.9/query-dsl-bool-query.html)
 
 ```json
 POST _search
@@ -167,7 +165,7 @@ POST _search
 
 ##### 01 must
 
-1. doc必须匹配，跟filter的不同是会影响score
+1. doc必须匹配，会影响score（这一点跟filter不同）
 
 ```json
 // 以下两个查询是等价的：
@@ -229,11 +227,19 @@ POST _search
 
 ----
 
-#### 0x08 FAQ
+#### 4 aggs聚合操作
 
 
 
-##### 上传json数据到es
+
+
+----
+
+#### 8 FAQ
+
+
+
+##### 01 上传json数据到es
 
 ```shell
 curl -H 'Content-Type: application/x-ndjson' -s -XPOST http://172.20.0.214:50900/_bulk --data-binary @user_behaviour.json
@@ -241,7 +247,7 @@ curl -H 'Content-Type: application/x-ndjson' -s -XPOST http://172.20.0.214:50900
 
 
 
-##### 删除上传的json数据
+##### 02 删除上传的json数据
 
 ```shell
 curl -X DELETE "localhost:9200/user_behaviour"
@@ -249,7 +255,7 @@ curl -X DELETE "localhost:9200/user_behaviour"
 
 
 
-##### 使用from和size控制分页
+##### 03 用from和size控制分页
 
 ```json
 GET user_behaviour/_search?pretty=false
@@ -267,11 +273,30 @@ GET user_behaviour/_search?pretty=false
 
 
 
+##### 04 搜索结果不稳定问题
+
+原因：数据分布在不同分片，不同分片的分数计算最终结果是不一样，所以导致两次一样的查询最终搜索出来的结果不一样。
+
+方案：使用[preference=session_id](https://www.elastic.co/guide/en/elasticsearch/reference/6.8/search-request-preference.html)
+
+```json
+GET /_search?preference=xyzabc123
+{
+    "query": {
+        "match": {
+            "title": "elasticsearch"
+        }
+    }
+}
+```
+
+
+
 
 
 ----
 
-#### 0x09 References
+#### 9 References
 
 1. [Query DSL](https://www.elastic.co/guide/en/elasticsearch/reference/7.9/query-dsl.html)
 2. [全文搜索 (三) - match查询和bool查询的关系，提升查询子句](https://blog.csdn.net/dm_vincent/article/details/41743955)
