@@ -56,7 +56,7 @@ echo "hello" >&2
 #### 0x03 常用shell指令
 
 ```shell
-# 创建用户，然后修改密码，然后加入wheel组以获取sudoer权限
+# centos：创建用户，然后修改密码，然后加入wheel组以获取sudoer权限
 adduser work
 passwd work
 usermod -a -G wheel work
