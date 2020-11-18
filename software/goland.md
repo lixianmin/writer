@@ -30,3 +30,15 @@
 4. 代码运行有可能需要设置working directory，位置在 Run -> Edit Configrations -> Go Build -> Working Directory
 5. 解决`go list -m -json all`超时的问题：设置 Go -> Go Mudules(vgo) -> Vendoring mode
 
+
+
+-------------
+
+```shell
+
+# 这是一个好地方
+cd ~/Library/Application Support/JetBrains
+
+
+```
+
