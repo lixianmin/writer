@@ -33,12 +33,15 @@
 
 
 -------------
+#### 重置VM Options相关的错误
 
 ```shell
+# 把二进制文件拖到命令行里执行，会打印VM Options相关的信息
+/Applications/GoLand.app/Contents/MacOS/goland
 
-# 这是一个好地方
+# 进入这里，把当前版本相关的内容删除
 cd ~/Library/Application Support/JetBrains
 
-
+# 注意最新安装参数可能需要手动输入
 ```
 
