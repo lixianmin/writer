@@ -3,6 +3,8 @@
 ---
 #### 01 基础命令
 
+##### 01 基础命令
+
 1. HEAD表示当前版本， HEAD^是前一个版本，HEAD^^是前前一个版本, 或者用 HEAD@{5}这样的格式
 2. git config --global pull.rebase true 设置[pull下的rebase=true
 
@@ -19,71 +21,116 @@ git config --global user.name "lixianmin"
 ---|---
 git branch -va      | 显示所有的分支信息
 git branch -d hotfix| 删除hotfix分支
-git checkout master | 切换到master分支
-git checkout -b hotfix  | 新建一个hotfix分支并checkout
-git checkout -b hotfix remotes/origin/hotfix | 拉取远程hotfix分支 
-git fetch origin<br>git checkout hotfix | 拉取远程的hotfix分支 
-git checkout -- .   | discard本地所有unstagged files
 git cherry-pick commit-id | 将commit-id提交到当前分支 
 git clean -xdf | 清除所有不被跟踪的文件和目录 
 git clone http://.. | clone一个git目录到本地
 git config --global credential.helper store | 解决**每次都需要输入用户名密码**的问题 
-git diff dev ^master | 查询dev有，而mater没有的修改 
-git diff HEAD  ^efe03951 | 查询当前分支从efe03951开始的改动 
-git difftool master dev | 使用difftool查看master如何转成dev 
-git difftool master | 使用difftool查看master如何转成当前分支 
 git gc              | 清空无用文件，解决格式错误
 git merge master    | 开发时我们往往从master分支切一个dev.risk出来，开发完成的时候往往master已经更新了，此时该命令将master分支上的改动重新合并到dev.risk中，然后dev.risk就可以考虑发版了 
 git pull            | pull
-git push            | push
-**git push origin --delete review** | 删除远程的名字为review的分支 
-**git push -f origin head:test** | 将当前分支强推到远程的test分支上。需要到gitlab的设置 --> 版本库 --> 保护分支，把相关分支摘出来 
-**git rebase -i targetBase** | 将targetBase拿过来，将当前分支上的修改在targetBase的基础上重新应用一遍 
-git remote -v       | 查看远程的url地址
-git remote set-url origin [url] | 重新设置remote地址 
 git reset --hard HEAD   | 把你工作目录中所有未提交的内容清空
 git rm --cached filename | 删除远程的文件，但是保存本地的 
 
 
 
+##### 02 git checkout
 
-log | 详解
----|---
-git log --oneline   | 在同一行内打印日志
-git log -p          | 打印详细日志
-git log --stat      | 打印统计信息
-git reflog          | 对git误操作进行数据恢复
-
-
-
-stash | 详解
----|---
-git stash           | stash当前变更
-git stash list      | 打印stash列表
-git stash apply     | apply最后一个stash
-git stash apply stash@{2}   | 按名字apply
+| 命令                                         | 详解                           |
+| -------------------------------------------- | ------------------------------ |
+| git checkout master                          | 切换到master分支               |
+| git checkout -b hotfix                       | 新建一个hotfix分支并checkout   |
+| git checkout -b hotfix remotes/origin/hotfix | 拉取远程hotfix分支             |
+| git fetch origin<br>git checkout hotfix      | 拉取远程的hotfix分支           |
+| git checkout -- .                            | discard本地所有unstagged files |
 
 
 
-----
+##### 03 git diff
 
-#### 02 FAQ列表
+| 命令                     | 详解                                   |
+| ------------------------ | -------------------------------------- |
+| git diff dev ^master     | 查询dev有，而mater没有的修改           |
+| git diff HEAD  ^efe03951 | 查询当前分支从efe03951开始的改动       |
+| git difftool master dev  | 使用difftool查看master如何转成dev      |
+| git difftool master      | 使用difftool查看master如何转成当前分支 |
 
-##### 01 强推到远程分支
-
-1. `git push origin master:release -f` 强推本地master支持到远程release分支
-2. `git push -f origin head:test`  将当前分支强推到远程的test分支上。需要到gitlab的设置 --> 版本库 --> 保护分支，把相关分支摘出来
 
 
+##### 03 git log
 
----
-##### 02 rebase代码流程
+
+
+
+| 命令              | 详解                    |
+| ----------------- | ----------------------- |
+| git log --oneline | 在同一行内打印日志      |
+| git log -p        | 打印详细日志            |
+| git log --stat    | 打印统计信息            |
+| git reflog        | 对git误操作进行数据恢复 |
+
+
+
+##### 04 git push
+
+
+
+| 命令                              | 详解                                                         |
+| --------------------------------- | ------------------------------------------------------------ |
+| git push origin --delete review   | 删除远程的名字为review的分支                                 |
+| git push -f origin head:test      | 1. 将当前分支强推到远程的test分支上。<br />2. 需要到gitlab的设置 --> 版本库 --> 保护分支，把相关分支摘出来 |
+| git push -f origin master:release | 1. 强推本地master支持到远程release分支<br />2. 需要到gitlab的设置 --> 版本库 --> 保护分支，把相关分支摘出来 |
+
+
+
+##### 05 git rebase
+
+
+
+| 命令                        | 详解                                                         |
+| --------------------------- | ------------------------------------------------------------ |
+| **git rebase -i srcBranch** | 1. git命令从来都是**修改当前分支**的<br />2. 将srcBranch上的改动在当前分支上重新apply一遍 |
+
+
+
 目标：将master分支上的代码合并到lixianmin这个分支上
 
 1. git checkout master，切换到master分支
 2. git pull，更新master分支的数据
 3. git checkout lixianmin，切换到lixianmin分支
 4. git rebase -i master，基于master分支将所有lixianmin分支上的修改应用到lixianmin分支（**在哪个分支上改哪个分支**）
+
+
+
+##### 06 git remote
+
+
+
+| 命令                            | 详解               |
+| ------------------------------- | ------------------ |
+| git remote -v                   | 查看远程的url地址  |
+| git remote set-url origin [url] | 重新设置remote地址 |
+|                                 |                    |
+
+
+
+##### 07 git stash
+
+
+
+| 命令                      | 详解               |
+| ------------------------- | ------------------ |
+| git stash                 | stash当前变更      |
+| git stash list            | 打印stash列表      |
+| git stash apply           | apply最后一个stash |
+| git stash apply stash@{2} | 按名字apply        |
+
+
+
+
+
+----
+
+#### 02 FAQ列表
 
 
 
