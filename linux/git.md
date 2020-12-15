@@ -27,7 +27,6 @@ git clone http://.. | clone一个git目录到本地
 git config --global credential.helper store | 解决**每次都需要输入用户名密码**的问题 
 git gc              | 清空无用文件，解决格式错误
 git merge master    | 开发时我们往往从master分支切一个dev.risk出来，开发完成的时候往往master已经更新了，此时该命令将master分支上的改动重新合并到dev.risk中，然后dev.risk就可以考虑发版了 
-git pull            | pull
 git reset --hard HEAD   | 把你工作目录中所有未提交的内容清空
 git rm --cached filename | 删除远程的文件，但是保存本地的 
 
@@ -35,13 +34,13 @@ git rm --cached filename | 删除远程的文件，但是保存本地的
 
 ##### 02 git checkout
 
-| 命令                                         | 详解                           |
-| -------------------------------------------- | ------------------------------ |
-| git checkout master                          | 切换到master分支               |
-| git checkout -b hotfix                       | 新建一个hotfix分支并checkout   |
-| git checkout -b hotfix remotes/origin/hotfix | 拉取远程hotfix分支             |
-| git fetch origin<br>git checkout hotfix      | 拉取远程的hotfix分支           |
-| git checkout -- .                            | discard本地所有unstagged files |
+| 命令                                                         | 详解                                                         |
+| ------------------------------------------------------------ | ------------------------------------------------------------ |
+| git checkout master                                          | 切换到master分支                                             |
+| git checkout -b hotfix                                       | 新建一个hotfix分支并checkout                                 |
+| git checkout -b hotfix remotes/personal/hotfix 或<br />git checkout -t personal/hotfix | 1. 拉取personal这个remote上的hotfix分支<br />2. -t 是 --track 的简写 |
+| git fetch origin<br>git checkout hotfix                      | 拉取远程的hotfix分支                                         |
+| git checkout -- .                                            | discard本地所有unstagged files                               |
 
 
 
@@ -70,7 +69,17 @@ git rm --cached filename | 删除远程的文件，但是保存本地的
 
 
 
-##### 04 git push
+##### 04 git pull
+
+
+
+| 命令                   | 详解                     |
+| ---------------------- | ------------------------ |
+| git pull origin hotfix | 从指定的远程分支拉取数据 |
+
+
+
+##### 05 git push
 
 
 
@@ -82,7 +91,7 @@ git rm --cached filename | 删除远程的文件，但是保存本地的
 
 
 
-##### 05 git rebase
+##### 06 git rebase
 
 
 
@@ -101,7 +110,7 @@ git rm --cached filename | 删除远程的文件，但是保存本地的
 
 
 
-##### 06 git remote
+##### 07 git remote
 
 
 
@@ -109,11 +118,11 @@ git rm --cached filename | 删除远程的文件，但是保存本地的
 | ------------------------------- | ------------------ |
 | git remote -v                   | 查看远程的url地址  |
 | git remote set-url origin [url] | 重新设置remote地址 |
-|                                 |                    |
+| git remote add personal url.git | 增加运程分支       |
 
 
 
-##### 07 git stash
+##### 08 git stash
 
 
 
