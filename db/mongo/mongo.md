@@ -29,6 +29,9 @@ db.movies.insert ({ _id:10, name:"apple"})
 # 查询数据
 db.movies.find()
 
+# 清空数据
+db.movies.remove({})
+
 ```
 
 
