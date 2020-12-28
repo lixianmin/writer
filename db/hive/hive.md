@@ -1,18 +1,6 @@
-
-
-
-
-
-
 ---
 
-#### 0x01 hive项目相关
-
-|                     |                    |
-| ------------------- | ------------------ |
-| rsync -avz .. /data | 这一句好像没有用吧 |
-|                     |                    |
-|                     |                    |
+#### 01 hive项目相关
 
 
 
@@ -28,7 +16,7 @@
 
 ----
 
-#### 0x02 hive命令
+#### 02 hive命令
 
 ```bash
 # -e 从命令行拿到sql语句
@@ -41,7 +29,7 @@ hive -e "CREATE DATABASE IF NOT EXISTS $database;" -S
 
 ----
 
-#### 0x03 sql
+#### 03 sql
 
 ```mysql
 # 可以删除分区
@@ -52,6 +40,24 @@ select * from account_record where create_time >= '2019-07-26'
 select * from account_record where create_time >= '2019-07-26 00:00:00.0'
 
 ```
+
+
+
+-----
+
+#### 04  手动上传
+
+```mysql
+
+# 使用shell命令上传数据到hdfs
+# 注意组织目录结构为 /usr/data/path/table_name/event_day=20201216/event_hour=18/text_file.name
+
+hive -e "alter table table_name add partition (event_day=20201216, event_hour=18)"
+
+
+```
+
+
 
 
 
