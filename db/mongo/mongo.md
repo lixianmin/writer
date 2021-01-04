@@ -25,6 +25,7 @@ show dbs
 
 # 插入数据
 db.movies.insert ({ _id:10, name:"apple"})
+db.daily_7d3b4028847acfff.find ({ _id:ObjectId("5fa6c70d8407a870e9fff94f") })
 
 # 查询数据
 db.movies.find()
