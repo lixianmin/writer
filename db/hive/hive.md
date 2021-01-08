@@ -51,9 +51,9 @@ select * from account_record where create_time >= '2019-07-26 00:00:00.0'
 
 # 使用shell命令上传数据到hdfs
 # 注意组织目录结构为 /usr/data/path/table_name/event_day=20201216/event_hour=18/text_file.name
+# 上传的表数据中不需要填空event_day, event_hour这两个字段，它们完全是按照partition（也就是目录名）来查询的
 
 hive -e "alter table table_name add partition (event_day=20201216, event_hour=18)"
-
 
 ```
 

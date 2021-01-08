@@ -20,7 +20,7 @@ mongo
 # 打印help
 help
 
-#  显示所有db
+#  显示所有db的名称和大小
 show dbs
 
 # 插入数据
@@ -33,6 +33,11 @@ db.movies.find()
 # 清空数据
 db.movies.remove({})
 
+db.printReplicationInfo()				# oplog状态
+db.printSlaveReplicationInfo()	# 从节点信息
+
+rs.conf()		# 复制集配置
+rs.status()	# 复制集状态
 ```
 
 
@@ -42,6 +47,13 @@ db.movies.remove({})
 ```shell
 use local
 db.oplog.rs.findOne()
-
 ```
 
+
+
+--------
+
+#### 09 References
+
+1. [MongoDB的复制集](https://www.bookstack.cn/read/linfenliang-mongodb/chapter7.md)
+2. 
