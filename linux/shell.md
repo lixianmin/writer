@@ -67,6 +67,9 @@ cat /etc/*release
 # cd支持glob方式
 cd *07  # 进入17-01-07目录
 
+# 修改目录的owner为batsdk
+sudo chown -R batsdk mongoExceptionData/
+
 # 时间格式化
 date -d -1hour '+%Y%m%d'
 date -d "${start_time} CST +1 day" "+%Y-%m-%d %H:%M:%S"
