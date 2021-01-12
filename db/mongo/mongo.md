@@ -36,8 +36,15 @@ db.movies.remove({})
 db.printReplicationInfo()				# oplog状态
 db.printSlaveReplicationInfo()	# 从节点信息
 
-rs.conf()		# 复制集配置
-rs.status()	# 复制集状态
+# 1. 从节点默认不可读，需要在『从节点』执行如下操作激活可读
+# 2. 但需要每链接都执行一遍db
+# 3. 仍然不能执行 show dbs; show collections这样的操作
+rs.slaveOk()  # 设置从节点可读，或db.setSlaveOk()，或db.getMongo().setSlaveOk()
+
+# rs是replication set的缩写
+rs.conf()			# 复制集配置
+rs.isMaster()	# 是否是主节点，集群信息
+rs.status()		# 复制集状态
 ```
 
 
