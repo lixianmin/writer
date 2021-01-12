@@ -18,6 +18,19 @@ scp -r .  root@180.76.55.113:/root/lixianmin/tour-words
 
 
 
+```shell
+# 下面的配置可以支持 ssh t8 登录
+cat ~/.ssh/config
+
+Host t8
+HostName szwg-inf-trace08.szwg01.baidu.com
+User batsdk
+```
+
+
+
+
+
 下面这些内容，需要放到.bashrc文件中，否则ssh远程执行的时候不会加载
 
 ```shell
