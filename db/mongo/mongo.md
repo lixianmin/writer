@@ -115,4 +115,5 @@ docs.forEach(function(x) { db.crash_records.insert(x); } )	# 如果想执行upse
 #### 09 References
 
 1. [MongoDB的复制集](https://www.bookstack.cn/read/linfenliang-mongodb/chapter7.md)
-2. 
+2. [MongoDB中ObjectId的误区，以及引起的一系列问题](https://blog.csdn.net/xiamizy/article/details/41521025)
+3. 
