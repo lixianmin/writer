@@ -7,7 +7,7 @@
 3. /usr/bin/env
 
 -----
-#### 0x01 重定向
+#### 01 重定向
 
 ```shell
 
@@ -30,12 +30,16 @@ echo "hello" >&2
 2>&1 | 重定向标准错误输出到标准输出 
 
 ----
-#### 0x02 shell特殊变量
+#### 02 shell特殊变量
 
 
 
 | 变量     | 含义                                                         |
 | -------- | ------------------------------------------------------------ |
+| !!       | 执行最后一条命令                                             |
+| !-1      | 执行倒数第2条命令                                            |
+| !$       | 上一个命令的最后一个参数                                     |
+|          |                                                              |
 | $0       | 当前脚本的文件名                                             |
 | $n       | 传递给脚本或函数的参数。n 是一个数字，表示第几个参数。例如，第一个参数是\$1，第二个参数是$2 |
 | $#       | 传递给脚本或函数的参数个数                                   |
@@ -53,13 +57,19 @@ echo "hello" >&2
 1. [Shell特殊变量：Shell $0, $#, $*, $@, $?, $$和命令行参数](http://c.biancheng.net/cpp/view/2739.html)
 
 ---
-#### 0x03 常用shell指令
+#### 03 常用shell指令
 
 ```shell
 # centos：创建用户，然后修改密码，然后加入wheel组以获取sudoer权限
 adduser work
 passwd work
 usermod -a -G wheel work
+
+
+# bc执行计算
+# 或者：命令行直接打bc，然后会开一个交互式的控制台，然后反复输入计算
+echo '3+4' | bc
+
 
 # 查看linux发生版
 cat /etc/*release
@@ -73,6 +83,9 @@ sudo chown -R batsdk mongoExceptionData/
 # 时间格式化
 date -d -1hour '+%Y%m%d'
 date -d "${start_time} CST +1 day" "+%Y-%m-%d %H:%M:%S"
+
+# 打印磁盘使用量
+df -h
 
 # m按兆输出，d深度为2，r逆序，n按字符串中的数字的值排序
 du -md 2 | sort -rn
@@ -108,11 +121,12 @@ pbcopy < file
 # -		从stdin读取一次数据
 ls | paste -sd:
 
+# 16进制转10进制
+printf "%d\n" 0x5f72f102
+printf %d 0x5f72f102
+
 # 查看网卡流量: 1s一次，一共2次
 sar -n DEV 1 2
-
-# -t 默认情况下使用ssh执行远程命令并不会分配伪终端，但有些命令需要基于屏幕输入输出进行交互，此时可以使用-t参数分配一个伪终端，直到ssh命令执行结束
-ssh root@xl-slave022 -t 'docker exec $(docker ps --filter "name=sqoop" --format "{{.ID}}") bash /scripts/import_all.sh'
 
 # systemctl
 systemctl start mysqld
@@ -137,7 +151,7 @@ while True; do echo "hello"; sleep 1; done;
 
 ----
 
-#### 0x04 条件语句
+#### 04 条件语句
 
 
 
@@ -158,8 +172,9 @@ while True; do echo "hello"; sleep 1; done;
 
 
 
----
-#### bc
+-----
 
-1. echo '3+4' | bc
-2. 命令行直接打bc，然后会开一个交互式的控制台，然后反复输入计算
+#### 09 References
+
+1. [shell中!$获取上一次命令的最后一个参数作为本次命令的参数；Linux命令行下”!”的十个神奇用法！](http://chuancn.cn/post/limux2)
+2. 

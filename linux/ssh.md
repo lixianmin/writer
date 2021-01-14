@@ -3,7 +3,7 @@
 
 
 ```shell
-# 生成签名文件
+# 生成签名文件（直接回车，不输入y）
 ssh-keygen -t rsa
 cat ~/.ssh/id_rsa.pub 
 
@@ -13,6 +13,9 @@ ssh-copy-id root@180.76.55.113
 # 递归上传当前目录到服务器的指定目录
 rsync -av -e ssh --exclude='.git' --exclude='logs' . root@180.76.55.113:/root/lixianmin/tour-words
 scp -r .  root@180.76.55.113:/root/lixianmin/tour-words
+
+# -t 默认情况下使用ssh执行远程命令并不会分配伪终端，但有些命令需要基于屏幕输入输出进行交互，此时可以使用-t参数分配一个伪终端，直到ssh命令执行结束
+ssh root@xl-slave022 -t 'docker exec $(docker ps --filter "name=sqoop" --format "{{.ID}}") bash /scripts/import_all.sh'
 
 ```
 
