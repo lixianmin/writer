@@ -108,6 +108,17 @@ docs.forEach(function(x) { db.crash_records.insert(x); } )	# 如果想执行upse
 
 
 
+##### 05 打印count()数最大的10张表
+
+
+
+```js
+db.getCollectionNames().map(function(x){return db[x]}).sort(function(a,b){ return a.count() - b.count() }).slice(-10).forEach(function(x){ print(x, x.count())})
+
+```
+
+
+
 
 
 --------
