@@ -118,7 +118,8 @@ git rm --cached filename | 删除远程的文件，但是保存本地的
 | ------------------------------- | ------------------ |
 | git remote -v                   | 查看远程的url地址  |
 | git remote set-url origin [url] | 重新设置remote地址 |
-| git remote add personal url.git | 增加运程分支       |
+| git remote add personal [url]   | 增加远程分支       |
+| git remote rm personal          | 删除远程分支       |
 
 
 
