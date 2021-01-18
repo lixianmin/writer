@@ -24,6 +24,7 @@ git branch -d hotfix| 删除hotfix分支
 git cherry-pick commit-id | 将commit-id提交到当前分支 
 git clean -xdf | 清除所有不被跟踪的文件和目录 
 git clone http://.. | clone一个git目录到本地
+git commit --amend | 修改最后一次提交的comment 
 git config --global credential.helper store | 解决**每次都需要输入用户名密码**的问题 
 git gc              | 清空无用文件，解决格式错误
 git merge master    | 开发时我们往往从master分支切一个dev.risk出来，开发完成的时候往往master已经更新了，此时该命令将master分支上的改动重新合并到dev.risk中，然后dev.risk就可以考虑发版了 
@@ -95,9 +96,10 @@ git rm --cached filename | 删除远程的文件，但是保存本地的
 
 
 
-| 命令                        | 详解                                                         |
-| --------------------------- | ------------------------------------------------------------ |
-| **git rebase -i srcBranch** | 1. git命令从来都是**修改当前分支**的<br />2. 将srcBranch上的改动在当前分支上重新apply一遍 |
+| 命令                      | 详解                                                         |
+| ------------------------- | ------------------------------------------------------------ |
+| git rebase -i srcBranch   | 1. git命令从来都是**修改当前分支**的<br />2. 将srcBranch上的改动在当前分支上重新apply一遍 |
+| git rebase -i [commit-id] | 1. 将[commit-id]之后的所有commit[合并为一个commit](https://www.jianshu.com/p/571153f5daa1)<br />2. 进入vi提交模式之后，把pick改为squash/s<br />3. git add .<br />4. git rebase --continue |
 
 
 
