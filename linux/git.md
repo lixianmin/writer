@@ -33,7 +33,20 @@ git rm --cached filename | 删除远程的文件，但是保存本地的
 
 
 
-##### 02 git checkout
+##### 02 git branch
+
+
+
+| 命令                  | 详解                    |
+| --------------------- | ----------------------- |
+| git branch -va        | 显示所有的分支信息      |
+| git branch -d hotfix  | 删除hotfix分支          |
+| git branch -D hotfix  | 强制删除hotfix分支      |
+| git branch -m newName | 将当前分支改名为newName |
+
+
+
+##### 03 git checkout
 
 | 命令                                                         | 详解                                                         |
 | ------------------------------------------------------------ | ------------------------------------------------------------ |
@@ -45,7 +58,7 @@ git rm --cached filename | 删除远程的文件，但是保存本地的
 
 
 
-##### 03 git diff
+##### 04 git diff
 
 | 命令                     | 详解                                   |
 | ------------------------ | -------------------------------------- |
@@ -56,7 +69,7 @@ git rm --cached filename | 删除远程的文件，但是保存本地的
 
 
 
-##### 03 git log
+##### 05 git log
 
 
 
@@ -70,7 +83,7 @@ git rm --cached filename | 删除远程的文件，但是保存本地的
 
 
 
-##### 04 git pull
+##### 06 git pull
 
 
 
@@ -80,7 +93,7 @@ git rm --cached filename | 删除远程的文件，但是保存本地的
 
 
 
-##### 05 git push
+##### 07 git push
 
 
 
@@ -92,7 +105,7 @@ git rm --cached filename | 删除远程的文件，但是保存本地的
 
 
 
-##### 06 git rebase
+##### 08 git rebase
 
 
 
@@ -112,7 +125,7 @@ git rm --cached filename | 删除远程的文件，但是保存本地的
 
 
 
-##### 07 git remote
+##### 09 git remote
 
 
 
@@ -125,7 +138,7 @@ git rm --cached filename | 删除远程的文件，但是保存本地的
 
 
 
-##### 08 git stash
+##### 10 git stash
 
 
 
