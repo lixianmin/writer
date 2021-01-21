@@ -126,11 +126,10 @@ db.getCollectionNames().map(function(x){return db[x]}).sort(function(a,b){ retur
 // 如果是primary节点，先强制变成sencodary节点
 rs.stepdown(120)；
 
-
 # 整理磁盘，有可能卡死进程
 db.runCommand({compact:"collection", force:<boolen>})
-db.currentOp()
-db.
+db.currentOp()    # 查询opid
+db.killOp(<opid>)	# 按opid杀死操作进程
 
 ```
 
