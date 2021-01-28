@@ -14,6 +14,9 @@ grant all privileges on ApolloConfigDB.* to "apollo"@'%';
 
 # 打印用户列表
 select user, host from mysql.user; 
+
+source /home/batsdk/software/apollo1.7.1/apolloconfigdb.sql
+# source /home/batsdk/software/apollo1.7.1/apolloportaldb.sql
 ```
 
 
@@ -27,7 +30,7 @@ vi configservice/config/application-github.properties
 # 打开以下文件:
 # 1. 修改LOG_DIR，日志需要写入到有权限的目录中
 # 2. 修改端口，有可能8090, 8080, 8070这样的端口已经被占用了
-vi adminservice/scripts/startup.shljjk
+vi adminservice/scripts/startup.sh
 vi configservice/scripts/startup.sh
 #vi portal/scripts/startup.sh
 
@@ -40,6 +43,7 @@ configservice/scripts/startup.sh
 netstat -ntlp | grep java
 
 # 到portal所在的服务器，修改meta-service地址
+# 注意，这里只能加apollo内置的环境：dev, fat, uat, pro，否则需要修改apollo的代码
 vi portal/config/apollo-env.properties 
 
 # 重启portal服务
