@@ -256,7 +256,7 @@ select date_add(now(), interval 1 day);
 ```mysql
 # 创建用户
 create user 'panda'@'%' identified by 'password';
-grant all privileges  on *.*  to "panda"@'%';
+grant all privileges on *.* to "panda"@'%';
 
 # 创建只读用户
 grant select on *.*  to  'grafana'@'192.168.16.11'  IDENTIFIED BY "pa$$word";
