@@ -1,8 +1,4 @@
-
-
-------
-
-#### 0x01 shell command
+#### 01 basics
 
 1. MySQL的字符集请指定为[utf8mb4](https://dev.mysql.com/doc/refman/5.6/en/charset-unicode-utf8mb4.html)以支持完整的中文字符集；
 2. `mysql -uroot -p123456；` -p与密码之间不允许有空格，只能在.sh文件使用；命令行中不能带密码
@@ -10,7 +6,6 @@
 4. sql命令直接输入，**以";"或"\G"结束**并执行；
 5. **判断相等时只使用一个"="**；
 6. 可以使用`select *, id from account`这种方法，不能使用`select id, * from account`
-7. `alter user 'root'@'localhost' identified with mysql_native_password by '123456';` 修改密码；可以设置空密码
 8. explain xxx; 查询分析；
 9. innoDB支持自适应hash索引，默认开启；另外还有空间索引、全文索引；
 10. **datetime类型比较时一定要使用跟定义时一样的精度，否则会被四舍五入**，比如之前定义的是秒级精度，而比较时使用的是 '2019-06-26 23:59:59.499999' 会被砍为  '2019-06-26 23:59:59'，而 '2019-06-26 23:59:59.500000'会被进位为  '2019-06-27 00:00:00'；
@@ -21,9 +16,6 @@
 
 | Command            | Description                                                  |
 | ------------------ | ------------------------------------------------------------ |
-| create user 'panda'@'%' identified by 'LmvzpirvR2T6HX';<br/>grant all privileges  on \*.\*  to "panda"@'%'; | 创建用户 |
-| grant all privileges on wisdom.* to "grafana"@'192.168.%';<br />revoke all privileges on wisdom.* from "grafana"@'192.168.%'; | 授权与回收某个数据库实例 |
-| grant select on \*.\*  to  'grafana'@'192.168.16.11'  IDENTIFIED BY "pa$$word"; | 创建只读用户 |
 | 1. desc tbl_name;<br />2. show columns from tbl_name; | 显示table结构                                       |
 | show create procedure proc_name \G | 显示创建procedure语句 |
 | show create table tbl_name; | 显示创建table的语句 |
@@ -32,13 +24,6 @@
 | show index from til_name; | 显示表的索引情况 |
 | show global status like 'Thread%'; | 查询线程状态 |
 |  |  |
-| select @@autocommit; | 是否自动commit |
-| select @@tx_isolation;<br />select @@transaction_isolation; (MySQL 8.0) | 查询会话隔离级别 |
-| select @@version; | 显示db版本 |
-|  |  |
-| **set tx_isolation = 'read-committed';**<br />set transaction_isolation='read-committed'; (MySQL 8.0) | 修改会话隔离级别 |
-| set @@ tx_isolation = 'read-committed';**<br />set @@transaction_isolation='read-committed'; (MySQL 8.0) | 修改下一次事务的隔离级别 |
-| select @@tx_isolation; | 查询会话隔离级别 |
 | select @@version; | 显示db版本 |
 |  |  |
 | source filepath.sql; | 导入sql文件 |
@@ -48,7 +33,7 @@
 
 ---
 
-#### 0x02 create table
+#### 02 create table
 
 ```mysql
 create temporary table t(id int primary key, a int, index(a)) engine=innodb;
@@ -58,7 +43,7 @@ create temporary table t(id int primary key, a int, index(a)) engine=innodb;
 
 ---
 
-#### 0x03 select
+#### 03 select
 
 
 ```mysql
@@ -124,9 +109,9 @@ select id, user_id, total_balance_before, create_time from account_record a wher
 
 ------
 
-#### 0x03 常见操作
+#### 04 常见操作
 
-##### 1. 增删改查（crud）
+##### 01 增删改查（crud）
 
 
 
@@ -144,7 +129,7 @@ alter table tabl_name drop index index_name;
 
 
 
-##### 2. 条件语句
+##### 02 条件语句
 
 | Name   | Notice                               |
 | ------ | ------------------------------------ |
@@ -154,7 +139,7 @@ alter table tabl_name drop index index_name;
 
 
 
-##### 3. 插
+##### 03 插
 
 
 ```mysql
@@ -193,7 +178,7 @@ replace into t(id, v) values (1, 2);
 
 
 
-##### 5. 删
+##### 04 删
 
 
 1. insert、update、delete操作会返回被操作的行数
@@ -214,16 +199,16 @@ truncate t;
 
 
 
-##### 6. 基于一张表更新另一张表
+##### 05 基于一张表更新另一张表
 
 ```mysql
-// 方式一：
+# 方式一：
 update t1, (select * from xxx where xxx) t2
 set t1.name = t2.name
 where t1.id = t2.id;
 
 
-// 方式二：
+# 方式二：
 update t1 inner join t2
 on t1.id = t2.id
 set t1.name = t2.name
@@ -232,13 +217,13 @@ where xxx
 
 
 
-##### 7. 设计时考虑预留字段
+##### 06 设计时考虑预留字段
 
 有些表，比如user_extend_info，几乎可以肯定后期会加入新的字段，但是在前期并不确定是有哪一些，因此应考虑加入varchar()类型的预留字段，后面可以在comment中加注释用于明确字段的作用
 
 
 
-#####  8. 字段尽量设置not null
+#####  07 字段尽量设置not null
 
 MySQL可以在含有null的列上使用索引，包括普通的等值查询和范围查询，但针对null字段本身有一些特殊的处理方式需要注意：
 
@@ -253,7 +238,7 @@ MySQL可以在含有null的列上使用索引，包括普通的等值查询和�
 
 
 
-##### 9. 时间函数
+##### 08 时间函数
 
 ```mysql
 # 时间格式化
@@ -266,9 +251,68 @@ select date_add(now(), interval 1 day);
 
 
 
+##### 09 用户管理
+
+```mysql
+# 创建用户
+create user 'panda'@'%' identified by 'password';
+grant all privileges  on *.*  to "panda"@'%';
+
+# 创建只读用户
+grant select on *.*  to  'grafana'@'192.168.16.11'  IDENTIFIED BY "pa$$word";
+
+# 修改密码；可以设置空密码
+alter user 'root'@'localhost' identified with mysql_native_password by '123456'; 
+
+# 授权数据库实例
+grant all privileges on wisdom.* to 'grafana'@'192.168.%';
+
+# 回收数据库实例权限
+revoke all privileges on wisdom.* from 'grafana'@'192.168.%';
+
+# 列出当前用户列表
+select user, host from mysql.user;
+
+```
+
+
+
+##### 10 事务
+
+1. 在MySQL中， @x是用户自定义变量， @@x是系统变量
+2. 
+
+```mysql
+# 是否自动commit
+select @@autocommit;
+
+# 查询隔离级别
+select @@tx_isolation;					# 默认是session级别
+select @@global.tx_isolation;		# 加上global.就是global级别
+
+select @@session.tx_isolation;	# session级别
+select @@transaction_isolation; # (MySQL 8.0)
+
+# 修改事务隔离级别
+set @@tx_isolation = 'read-committed';					# 修改session变量
+set @@global.tx_isolation = 'repeatable-read';	# 修改global变量
+
+set tx_isolation = 'read-committed';				  	# 修改session变量，这个对set session tx_isolation的简化
+set session tx_isolation = 'read-committed';		# 修改session变量
+set global tx_isolation = 'repeatable-read';		# 修改global变量
+set @@transaction_isolation='read-committed'; 	# (MySQL 8.0)
+
+# 事务
+start transaction;
+commit;
+rollback;
+```
+
+
+
 ------
 
-#### 0x09 References
+#### 09 References
 
 1. [Index Merge Optimization](https://dev.mysql.com/doc/refman/8.0/en/index-merge-optimization.html)
 2. [INSERT ... ON DUPLICATE KEY UPDATE Syntax](https://dev.mysql.com/doc/refman/8.0/en/insert-on-duplicate.html)
