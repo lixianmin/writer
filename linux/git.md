@@ -37,12 +37,13 @@ git rm --cached filename | 删除远程的文件，但是保存本地的
 
 
 
-| 命令                  | 详解                    |
-| --------------------- | ----------------------- |
-| git branch -va        | 显示所有的分支信息      |
-| git branch -d hotfix  | 删除hotfix分支          |
-| git branch -D hotfix  | 强制删除hotfix分支      |
-| git branch -m newName | 将当前分支改名为newName |
+| 命令                            | 详解                         |
+| ------------------------------- | ---------------------------- |
+| git branch -va                  | 显示所有的分支信息           |
+| git branch -d hotfix            | 删除hotfix分支               |
+| git branch -D hotfix            | 强制删除hotfix分支           |
+| git branch -m newName           | 将当前分支改名为newName      |
+| git push origin --delete review | 删除远程的名字为review的分支 |
 
 
 
