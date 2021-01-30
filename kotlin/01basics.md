@@ -4,7 +4,7 @@
 
 ----
 
-#### basics
+##### 01 basics
 
 1. 构造函数，其中的参数如果**加了val就是public只读**的，如果**加了var就是public可写**的，如果**两个都不加，就是私有**变量
 2. class内定义的成员变量默认是public的，需要自己补private
@@ -15,9 +15,18 @@
 
 
 
+|            |                                                              |
+| ---------- | ------------------------------------------------------------ |
+| @JvmField  | 标记字段是field类型，而不是property，不生成getter/setter方法，并设置成public字段 |
+| @JvmStatic | 从java的角度，标记方法是static方法，而不是Companion对象的成员方法 |
+|            |                                                              |
+|            |                                                              |
+
+
+
 ----
 
-
+##### 02 表达式
 
 ```kotlin
 val p : String by lazy {
@@ -113,7 +122,7 @@ drawSquare(x= 10, y=10, wi=true)
 
 -----
 
-#### 使用区间	
+##### 03 使用区间	
 
 ```kotlin
 for (i in 1..100) 		// [1, 100]

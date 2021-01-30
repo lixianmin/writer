@@ -3,7 +3,6 @@
 
 
 ```shell
-
 # 启动服务
 systemctl start mysqld.service
 
