@@ -1,6 +1,6 @@
 ----
 
-#### Basics
+#### 01 Basics
 
 
 
@@ -68,9 +68,23 @@ man flock
 
 
 
+-------
+
+#### 02 安装
+
+```shell
+yum install vixie-cron
+service crond start
+chkconfig crond on
+```
+
+
+
+
+
 ---
 
-#### 0x09 References
+#### 09 References
 
 1. [cron表达式在线生成工具](http://www.bejson.com/othertools/cron/)
 2. [crontab用法与实例](https://www.linuxprobe.com/how-to-crontab.html)

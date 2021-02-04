@@ -280,6 +280,47 @@ POST _search
 
 
 
+使用histogram查询
+
+```json
+
+{
+  "query": {
+    "bool": {
+      "must": [
+        {
+          "term": {
+            "appKey": "this is a appKey"
+          }
+        },
+        {
+          "range": {
+            "serverTime": {
+              "gte": 1610236800,
+              "lt": 1612915200
+            }
+          }
+        }
+      ]
+    }
+  },
+
+  "aggs": {
+     "by_day": {
+      "histogram": {
+        "field":     "serverTime",
+        "interval":  86400,
+        "order" : { "_key" : "asc" }
+      }
+}
+ },
+  
+ "size": 0
+}
+```
+
+
+
 
 
 ----
