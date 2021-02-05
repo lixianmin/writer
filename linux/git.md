@@ -19,8 +19,6 @@ git config --global user.name "lixianmin"
 
 命令 | 详解
 ---|---
-git branch -va      | 显示所有的分支信息
-git branch -d hotfix| 删除hotfix分支
 git cherry-pick commit-id | 将commit-id提交到当前分支 
 git clean -xdf | 清除所有不被跟踪的文件和目录 
 git clone http://.. | clone一个git目录到本地
@@ -43,7 +41,7 @@ git rm --cached filename | 删除远程的文件，但是保存本地的
 | git branch -d hotfix            | 删除hotfix分支               |
 | git branch -D hotfix            | 强制删除hotfix分支           |
 | git branch -m newName           | 将当前分支改名为newName      |
-| git push origin --delete review | 删除远程的名字为review的分支 |
+| git push --delete origin review | 删除远程的名字为review的分支 |
 
 
 
@@ -100,7 +98,7 @@ git rm --cached filename | 删除远程的文件，但是保存本地的
 
 | 命令                              | 详解                                                         |
 | --------------------------------- | ------------------------------------------------------------ |
-| git push origin --delete review   | 删除远程的名字为review的分支                                 |
+| git push --delete origin review   | 删除远程的名字为review的分支                                 |
 | git push -f origin head:test      | 1. 将当前分支强推到远程的test分支上。<br />2. 需要到gitlab的设置 --> 版本库 --> 保护分支，把相关分支摘出来 |
 | git push -f origin master:release | 1. 强推本地master支持到远程release分支<br />2. 需要到gitlab的设置 --> 版本库 --> 保护分支，把相关分支摘出来 |
 
