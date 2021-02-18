@@ -89,6 +89,7 @@ df -h
 
 # m按兆输出，d深度为2，r逆序，n按字符串中的数字的值排序
 du -md 2 | sort -rn
+du -h --max-depth=2
 # 显示当前目录下所有entry的大小
 du -sh *
 
@@ -128,6 +129,9 @@ printf %d 0x5f72f102
 # 查看网卡流量: 1s一次，一共2次
 sar -n DEV 1 2
 
+# 查询文件属性
+stat a.txt
+
 # systemctl
 systemctl start mysqld
 systemctl enable mysqld	# 加入开机自启动
@@ -139,6 +143,10 @@ tail -n 2 file.in			# 只保留最后2行的数据
 
 # 将dir_name中的文件压缩打包，不包含.svn目录
 tar cjvpf a.tar.gz dir_name --exclude .svn
+
+# 修改文件的时间戳
+# -t 指定时间
+touch -t 200601021314.15 a.txt 
 
 # 以全屏方式监控文件的变化。watch命令需要brew安装
 watch tail -r ~/Library/Logs/Unity/Editor.log

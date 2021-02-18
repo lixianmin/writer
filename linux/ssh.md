@@ -1,5 +1,5 @@
 
-=======
+
 ```shell
 # 生成签名文件（直接回车，不输入y）
 ssh-keygen -t rsa
