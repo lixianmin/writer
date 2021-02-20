@@ -18,9 +18,15 @@
 
 #### 2 配置
 
-##### 01 server配置
+##### 01 server.properties
 
 ```ini
+# 唯一标识符，整数
+broker.id=10
+
+# 配置zookeeper地址
+zookeeper.connect=hello.com:2181,world.com:2181,panda.com:2181
+
 # follower超过10秒没向leader发起fetch请求，就从ISR中移除（满足条件后会再加入到ISR中）
 replica.lag.time.max.ms=10000
 
@@ -39,7 +45,7 @@ min.insync.replicas=1
 
 
 
-##### 03 producer配置
+##### 03 producer.properties
 
 ```ini
 # 0：异步发送，不等待leader回复，producer立即返回，消息有可能丢失
@@ -54,9 +60,19 @@ request.required.asks=0
 
 #### 3 shell
 
-##### 01 查看topics
+##### 01 启动kafka
+
+```shell
+# 启动
+bin/kafka-server-start.sh config/server.properties &
+
+# 查看进程是否存在
+ps aux | grep kafka
+```
 
 
+
+##### 02 查看topics
 
 ```shell
 # 查看topics
@@ -68,7 +84,7 @@ kafka-topics --zookeeper 172.20.20.120:2181  --describe --topic __consumer_offse
 
 
 ```shell
-./kafka-topics.sh --zookeeper localhost:8555 --describe --topic crab-stat-test
+bin/kafka-topics.sh --zookeeper localhost:2181 --describe --topic crab-stat-test
 
 # 输出如下内容
 # PartitionCount:4 			这个主题分布在4个分区上，分区的个数 <= broker数
