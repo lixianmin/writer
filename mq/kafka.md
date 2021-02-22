@@ -31,7 +31,10 @@ zookeeper.connect=hello.com:2181,world.com:2181,panda.com:2181
 replica.lag.time.max.ms=10000
 
 # follower的消息落后于leader超4000条，就从ISR中移除（满足条件后会再加入到ISR中）
-replica.lag.max.messages=4000   
+replica.lag.max.messages=4000
+
+# 当有新的节点加入时自动调leader，让leader在所有节点上均衡分布
+auto.leader.rebalance.enable=true
 ```
 
 
@@ -96,8 +99,20 @@ bin/kafka-topics.sh --zookeeper localhost:2181 --describe --topic crab-stat-test
 Topic:crab-stat-test	PartitionCount:4	ReplicationFactor:2	Configs:
 	Topic: crab-stat-test	Partition: 0	Leader: 11	Replicas: 11,13	Isr: 13,11
 	Topic: crab-stat-test	Partition: 1	Leader: 12	Replicas: 12,14	Isr: 14,12
-	Topic: crab-stat-test	Partition: 2	Leader: 13	Replicas: 13,10	Isr: 13
+	Topic: crab-stat-test	Partition: 2	Leader: 13	Replicas: 13,10	Isr: 13    # 这里10号节点就被踢出ISR了
 	Topic: crab-stat-test	Partition: 3	Leader: 14	Replicas: 14,11	Isr: 14,11
+```
+
+
+
+##### 03 查看borkers
+
+```shell
+# 打开zookeeper的shell
+bin/zkCli.sh -server localhost:2181
+
+# 查看brokers
+ls /brokers/ids
 ```
 
 

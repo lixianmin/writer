@@ -45,8 +45,8 @@ brew services start kibana
 
 #### 2 叶子查询
 
-1. 叶子查询直接带\<field\>子节点
-2. \<field\>节点的子节点会有一些参数用于约束叶子查询的行为
+1. 叶子查询是指**内部节点是field的节点**，通常是**term（精确查询）和match（模糊查询）**
+2. field节点的子节点可以有一些参数用于约束叶子查询的行为
 3. 简记为TRIM，分别代表Term, Range, Ids, Match
 
 
@@ -191,21 +191,24 @@ POST _search
 ```json
 // 以下两个查询是等价的：
 {
+  "query":{
     "match": {
         "title": {
             "query":    "brown fox",
             "operator": "and"
         }
-    }
+		}
+  }
 }
 
 {
-  "bool": {
-    "must": [
-      { "term": { "title": "brown" }},
-      { "term": { "title": "fox"   }}
-    ]
-  }
+  "query":{
+		"bool": {
+    	"must": [
+      	{ "term": { "title": "brown" }},
+        { "term": { "title": "fox" }}
+    	]
+  }}
 }
 ```
 
@@ -388,6 +391,12 @@ GET /_search?preference=xyzabc123
 
 
 ##### 05 搜索模式
+
+1. index是database
+2. type是table
+3. field是column
+
+
 
 |                        |                                          |      |
 | ---------------------- | ---------------------------------------- | ---- |
