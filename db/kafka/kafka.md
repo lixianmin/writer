@@ -79,15 +79,15 @@ ps aux | grep kafka
 
 ```shell
 # 查看topics
-kafka-topics --zookeeper 172.20.20.120:2181  --list
-kafka-topics --zookeeper 172.20.20.120:2181  --describe --topic users
-kafka-topics --zookeeper 172.20.20.120:2181  --describe --topic __consumer_offsets
+bin/kafka-topics --zookeeper localhost:2181  --list
+bin/kafka-topics --zookeeper localhost:2181  --describe --topic users
+bin/kafka-topics --zookeeper localhost:2181  --describe --topic __consumer_offsets
 ```
 
 
 
 ```shell
-bin/kafka-topics.sh --zookeeper localhost:2181 --describe --topic crab-stat-test
+bin/kafka-topics.sh --zookeeper localhost:8555 --describe --topic users
 
 # 输出如下内容
 # PartitionCount:4 			这个主题分布在4个分区上，分区的个数 <= broker数
@@ -96,11 +96,11 @@ bin/kafka-topics.sh --zookeeper localhost:2181 --describe --topic crab-stat-test
 # Replicas: 11, 13			副本列表
 # Isr: 13, 11						In sync Replicas列表
 
-Topic:crab-stat-test	PartitionCount:4	ReplicationFactor:2	Configs:
-	Topic: crab-stat-test	Partition: 0	Leader: 11	Replicas: 11,13	Isr: 13,11
-	Topic: crab-stat-test	Partition: 1	Leader: 12	Replicas: 12,14	Isr: 14,12
-	Topic: crab-stat-test	Partition: 2	Leader: 13	Replicas: 13,10	Isr: 13    # 这里10号节点就被踢出ISR了
-	Topic: crab-stat-test	Partition: 3	Leader: 14	Replicas: 14,11	Isr: 14,11
+Topic:users	PartitionCount:4	ReplicationFactor:2	Configs:
+	Topic: users	Partition: 0	Leader: 11	Replicas: 11,13	Isr: 13,11
+	Topic: users	Partition: 1	Leader: 12	Replicas: 12,14	Isr: 14,12
+	Topic: users	Partition: 2	Leader: 13	Replicas: 13,10	Isr: 13    # 这里10号节点就被踢出ISR了
+	Topic: users	Partition: 3	Leader: 14	Replicas: 14,11	Isr: 14,11
 ```
 
 
@@ -109,7 +109,10 @@ Topic:crab-stat-test	PartitionCount:4	ReplicationFactor:2	Configs:
 
 ```shell
 # 打开zookeeper的shell
-bin/zkCli.sh -server localhost:2181
+bin/zkCli.sh -server localhost:8555
+
+# 查看根目录
+ls /
 
 # 查看brokers
 ls /brokers/ids
@@ -122,14 +125,14 @@ ls /brokers/ids
 
 ```bash
 # 删除topic
-kafka-topics --zookeeper 172.20.20.120:2181  --delete --topic users
+bin/kafka-topics.sh --zookeeper localhost:2181  --delete --topic users
 
 # 消息处理
-kafka-console-producer --broker-list 172.20.20.120:9092 --topic users
-kafka-console-consumer --bootstrap-server 172.20.20.120:9092 --topic users --from-beginning
+bin/kafka-console-producer.sh --broker-list localhost:8592 --topic users
+bin/kafka-console-consumer.sh --zookeeper localhost:8555 --topic users --from-beginning
 
 # 查看某group的offset
-kafka-consumer-groups --bootstrap-server 172.20.20.120:9092 --describe --group user-behaviour
+kafka-consumer-groups --bootstrap-server localhost:9092 --describe --group user-behaviour
 
 ```
 

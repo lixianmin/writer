@@ -2,7 +2,9 @@
 
 ----
 
-#### 0x01 安装
+#### 1 安装
+
+##### 01 docker安装
 
 ```shell
 # 解决以下问题：
@@ -56,9 +58,14 @@ ssh root@192.168.64.5 /root/go/src/github.com/lixianmin/tour-server/build.jenkin
 
 
 
+##### 02 普通安装
+
+
+
 
 
 ----
+#### 9 References
 
 1. [Jenkins与Github集成 webhook配置](https://blog.csdn.net/qq_21768483/article/details/80177920)
 2. [jenkins docker image](https://hub.docker.com/r/jenkinszh/jenkins-zh)

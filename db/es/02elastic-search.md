@@ -25,7 +25,7 @@ brew services start kibana
 
 |         |                          |      |
 | ------- | ------------------------ | ---- |
-| _bulk   | 上传数据                 |      |
+| _bulk   | 指上传数据               |      |
 | _search | 搜索数据                 |      |
 | _source | 查询结果中实际的数据部分 |      |
 |         |                          |      |
@@ -43,7 +43,103 @@ brew services start kibana
 
 -----
 
-#### 2 叶子查询
+#### 2 索引操作
+
+
+
+
+
+----
+
+#### 3 数据操作
+
+
+
+##### 01 增
+
+1. 最好手动增加_mappings中的field，而不是第一次上传数据时自动创建，因为field类型可能不是你想要的
+2. update数据的方式与新增数据的方式相关，指定_id即可
+
+
+
+```json
+# 上传数据，自动生成_id
+POST test_index/person
+{"apkVersion":"world"}
+
+# 手动指定_id。比如我已经在mongodb中生成了一个id，这时手动指定_id有两个好处：
+# 1. 方便mongo中的数据与es中的数据做关联
+# 2. 通过primary index去重，解决kafka重试问题
+#
+# 注：经过验证，这里使用post/put请求都可以
+POST/PUT test_index/person/603606980695e0a74b360230
+{"apkVersion":"hello"}
+
+```
+
+
+
+##### 02 删
+
+```js
+POST test_index/_delete_by_query 
+{
+  "query":{
+     "term":{ "apkVersion":"world" }
+  }
+}
+```
+
+
+
+##### 03 查
+
+1. **务必使用POST**：虽然GET也可以查，但后面body这个json是不起作用的，GET需要把所有的字段写到query string中
+2. 查询一定是query开头的， 下面使用match, term等叶节点是直接查询， 如果需要复合查询可以使用bool节点
+
+
+
+```js
+# 查询所有数据
+POST test_index/_search?pretty
+{}
+
+# 查询特定的term
+# 按_id查询的方式，与按普通字段的查询方式相同，在match/term叶节点下面指定_id的值即可
+POST test_index/person/_search
+{
+    "query": {
+        "match" : {"apkVersion" : "hello"}
+    }
+}
+
+
+{
+  "query": {
+    	 "term":{"apkVersion": "hello" }
+  }
+}
+
+
+{
+  "query": {
+    "bool":{
+    		"filter": {
+    		 "term":{"apkVersion": "hello" }
+    	}
+    }
+  }
+}
+
+```
+
+
+
+
+
+-----
+
+#### 4 叶子查询
 
 1. 叶子查询是指**内部节点是field的节点**，通常是**term（精确查询）和match（模糊查询）**
 2. field节点的子节点可以有一些参数用于约束叶子查询的行为
@@ -139,7 +235,7 @@ GET /_search
 
 -----
 
-#### 3 [bool复合查询](https://www.elastic.co/guide/en/elasticsearch/reference/7.9/query-dsl-bool-query.html)
+#### 5 [bool复合查询](https://www.elastic.co/guide/en/elasticsearch/reference/7.9/query-dsl-bool-query.html)
 
 
 
@@ -251,7 +347,7 @@ POST _search
 
 ----
 
-#### 4 aggs聚合操作
+#### 6 aggs聚合操作
 
 1. aggs是{}，下面的节点名是任意取的
 2. aggs可以嵌套
