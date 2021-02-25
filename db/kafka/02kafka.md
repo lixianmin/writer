@@ -14,49 +14,6 @@
 
 
 
------
-
-#### 2 配置
-
-##### 01 server.properties
-
-```ini
-# 唯一标识符，整数
-broker.id=10
-
-# 配置zookeeper地址
-zookeeper.connect=hello.com:2181,world.com:2181,panda.com:2181
-
-# follower超过10秒没向leader发起fetch请求，就从ISR中移除（满足条件后会再加入到ISR中）
-replica.lag.time.max.ms=10000
-
-# follower的消息落后于leader超4000条，就从ISR中移除（满足条件后会再加入到ISR中）
-replica.lag.max.messages=4000
-
-# 当有新的节点加入时自动调leader，让leader在所有节点上均衡分布
-auto.leader.rebalance.enable=true
-```
-
-
-
-##### 02 topic配置
-
-```ini
-# 需要保证ISR中至少有多少个replica
-min.insync.replicas=1 
-```
-
-
-
-##### 03 producer.properties
-
-```ini
-# 0：异步发送，不等待leader回复，producer立即返回，消息有可能丢失
-# 1：produer等待leader返回的ack消息后再返回，丢会重发
-# -1：所有的follower都同步消息成功后leader才发送ack给produer，高可靠
-request.required.asks=0
-```
-
 
 
 ----
