@@ -23,8 +23,9 @@
 ##### 01 启动kafka
 
 ```shell
-# 启动
+# 启停
 bin/kafka-server-start.sh config/server.properties &
+bin/kafka-server-stop.sh
 
 # 查看进程是否存在
 ps aux | grep kafka
@@ -86,7 +87,7 @@ bin/kafka-topics.sh --zookeeper localhost:2181  --delete --topic users
 
 # 消息处理
 bin/kafka-console-producer.sh --broker-list localhost:8592 --topic users
-bin/kafka-console-consumer.sh --zookeeper localhost:8555 --topic users --from-beginning
+bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic users --from-beginning
 
 # 查看某group的offset
 kafka-consumer-groups --bootstrap-server localhost:9092 --describe --group user-behaviour

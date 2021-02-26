@@ -20,7 +20,7 @@ docker run -d --rm  --name mongo-arbiter -p 27019:27017 mongo:3.0.3 mongod --dbp
 # 2.集群配置
 docker exec -it mongo-master mongo
 
-config = {_id:"mongoreplset", version:1, members:[{_id:0, host:"172.24.194.240:27017", priority:5}, {_id:1, host:"172.24.194.240:27018", priority:2}, {_id:2, host:"172.24.194.240:27019", priority:3}]}
+config = {_id:"mongoreplset", version:1, members:[{_id:0, host:"172.24.202.186:27017", priority:5}, {_id:1, host:"172.24.202.186:27018", priority:2}, {_id:2, host:"172.24.202.186:27019", priority:3}]}
 
 rs.initiate(config)
 

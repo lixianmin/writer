@@ -2,7 +2,7 @@
 
 --------------
 
-#### 01 新流程
+#### 1 新流程
 
 
 
@@ -52,6 +52,20 @@ autorestart=true
 
 
 
+---
+
+#### 2  supervisorctl
+
+
+
+```shell
+# 进入控制台后，运行help, status等指令检查是否正确启动
+supervisorctl
+
+# 重新加载配置，如果有新的ini文件，会加入
+update
+```
+
 
 
 ---------------------------
@@ -76,8 +90,7 @@ sudo ln -sv /usr/local/etc/supervisord.ini /etc/supervisord.conf
 # 重启supervisor
 brew services restart supervisor
 
-supervisorctl
-# 进入控制台后，运行help, status等指令检查是否正确启动
+
 ```
 
 
