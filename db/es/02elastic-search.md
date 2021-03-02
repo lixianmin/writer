@@ -104,6 +104,10 @@ POST test_index/_delete_by_query
 POST test_index/_search?pretty
 {}
 
+# 查询mongoid字段不为空的
+POST test_index/_search?pretty
+{"query":{"exists":{"field":"mongoid"}}}
+
 # 查询特定的term
 # 按_id查询的方式，与按普通字段的查询方式相同，在match/term叶节点下面指定_id的值即可
 POST test_index/person/_search
