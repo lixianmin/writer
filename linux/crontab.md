@@ -1,6 +1,10 @@
 ----
 
-#### 01 Basics
+#### 1 Basics
+
+
+
+1. cron的日志在 /var/log/cron中
 
 
 
@@ -70,7 +74,7 @@ man flock
 
 -------
 
-#### 02 安装
+#### 2 安装
 
 ```shell
 yum install vixie-cron
@@ -84,7 +88,7 @@ chkconfig crond on
 
 ---
 
-#### 09 References
+#### 9 References
 
 1. [cron表达式在线生成工具](http://www.bejson.com/othertools/cron/)
 2. [crontab用法与实例](https://www.linuxprobe.com/how-to-crontab.html)
