@@ -237,6 +237,22 @@ GET /_search
 
 
 
+##### 06 [exists](https://www.elastic.co/guide/en/elasticsearch/reference/7.9/query-dsl-exists-query.html)
+
+存在性查询
+
+```json
+GET /_search
+{
+    "query": {
+        "exists" : { "field" : "apkVersion" }
+    }
+}
+
+```
+
+
+
 -----
 
 #### 5 [bool复合查询](https://www.elastic.co/guide/en/elasticsearch/reference/7.9/query-dsl-bool-query.html)
@@ -366,7 +382,7 @@ POST _search
 ```json
 {
   "aggs": {
-    "IP": {
+    "group_by_ip": {
       "terms": {
         "field": "IP",	// 目标字段
         "size": 3000,   // 相当于SQL中的limit
@@ -415,7 +431,7 @@ POST _search
         "interval":  86400,
         "order" : { "_key" : "asc" }
       }
-}
+    }
  },
   
  "size": 0
