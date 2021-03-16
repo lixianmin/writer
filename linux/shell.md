@@ -148,6 +148,9 @@ tar cjvpf a.tar.gz dir_name --exclude .svn
 # -t 指定时间
 touch -t 200601021314.15 a.txt 
 
+# 增加用户batsdk添加到root用户组
+usermod -a -G root batsdk
+
 # 以全屏方式监控文件的变化。watch命令需要brew安装
 watch tail -r ~/Library/Logs/Unity/Editor.log
 

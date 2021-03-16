@@ -14,7 +14,7 @@ rpm -ivh --tset a.rpm
 rpm -qpi a.rpm 						# --query --package --install 
 
 # 删除
-rpm -e a.rpm							# -e erase
+rpm -e a     							# -e erase，不能带 .rpm 后缀
 rpm -e lynx --nodeps			# 忽略依赖检查
 
 
