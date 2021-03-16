@@ -51,9 +51,12 @@ rpm -ivh go-agent-21.1.0-12439.noarch.rpm
 # 修改go用户的密码
 passwd go
 
-# 登录到go用户下，使用jumbo安装git，使用deck安装golang
-# 使用batsdk账号，在/usr/local/bin下面建立git的链接，否则gocd找不到
-sudo ln -s /var/go/.jumbo/bin/git /usr/local/bin/git
+# 登录到go用户下，安装deck
+deck install devel
+deck install go-1.15.2
+
+# 使用batsdk账号，在/usr/bin下面建立git的链接，否则gocd找不到。不能建到/usr/local/bin下面
+sudo ln -s /var/go/.deck/1.0/devel/1.0/bin/git /usr/bin/git
 
 # 自己建一个code目录，将代码下载下来，测试一下流程能否跑通，可能需要调整.ssh
 ```

@@ -46,3 +46,22 @@ export EDITOR=vim
 
 alias ll='/bin/ls -lh --color'
 ```
+
+
+
+----
+
+#### 2 FAQ
+
+##### 1 Bad owener or permissions
+
+```shell
+chmod 600 ~/.ssh/config
+```
+
+
+
+
+
+
+
