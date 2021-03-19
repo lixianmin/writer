@@ -59,7 +59,98 @@ deck install go-1.15.2
 sudo ln -s /var/go/.deck/1.0/devel/1.0/bin/git /usr/bin/git
 
 # 自己建一个code目录，将代码下载下来，测试一下流程能否跑通，可能需要调整.ssh
+
+
+# 创建任务时，pipeline的名字就叫原始项目的名字就好，不要带-pipeline的结尾，因为这其实就是目录的名字，这个目录名会用作进程名
+# 在task中加入两个command
+./build.nake.sh         # 用于构建
+./deploy.gocd.sh {IP}   # 用于发版
 ```
+
+
+
+##### 1 build.naked.sh
+
+```shell
+#!/bin/bash
+
+APP_NAME=${PWD##*/}
+PID=`ps aux | grep ${APP_NAME} | grep -v grep | awk '{ print $2}'`
+if [ "$PID" != "" ] ;then
+  kill -9 $PID
+  echo "kill old process with name="$APP_NAME", pid="$PID
+else
+  echo "can not find old process with name="$APP_NAME
+fi
+
+IMPORT_PATH=github.com/lixianmin/gonsole
+FLAGS="-X $IMPORT_PATH.GitBranchName=`git rev-parse --abbrev-ref HEAD` -X $IMPORT_PATH.GitCommitId=`git log --pretty=format:\"%h\" -1` -X $IMPORT_PATH.AppBuildTime=`date +%Y-%m-%dT%H:%M:%S`"
+go build -ldflags "$FLAGS" -mod vendor -gcflags "-N -l"
+```
+
+
+
+##### 2 deploy.gocd.sh
+
+```shell
+#!/bin/bash
+
+# 假设：APP_NAME就是进程所在目录名
+# 假设：目标机安装了supervisor
+APP_NAME=$(basename `pwd`)
+USER_NAME=batsdk
+
+REMOTE=$USER_NAME@$1
+CONFIG_DIR=/home/$USER_NAME/etc/supervisor.d
+CONFIG_FILE=$CONFIG_DIR/supervisord.conf
+
+##############################################################
+echo 1. ssh $REMOTE "supervisorctl -c $CONFIG_FILE stop $APP_NAME"
+ssh $REMOTE "supervisorctl -c $CONFIG_FILE stop $APP_NAME"
+
+##############################################################
+echo 2. 创建 $APP_NAME.ini 文件
+
+echo "[program:$APP_NAME]" > $APP_NAME.ini
+echo "command     = /home/$USER_NAME/gocd/$APP_NAME/$APP_NAME" >> $APP_NAME.ini
+echo "directory   = /home/$USER_NAME/gocd/$APP_NAME" >> $APP_NAME.ini
+echo "" >> $APP_NAME.ini
+echo "autostart   = true" >> $APP_NAME.ini
+echo "autorestart = true" >> $APP_NAME.ini
+
+scp $APP_NAME.ini $REMOTE:$CONFIG_DIR/conf
+
+##############################################################
+echo
+echo 3. 创建目录并将资源传输到 $APP_NAME
+DEST_DIR=/home/$USER_NAME/gocd/$APP_NAME/
+ssh $REMOTE "mkdir -p $DEST_DIR"
+scp $APP_NAME $REMOTE:$DEST_DIR
+scp -r res $REMOTE:$DEST_DIR
+
+GONSOLE_DIR=vendor/github.com/lixianmin/gonsole
+ssh $REMOTE "mkdir -p $DEST_DIR/$GONSOLE_DIR"
+scp $GONSOLE_DIR/console.html $REMOTE:$DEST_DIR/$GONSOLE_DIR
+scp -r $GONSOLE_DIR/res $REMOTE:$DEST_DIR/$GONSOLE_DIR
+
+##############################################################
+echo
+echo 4. ssh $REMOTE "supervisorctl -c $CONFIG_FILE start $APP_NAME"
+ssh $REMOTE "supervisorctl -c $CONFIG_FILE update $APP_NAME"
+ssh $REMOTE "supervisorctl -c $CONFIG_FILE start $APP_NAME"
+```
+
+
+
+
+
+
+
+
+
+
+
+---------------------
 
 
 
