@@ -11,8 +11,8 @@
 
 # 生成配置文件
 cd
-mkdir -p etc/supervisor.d
-cd etc/supervisor.d
+mkdir -p etc/supervisor
+cd etc/supervisor
 echo_supervisord_conf > supervisord.conf
 
 # 修改包含的配置文件
