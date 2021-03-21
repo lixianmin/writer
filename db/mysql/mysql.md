@@ -294,13 +294,11 @@ select @@session.tx_isolation;	# session级别
 select @@transaction_isolation; # (MySQL 8.0)
 
 # 修改事务隔离级别
-set @@tx_isolation = 'read-committed';					# 修改session变量
-set @@global.tx_isolation = 'repeatable-read';	# 修改global变量
-
-set tx_isolation = 'read-committed';				  	# 修改session变量，这个对set session tx_isolation的简化
 set session tx_isolation = 'read-committed';		# 修改session变量
 set global tx_isolation = 'repeatable-read';		# 修改global变量
-set @@transaction_isolation='read-committed'; 	# (MySQL 8.0)
+
+set global transaction_isolation = 'repeatable-read';	# (MySQL 8.0)
+set session transaction_isolation='read-committed'; 	# (MySQL 8.0)
 
 # 事务
 start transaction;
