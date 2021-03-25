@@ -108,6 +108,10 @@ POST test_index/_search?pretty
 POST test_index/_search?pretty
 {"query":{"exists":{"field":"mongoid"}}}
 
+等价于 query_string里加上： _exists_:mongoid
+等价于 qildcard: { mongoid: "*" }
+
+
 # 查询特定的term
 # 按_id查询的方式，与按普通字段的查询方式相同，在match/term叶节点下面指定_id的值即可
 POST test_index/person/_search
