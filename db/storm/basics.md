@@ -1,6 +1,6 @@
 
 
-
+#### 1 名词
 
 | 结构                 | Hadoop      | Storm      |
 | -------------------- | ----------- | ---------- |
@@ -49,13 +49,29 @@ StormSubmitter.submitTopology(
 
 
 
+#### 2 运维
 
+```shell
+
+# 启动nimbus
+nohup bin/storm nimbus &>/dev/null &
+
+# 启动ui
+nohup bin/storm ui &>/dev/null &
+
+
+# 重启supervisor，先把旧的杀了
+ps aux | grep supervisor  # 这个可能看到很多进程，有可能是混部，有可能全是workers
+kill xxx
+
+nohup bin/storm supervisor &>/dev/null &
+```
 
 
 
 -----
 
-#### 09 References
+#### 9 References
 
 1. [storm从入门到放弃(一)，storm介绍](https://www.cnblogs.com/intsmaze/p/7274361.html)
 2. [What makes a running topology: worker processes, executors and tasks](https://storm.apache.org/releases/2.1.0/Understanding-the-parallelism-of-a-Storm-topology.html)

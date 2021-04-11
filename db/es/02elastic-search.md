@@ -429,11 +429,19 @@ POST _search
   },
 
   "aggs": {
-     "by_day": {
-      "histogram": {
-        "field":     "serverTime",
-        "interval":  86400,
+     "count_by_day": {
+      "histogram": {        // 用于统计pv
+        "field":    "serverTime",
+        "interval": 86400,
+        "offset":   57600,  // offset是为了能整除86400
         "order" : { "_key" : "asc" }
+      },
+      "aggs":{
+        "unique_uid":{
+          "cardinality":{  // 用于统计uv
+            "field":"uid"
+          }
+        }
       }
     }
  },
