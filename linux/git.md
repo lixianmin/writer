@@ -96,11 +96,11 @@ git rm --cached filename | 删除远程的文件，但是保存本地的
 
 
 
-| 命令                              | 详解                                                         |
-| --------------------------------- | ------------------------------------------------------------ |
-| git push --delete origin review   | 删除远程的名字为review的分支                                 |
-| git push -f origin head:test      | 1. 将当前分支强推到远程的test分支上。<br />2. 需要到gitlab的设置 --> 版本库 --> 保护分支，把相关分支摘出来 |
-| git push -f origin master:release | 1. 强推本地master支持到远程release分支<br />2. 需要到gitlab的设置 --> 版本库 --> 保护分支，把相关分支摘出来 |
+| 命令                                         | 详解                                                         |
+| -------------------------------------------- | ------------------------------------------------------------ |
+| git push --delete origin review              | 删除远程的名字为review的分支                                 |
+| git push -f origin(远程) head(源):test(目标) | 1. 将当前分支强推到远程的test分支上。<br />2. 需要到gitlab的设置 --> 版本库 --> 保护分支，把相关分支摘出来 |
+| git push -f personal master:release          | 1. 强推本地master支持到personal/release分支<br />2. 需要到gitlab的设置 --> 版本库 --> 保护分支，把相关分支摘出来 |
 
 
 
@@ -159,6 +159,23 @@ git rm --cached filename | 删除远程的文件，但是保存本地的
 
 
 ---
+
+
+##### 02 增加一个remote
+
+```shell
+
+# 新加一个remote，用作dev分支
+git remote add personal ssh://xxxx.com/personal-code/risk-lua
+
+# 创建一个dev分支
+git checkout -b dev
+git push --set-upstream personal dev
+git push -f personal head:dev
+```
+
+
+
 ##### 03 回滚dev分支代码
 
 1. git checkout dev，切换到dev分支
