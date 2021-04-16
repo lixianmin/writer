@@ -192,7 +192,7 @@ GROUP BY hour;
 
 用户名：risk_readonly
 
-密码： cRqA8BJVE7X9vO5H
+密码： cRqA8BJVE7X9vO5H (注意，这个文件的创建时间是在我来百度之前，跟百度没啥关系)
 
 
 

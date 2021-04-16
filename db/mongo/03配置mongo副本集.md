@@ -18,6 +18,7 @@ docker run -d --rm --name mongo-slave -p 27018:27017 mongo:3.0.3 mongod --dbpath
 docker run -d --rm  --name mongo-arbiter -p 27019:27017 mongo:3.0.3 mongod --dbpath /data/db --replSet mongoreplset --smallfiles --oplogSize 128
 
 # 2.集群配置
+# 因为macbook本机的ip经常变，测试时需要将下面命令中的ip改一下
 docker exec -it mongo-master mongo
 
 config = {_id:"mongoreplset", version:1, members:[{_id:0, host:"172.24.202.186:27017", priority:5}, {_id:1, host:"172.24.202.186:27018", priority:2}, {_id:2, host:"172.24.202.186:27019", priority:3}]}
