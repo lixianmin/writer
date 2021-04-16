@@ -18,7 +18,7 @@ echo_supervisord_conf > supervisord.conf
 # 修改包含的配置文件
 vim supervisord.conf  # 然后G到最文件尾部
 
-# 移除最后两行的注释，然后修改为：
+# 移除最后【两】行的注释，然后修改为：
 [include]
 files = conf/*.ini
 
