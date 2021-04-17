@@ -12,6 +12,6 @@ curl
 | curl -G http://url > output.txt                              | 使用get会等待下载完成再结束命令，post则不然 |
 | curl "http://url?key=123&token=abc"                          | 在url中传递多个参数                         |
 | curl -H "site:MAIN" http://url                               | 传入header, -H 可重复指定                   |
-| curl -d "user=user1&pass=abcd" -X POST https://example.com/login | 发送post请求                                |
+| curl -d "user=user1&pass=abcd" https://example.com/login<br />curl -d "user=user1&pass=abcd" -X POST https://example.com/login | 发送post请求                                |
 | curl -v http://url                                           | 显示调用详情，比如301重定向信息             |
 
