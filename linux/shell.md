@@ -181,6 +181,27 @@ while True; do echo "hello"; sleep 1; done;
 
 
 
+#### 05 批量循环
+
+```shell
+#!/bin/bash
+
+TOPICS=(
+topic1-dev
+topic2-dev
+    )
+
+
+for topic in ${TOPICS[@]}
+do
+    bin/kafka-topics.sh --zookeeper 127.0.0.1:8555  --delete --topic $topic
+done
+
+```
+
+
+
+
 
 
 -----
