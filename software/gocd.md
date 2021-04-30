@@ -98,7 +98,7 @@ go build -ldflags "$FLAGS" -mod vendor -gcflags "-N -l"
 # 假设：APP_NAME就是进程所在目录名
 # 假设：目标机安装了supervisor
 APP_NAME=$(basename `pwd`)
-USER_NAME=batsdk
+USER_NAME=hello
 
 REMOTE=$USER_NAME@$1
 CONFIG_DIR=/home/$USER_NAME/etc/supervisor.d
