@@ -308,6 +308,18 @@ rollback;
 
 
 
+##### 11 连接字符串
+
+```properties
+risk.datasource.url = jdbc:mysql://127.0.0.1:3306/coinbene_risk?autoReconnect=true&useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&useSSL=false
+risk.datasource.username = root
+risk.datasource.password = xxxxxx
+```
+
+
+
+
+
 ------
 
 #### 09 References
