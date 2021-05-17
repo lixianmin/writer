@@ -84,6 +84,9 @@ sudo chown -R batsdk mongoExceptionData/
 date -d -1hour '+%Y%m%d'
 date -d "${start_time} CST +1 day" "+%Y-%m-%d %H:%M:%S"
 
+# 测试磁盘写入速度
+dd if=/dev/zero of=/home/root/testw.dbf bs=4k count=1000000
+
 # 打印磁盘使用量
 df -h
 
