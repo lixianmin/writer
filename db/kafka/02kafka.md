@@ -161,6 +161,33 @@ cd kafkacat/
 
 
 
+#### 5 清理策略
+
+##### cleanup.policy: delete
+
+
+
+##### cleanup.polocy: compact
+
+```properties
+cleanup.policy: compact
+segment.bytes: 每个segment的大小，达到这个大小会产生新的segment, 默认是1G
+segment.ms: 配置每隔n ms产生一个新的segment,默认是168h,也就是7天
+retention.bytes: 总的segment的大小限制，达到这个限制后会删除旧的segment,默认值为-1，就是不会删除
+retention.ms: segment的最后写入record的时间-当前时间 > retention.ms 的segment会被删除，默认是168h, 7天
+
+# 可以容忍的脏数据比例，默认值0.5。清理数据需要对磁盘进行读写，如果数据只有很小的重复比例，实际上没有必要清理。
+# 如果你的机器性能可以，而且数据量较大的话，这个值可以设置更小一些，比如0.1，这样对consumer更友好。
+min.cleanable.dirty.ratio: 0.5
+
+# 默认值0，也就是不会根据消息投递的时间来决定消息是否应该被compact。
+min.compaction.lag.ms: 0
+```
+
+
+
+
+
 
 
 ------
