@@ -14,6 +14,23 @@
 
 
 
+----
+
+#### 2 行为准则
+
+##### 01 新建topic
+
+1. 考虑好分区策略：区分一下**event stream还是change log**，如果是change log则**是否考虑log compact**，因此需要考虑按什么key进行分区的问题。
+
+
+
+##### 02 发送数据
+
+1. 按照建立topic时既定的分区策略进行分区。
+2. 使用**caffeine+MySQL+threadLocal+每个item记住自己的topic**：批量从MySQL获取全局唯一id，批量发送到kafka。
+3. 批量发送到kafka时，**采用size+timeout结合的方式**。如果不对size进行考量，那么可能会OOM；如果不对timeout进行考量，可能一天都发不出数据去。
+4. **数据合法性检查：空字符串是否合理？是否超出了MySQL允许的表字段长度？数字为负值是否合理？**
+
 
 
 ----
