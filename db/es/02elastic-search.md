@@ -539,6 +539,32 @@ GET /_search?preference=xyzabc123
 
 
 
+##### 06 排序
+
+```json
+{
+    "query":{
+        "bool":{
+            "filter":[
+                ...
+            ]
+        }
+    },
+   "sort": [
+    {
+      "serverTime": {
+        "order": "desc"
+      }
+    }
+  ],
+  "size":100
+}
+```
+
+
+
+
+
 
 ----
 
