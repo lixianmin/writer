@@ -376,8 +376,8 @@ POST _search
 1. aggs是{}，下面的节点名是任意取的
 2. aggs可以嵌套
 3. order设置桶的排序，默认以doc_count降序排列。order的可选值有：
-   1. `"order":{"_count":"asc"}`
-   2. `"order":{"_key":"asc"}`
+   1. `"order":{"_count":"asc"}`  对应使用doc_count
+   2. `"order":{"_key":"asc"}`  在使用histogram或date_histogram的时候，对应桶的key
    3. 支持子聚合的结果作为排序字段
 4. 
 
@@ -394,6 +394,14 @@ POST _search
           "_count": "desc"
         },
         "min_doc_count": 5	// 过滤匹配文档数量小于给定值的桶
+      },
+      "aggs": {
+        "unique_uid":{
+           "cardinality":{"field":"uid"}
+         },
+        "max_server_time":{
+           "max":{"field":"serverTime"}
+         }
       }
     }
   },
