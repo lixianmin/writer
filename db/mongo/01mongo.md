@@ -17,7 +17,7 @@
 
 ```bash
 # 通过以下命令进入shell
-mongo
+mongo [address]
 
 # 打印help
 help
