@@ -1,4 +1,6 @@
+[toc]
 
+-----
 
 #### 1 名词
 
@@ -23,6 +25,26 @@
 | spout      | 拓扑的消息源                                                 |
 | bolt       | 拓扑的处理逻辑单元                                           |
 |            |                                                              |
+
+
+
+```mermaid
+graph LR;
+    Nimbus生产者==>ZooKeeper((ZooKeeper任务池));
+    ZooKeeper ==> Supervisor(Supervisor消费者);
+    Supervisor --> worker1
+    Supervisor --> worker2
+    Supervisor --> worker3
+    
+    subgraph topology
+    	worker1(Worker)
+    	worker2(Worker)
+    	worker3(Worker)
+    end
+    
+```
+
+
 
 
 
