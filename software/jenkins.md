@@ -29,7 +29,6 @@ cat /data/jenkins/secrets/initialAdminPassword
 1. Settings --> Developer settings --> Personal access tokens -> Generate new token
 2. 选中repo 和 admin:repo_hook
 3. 点击 Generate Token --> 记住这个token，否则再也找不回来了
-4. 如果使用github的『用户名/密码』的方式访问，则不需要使用这个token
 
 # 转到github的具体项目
 Settings --> Webhooks --> Add Webhook --> 输入刚刚部署jenkins的服务器的IP：

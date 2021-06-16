@@ -1,4 +1,4 @@
-​	
+[toc]	
 
 ---
 #### 01 基础命令
@@ -197,9 +197,12 @@ git reset --hard xxxx 是重置代码到某个版本，但如果想回滚代码�
 
 
 ```shell
+# 删除文件
 git filter-branch --force --index-filter 'git rm --cached --ignore-unmatch software/Intelij-idea.md' --prune-empty --tag-name-filter cat -- --all
 
 git push --all --force
+
+# 如果历史文件占用太大空间的话，可以使用 git gc 释放空间。需要在各自的git目录中各自执行
 ```
 
 
