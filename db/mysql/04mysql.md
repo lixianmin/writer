@@ -273,6 +273,8 @@ revoke all privileges on wisdom.* from 'grafana'@'192.168.%';
 # 列出当前用户列表
 select user, host from mysql.user;
 
+# 查看用户权限
+show grants root 'root'@'localhost';
 ```
 
 
