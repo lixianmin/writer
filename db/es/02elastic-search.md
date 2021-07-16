@@ -109,7 +109,7 @@ POST test_index/_search?pretty
 {"query":{"exists":{"field":"mongoid"}}}
 
 等价于 query_string里加上： _exists_:mongoid
-等价于 qildcard: { mongoid: "*" }
+等价于 wildcard: { mongoid: "*" }
 
 
 # 查询特定的term
