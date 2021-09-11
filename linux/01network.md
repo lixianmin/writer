@@ -86,6 +86,79 @@ firewall-cmd --list-port
 
 
 
+---
+
+#### 04 三次握手 vs. 四次挥手
+
+
+
+```mermaid
+sequenceDiagram
+	  autonumber
+    participant client
+    participant server
+    
+    note over client, server: CLOSED
+    note right of server: LISTEN <br> (listen())
+    note left of client: SYNC_SENT <br> (connect())
+    client -->> server: SYN seq=x
+    note right of server: SYN_REVD
+   
+    server ->> client: ACK=x+1, SYN seq=y
+    note left of client: ESTABLISHED
+    
+    client ->> server: ACK=y+1
+    note right of server: ESTABLISHED
+   
+```
+
+
+
+1. 四次握手是把established状态变为closed状态，client与server需要分别调用一次close()方法
+2. 三次握手用connect()：closed -> established； 
+3. 四次挥手用close() ： established --> closed
+4. 三次握手只要connect()一次即可，而四次挥手需要close()两次
+5. **connect()发送SYN，调用后的状态是SYN_SENT； close()发送FIN，调用后的状态是FIN_WAIT_1或LAST_ACK**
+6. sever收到close()后，变成close_wait状态，最后也会再调用一次close()
+7. client的最后这个状态，只所以叫TIME_WAIT，是因为等2*MSL时间后会关闭。只所以不立即关闭，是因为它正在回ACK，但无论server是否收到这个ACK，都会关闭。
+
+
+
+```mermaid
+sequenceDiagram
+	  autonumber
+    participant client
+    participant server
+    
+    note over client, server: ESTABLISHED
+    note left of client: FIN_WAIT_1 <br> (close())
+    client-->> server: FIN seq=x+2, ACK= y+1
+    
+    note right of server: CLOSE_WAIT
+    
+    note right of server: LAST_ACK <br> (close())
+    server ->> client: ACK x+3
+    
+    note left of client: FIN_WAIT_2
+    server -->> client: FIN seq=y+1
+    
+    client ->> server: ACK=y+2
+    activate client
+    note left of client : TIME_WAIT
+    deactivate client
+    
+    note over client, server: CLOSED
+    
+```
+
+
+
+
+
+
+
+
+
 
 
 
