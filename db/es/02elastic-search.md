@@ -272,28 +272,28 @@ GET /_search
 
 ```json
 POST _search
+
 {
-  "query": {
-    "bool" : {
-      "must" : {
-        "term" : { "user.id" : "kimchy" }
-      },
-      "filter": {
-        "term" : { "tags" : "production" }
-      },
-      "must_not" : {
-        "range" : {
-          "age" : { "gte" : 10, "lte" : 20 }
+    "query":{
+        "bool":{
+            "must":[
+                { "term":{ "user.id":123456}},
+                { "term":{ "user.name":"kimchy"}}
+            ],
+            "filter":[
+                { "term":{ "ts":1633968000 }}
+            ],
+            "must_not":[
+                { "range":{ "age":{ "gte":10, "lte":20 }}}
+            ],
+            "should":[
+                { "term":{ "tags":"env1" }},
+                { "term":{ "tags":"deployed" }}
+            ],
+            "minimum_should_match":1,
+            "boost":1
         }
-      },
-      "should" : [
-        { "term" : { "tags" : "env1" } },
-        { "term" : { "tags" : "deployed" } }
-      ],
-      "minimum_should_match" : 1,
-      "boost" : 1.0
     }
-  }
 }
 ```
 
