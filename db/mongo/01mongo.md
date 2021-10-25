@@ -25,6 +25,7 @@ mongo [address]
 
 # 打印help
 help
+db.help()
 
 #  显示所有db的名称和大小
 show dbs
@@ -32,7 +33,7 @@ show dbs
 # 清空数据
 db.movies.remove({})
 
-db.printReplicationInfo()				# oplog状态
+db.printReplicationInfo()				# 查看oplog的配置大小，当前状态等
 db.printSlaveReplicationInfo()	# 从节点信息
 
 # 1. 从节点默认不可读，需要在『从节点』执行如下操作激活可读

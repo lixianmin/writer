@@ -6,6 +6,8 @@
 
 
 
+##### 01 docker配置副本集
+
 
 
 ```shell
@@ -37,6 +39,24 @@ docker run -d --rm --name mongo-salve  -v /data/mongo-salve/db/:/data/db -v /dat
 
 docker run -d --rm --name mongo-arbiter   -v /data/mongo-arbiter/db/:/data/db -v /data/mongo-arbiter/configdb/:/data/configdb -p 27018:27017 mongo:latest mongod --dbpath /data/db --replSet mongoreplset --smallfiles --oplogSize 128 --auth --keyFile=/data/configdb/key_file
 注意，如果想看到日志，可以把-d去掉。
+
+```
+
+
+
+
+
+##### 02 解决replica sets没有primary节点的问题
+
+
+
+
+
+```javascript
+// 没有primary节点了，需要重新配置一下
+cfg = rs.conf();
+cfg.members.splice(1,2); // remove 2 servers starting at index 1 - documentation here
+rs.reconfig(cfg, {force: true});
 
 ```
 
