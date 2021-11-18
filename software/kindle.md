@@ -4,7 +4,7 @@
 
 ----
 
-#### 怎么转换pdf的格式到kindle上，使得字体更合适一些
+#### 01 怎么转换pdf的格式到kindle上，使得字体更合适一些
 
 1. 使用过calibre，转出mobi格式，发现字是好了，但是图丢失
 2. 发邮件到lixianmin56@kindle.cn，带convert标题，自己转mobi，发现图丢失
@@ -13,7 +13,7 @@
 
 
 ---
-#### 怎样将web clip发送到kindle
+#### 02 怎样将web clip发送到kindle
 
 试了各种chrome的插件，格式都会丢失，最终还是放弃吧
 
@@ -24,3 +24,18 @@
 4. 直接发送到自己的lixianmin56@kindle.cn 邮件地址
 
 因为是pdf，所以  格式保持的很完整
+
+
+
+----
+
+#### 03 使用calibre脱壳DRM导出到Boox中
+
+1. 安装calibre与plugin参考： https://github.com/apprenticeharper/DeDRM_tools/wiki/Exactly-how-to-remove-DRM#2-install-calibre
+2. 转到z.cn，登录，然后管理我的[内容与设备](https://www.amazon.cn/hz/mycd/myx?ref_=ya_d_l_manage_kindle#/home/content/booksAll/dateDsc/)
+3. 找到要下载的书，点击『操作』按钮，在弹出的菜单中选择『通过电脑下载USB传输』，然后选择设备『KindleVoyage』
+4. 将下载的图书（*.azw3），拖入到calibre中
+5. 双击图书，查看是否能正常打开
+6. 选中图书，按下s键，导出图书到U盘，调整一下目录，使用书名作为目录
+7. 将U盘插入到BOOX中，把U盘上的图书目录复制到『内部存储』的Books目录下
+8. 点击BOOX上的图书目录，进入目录，点击AZW3文件，打开图书查看
