@@ -15,6 +15,7 @@ puts m
 
 # 通过加入一个?来开启lazy匹配模式，这一点与python相同
 # String跟Regexp对象都拥有match方法
+# if m = /<.+?>/.match(text) --> 这样写也是是可以的
 if m = text.match(/<.+?>/)
     puts m[0]                               #=><a>
 end
