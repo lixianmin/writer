@@ -4,14 +4,13 @@
 
 ----
 
-#### 0x01 安装
+#### 01 安装
 
-##### 01 直接安装
+##### 01 brew安装
 
-1. centos上安装，[参考](https://www.fosslinux.com/8328/how-to-install-and-configure-grafana-on-centos-7.htm)，但是下载失败了
-2. brew services restart grafana
+1. brew services restart grafana
 3. 启动后，本机地址为： http://localhost:3000
-4. 默认的用户名密码是 admin : admin，密码在第一次登陆时会被要求强制修改，改为igmqttss
+4. 默认的用户名密码是 admin : admin，密码在第一次登陆时会被要求强制修改
 5. 安装Zabbix插件
 
 
@@ -37,11 +36,30 @@ docker run \
 
 
 
+##### 03 直接下载安装包
+
+1. https://grafana.com/grafana/download 直接下载安装包
+
+
+
+```shell
+
+tar xzvf grafana-enterprise-8.3.1.linux-amd64.tar.gz
+cd grafana-8.3.1
+
+# 默认端口是3000, 可以在default.ini中修改
+cp conf/defaults.ini conf/defaults.ini.bak
+vi conf/defaults.ini
+
+# 启动grafana.ini
+./bin/grafana-server &
+```
+
 
 
 ----
 
-#### 0x02 查询示例
+#### 02 查询示例
 
 
 
@@ -84,7 +102,7 @@ ORDER BY 1
 
 ----
 
-#### 0x03 显示格式
+#### 03 显示格式
 
 1. 表单里数字以Number格式显示时，可能会变成科学计数法，如果想显示全，可以考虑改成String；
 2. 时间那一列的格式，需要手动把`Time`改为`time`，否则显示怪怪的；
@@ -110,7 +128,7 @@ WHERE
 
 ---
 
-#### 0x04 Tips
+#### 04 Tips
 
 1. 如果有多个开发环境间需要创建一样的panel的话，可以使用Panel JSON功能；
 2. 权限控制：每一个Dashboards(Folder)设置中，可以通过把**Viewer删除 + Team的方式**进行权限控制；
@@ -121,9 +139,11 @@ WHERE
 
 
 
+#### 05 FAQ
+
 ----
 
-#### 0x05 重置密码
+##### 01 重置密码
 
 ```mysql
 find / -name "grafana.db"
@@ -143,7 +163,7 @@ update user set password = '59acf18b94d7eb0694c61e60ce44c110c7a683ac6a8f09580d62
 
 ---
 
-#### 0x06 解决grafana首次加载app.xxx.js过慢的问题
+##### 02 解决grafana首次加载app.xxx.js过慢的问题
 
 1. 找到grafana的安装目录。如果是在mac上使用brew安装的话，目录在 /usr/local/Cellar/graffana/6.5.1下面
 2. 找到index.html首页，参考目录：./share/grafana/public/views/index.html
@@ -156,7 +176,7 @@ update user set password = '59acf18b94d7eb0694c61e60ce44c110c7a683ac6a8f09580d62
 
 ------
 
-#### 0x07 解决时差问题
+##### 03 时差问题
 
 mysql通过date_sub() 减去8小时
 
@@ -173,11 +193,29 @@ ORDER BY create_time
 
 
 
+##### 04 import中间件仪表盘
+
+
+
+首先下载仪表盘的json, 常见的如下:
+
+1. [kafka](https://grafana.com/grafana/dashboards/7589)
+2. 
+
+
+
+然后导入到grafana中: 
+
+1. 主页 --> 左侧导航栏的+ --> Import --> Upload JSON file
+2. 
+
+
+
 
 
 ---
 
-#### 0x09 References
+#### 09 References
 
 1. [Using MySQL in Grafana](https://grafana.com/docs/features/datasources/mysql/)
 2. [Grafana 重置admin密码](https://blog.51cto.com/kexiaoke/2119814)
