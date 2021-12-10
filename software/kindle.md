@@ -32,6 +32,9 @@
 #### 03 使用calibre脱壳DRM导出到Boox中
 
 1. 安装calibre与plugin参考： https://github.com/apprenticeharper/DeDRM_tools/wiki/Exactly-how-to-remove-DRM#2-install-calibre
+   1. https://calibre-ebook.com/download 下载安装calibre
+   2. https://github.com/apprenticeharper/DeDRM_tools/releases 下载 DeDRM
+   3. Load plugin from file -> 加载DeDRM_Plugin.zip文件 -> File type下面, 选中DeDRM -> Customize plugin -> eInk Kindle ebooks -> 输入:  901309077372027T
 2. 转到z.cn，登录，然后管理我的[内容与设备](https://www.amazon.cn/hz/mycd/myx?ref_=ya_d_l_manage_kindle#/home/content/booksAll/dateDsc/)
 3. 找到要下载的书，点击『操作』按钮，在弹出的菜单中选择『通过电脑下载USB传输』，然后选择设备『KindleVoyage』
 4. 将下载的图书（*.azw3），拖入到calibre中

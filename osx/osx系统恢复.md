@@ -6,8 +6,9 @@
 
 1. bin和gitdir目录太大， 直接使用AirDrop或U盘copy
 3. 在~/bin/osx/services下面，有激活terminal等相关的apple script
-    * 打开Automator -> Utilities -> Run Apple Script
-    * 将activate-terminal.applescript的内容粘贴到里面，选择Workflow receives为no input，选择in any application
+    * 打开Automator -> 选择齿轮图标: 可能叫 Quick Action (旧版叫Service), 双击打开
+    * 左侧导航栏 -> Utilities -> Run Apple Script
+    * 将activate-terminal.applescript的内容粘贴到Run AppleScript的窗口中，选择Workflow receives为no input，选择in any application. 保存, 起个名字
     * 设置 -> keyboard -> shortcuts -> Services，设置快捷键
 4. 打开App Store，安装Xcode，否则像git这种都用不了。 安装xcode会很慢（3个小时？）
 4. 安装一系列命令行工具
@@ -27,6 +28,8 @@ brew install android-platform-tools
 brew install sequel-pro
 brew install shadowsocksx-ng
 
+# 在Finder中显示目录路径
+defaults write com.apple.finder _FXShowPosixPathInTitle -bool TRUE;killall Finder
 ```
 
 ----

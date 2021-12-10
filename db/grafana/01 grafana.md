@@ -45,7 +45,7 @@ docker run \
 ```shell
 
 tar xzvf grafana-enterprise-8.3.1.linux-amd64.tar.gz
-cd grafana-8.3.1
+cd grafana-8.2.7 # 最开始使用的是8.3.1, 有bug
 
 # 默认端口是3000, 可以在default.ini中修改
 cp conf/defaults.ini conf/defaults.ini.bak
@@ -200,7 +200,8 @@ ORDER BY create_time
 首先下载仪表盘的json, 常见的如下:
 
 1. [kafka](https://grafana.com/grafana/dashboards/7589)
-2. 
+2. [mongodb](https://grafana.com/grafana/dashboards/2583)
+3. [node_exporter](https://grafana.com/grafana/dashboards/1860)
 
 
 
