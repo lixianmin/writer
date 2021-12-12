@@ -56,9 +56,8 @@ sudo systemctl start docker
 sudo systemctl enable docker
 
 # 去这个位置查docker-compose的最新版本 https://github.com/docker/compose/releases
-sudo curl -L "https://github.com/docker/compose/releases/download/1.25.5/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+sudo curl -L "https://github.com/docker/compose/releases/download/v2.2.2/docker-compose-$(uname -s | tr A-Z a-z)-$(uname -m)" -o /usr/local/bin/docker-compose
 
-sudo chmod +x /usr/local/bin/docker-compose
 
 # 解决 Got permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock
 sudo chmod 666 /var/run/docker.sock
