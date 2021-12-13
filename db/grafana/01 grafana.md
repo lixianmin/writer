@@ -193,7 +193,7 @@ ORDER BY create_time
 
 
 
-##### 04 import中间件仪表盘
+##### 04 import仪表盘
 
 
 
@@ -202,6 +202,7 @@ ORDER BY create_time
 1. [kafka](https://grafana.com/grafana/dashboards/7589)
 2. [mongodb](https://grafana.com/grafana/dashboards/2583)
 3. [node_exporter](https://grafana.com/grafana/dashboards/1860)
+4. [elasticsearch](https://grafana.com/grafana/dashboards/6483/revisions)
 
 
 
