@@ -24,3 +24,14 @@ sudo xattr -rc /Applications/Kaleidoscope.app
 
 
 
+#### 03 命令行
+
+```shell
+
+
+# 格式化clipboard中的json串
+pbpaste | jq .
+
+
+```
+
