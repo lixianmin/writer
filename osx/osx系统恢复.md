@@ -23,6 +23,10 @@ brew install tig
 brew install wget
 brew install graphviz
 
+softwareupdate --all --install --force
+brew install fzf # https://github.com/junegunn/fzf
+
+
 # 以下是casks
 brew install android-platform-tools
 brew install sequel-pro
