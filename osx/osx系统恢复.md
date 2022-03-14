@@ -24,7 +24,11 @@ brew install wget
 brew install graphviz
 
 softwareupdate --all --install --force
-brew install fzf # https://github.com/junegunn/fzf
+brew install fzf 			# https://github.com/junegunn/fzf
+brew install fd	
+brew install bat			# https://github.com/sharkdp/bat
+brew install ripgrep	# https://github.com/BurntSushi/ripgrep
+
 
 
 # 以下是casks
