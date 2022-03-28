@@ -9,7 +9,11 @@
 eDQc/)_^C=qQ|n_/9/F5
 
 # 登录root
-su -
+sudo su
+#su -
+
+# 切换到work用户
+sudo -iu work
  
 # 加编辑权限
 #chmod u+w /etc/sudoers
