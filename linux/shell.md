@@ -101,6 +101,7 @@ echo "while true; do ls; sleep 1; done" | sh
 
 # 打印所有shell导出的变量
 export
+export LANG=en_US.UTF-8	# vi支持中文
 
 # 列出所有内置的命令及语法
 help
