@@ -217,7 +217,7 @@ git push --all --force
 
 ##### 06 git log中文乱码问题
 
-1. `$ echo $LANG;`如果输出结果为空，则执行 `export LANG="zh_CN.UTF-8"`
+1. `$ echo $LANG;`如果输出结果为空，则执行 `   export LANG="zh_CN.UTF-8"      `
 2. 如果还不能解决，则尝试修改git config：
 
 ```shell
