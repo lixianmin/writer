@@ -1,7 +1,7 @@
 
 
 ---
-#### 快捷键
+#### 01 快捷键
 
 
 | hotkey      | description          |
@@ -15,19 +15,32 @@
 
 
 ----
-#### golang设置
+#### 02 plugins
+
+##### 1 golang
+
 1. gocode set package-lookup-mode g
 
+ 
+
+|                              |                                                              |
+| ---------------------------- | ------------------------------------------------------------ |
+| reset client                 | 1. 支持curl, 代替postman<br />2. 文件格式为xxxx.http         |
+| cweijan.vscode-mysql-client2 | 1. mysql插件<br />2. 文件格式为xxx.sql<br />3. 必须先通过Open Query打开一个*.sql文件, 然后才能执行命令, 否则报错 |
+|                              |                                                              |
+|                              |                                                              |
 
 
----
-####  unity3d设置
+
+#####  2 unity3d设置
 
 1. .Net Core Tools
 2. C#
 3. C# Extensions
 4. Debugger for Unity
 5. Lua Coder Assist
+
+
 
 ----
 #### user settings
