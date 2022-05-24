@@ -227,7 +227,6 @@ min.compaction.lag.ms: 0
 
 1. [kafka-docker](https://hub.docker.com/r/wurstmeister/kafka/)
 2. [Kafka系列（四）Kafka消费者：从Kafka中读取数据](http://www.dengshenyu.com/%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F/2017/11/14/kafka-consumer.html)
-3. [Kafka重复消费和丢失数据研究](http://blog.zollty.com/b/archive/about-kafka-repeated-consumption-and-lost-data.html)
 4. [Twitter的分布式自增ID算法snowflake (Java版)](https://www.cnblogs.com/relucent/p/4955340.html)
 5. [kafka无消息丢失配置](https://www.jianshu.com/p/741c506cc3ff)
 6. [Kafka HA Kafka一致性重要机制之ISR](https://blog.csdn.net/qq_37502106/article/details/80271800)
