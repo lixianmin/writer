@@ -36,7 +36,6 @@ brew install bat			# https://github.com/sharkdp/bat
 brew install ripgrep	# https://github.com/BurntSushi/ripgrep
 
 
-
 # 以下是casks
 brew install android-platform-tools
 brew install sequel-pro
