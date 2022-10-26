@@ -36,10 +36,10 @@ brew install bat			# https://github.com/sharkdp/bat
 brew install ripgrep	# https://github.com/BurntSushi/ripgrep
 
 
-# 以下是casks
+# 以下是cask
 brew install android-platform-tools
-brew install sequel-pro
 brew install sequel-ace
+brew install kaleidoscope   # 试用版
 
 brew install shadowsocksx-ng
 

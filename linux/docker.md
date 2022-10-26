@@ -6,7 +6,7 @@ dock
 
 ##### 01 macos
 
-1. brew cask install docker，500M，直接下载：https://download.docker.com/mac/stable/Docker.dmg
+1. brew install --cask docker，500M，直接下载：https://download.docker.com/mac/stable/Docker.dmg
 2. 在  Perferences... -> Daemon -> Registry mirrors中添加镜像https://registry.docker-cn.com， 并重启
 
 
@@ -74,7 +74,9 @@ sudo chmod 666 /var/run/docker.sock
 
 |    命令                              |    描述           |
 | -------------------------------- | ------------- |
-| docker build -t exchange-ws.image . | build image   |
+| docker build -t lixianmin/golang-mini:latest . | build image，最后的.指Dockerfile的位置 |
+| docker push lixianmin/golang-mini:latest | 把build完成的image推到docker hub上去 |
+|  |  |
 | docker info | 打印docker信息 |
 | docker run -p 2745:2745 exchange-ws.bin | 运行image     |
 | docker logs [container-id] | 如果启动失败了，通过logs命令查看失败原因 |
