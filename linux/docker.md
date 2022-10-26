@@ -1,8 +1,8 @@
-
+dock
 
 ---
 
-#### 0x01 安装并启动
+#### 0x1 安装并启动
 
 ##### 01 macos
 
@@ -56,7 +56,7 @@ sudo systemctl start docker
 sudo systemctl enable docker
 
 # 去这个位置查docker-compose的最新版本 https://github.com/docker/compose/releases
-sudo curl -L "https://github.com/docker/compose/releases/download/v2.2.2/docker-compose-$(uname -s | tr A-Z a-z)-$(uname -m)" -o /usr/local/bin/docker-compose
+sudo curl -L "https://github.com/docker/compose/releases/download/v2.12.2/docker-compose-$(uname -s | tr A-Z a-z)-$(uname -m)" -o /usr/local/bin/docker-compose
 
 
 # 解决 Got permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock
@@ -66,7 +66,7 @@ sudo chmod 666 /var/run/docker.sock
 
 
 ----
-#### 0x02 常用命令
+#### 0x2 常用命令
 
 
 
@@ -77,6 +77,7 @@ sudo chmod 666 /var/run/docker.sock
 | docker build -t exchange-ws.image . | build image   |
 | docker info | 打印docker信息 |
 | docker run -p 2745:2745 exchange-ws.bin | 运行image     |
+| docker logs [container-id] | 如果启动失败了，通过logs命令查看失败原因 |
 |                                  |               |
 | docker ps -a                     | 显示所有进程  |
 | docker rm [container-id]         | 删除容器      |
@@ -97,7 +98,7 @@ docker-compose build
 docker-compose up -d
 
 # 启动/停止/重启container
-docker-comopose start/stop/restart
+docker-comopose start/ddf/restart
 
 # 停止
 docker-compose down
@@ -201,7 +202,7 @@ docker node demote hostname 	# 降级为worker节点
 
 -----
 
-#### 0x03 时区
+#### 0x3 时区
 
 1.  到目前为止仍然没有搞清楚时区的规则
 2. `--env TZ=Asia/Shanghai`，在sqoop把时间信息从mysql(datetime)导出到hive(bigint)时，发生了-8小时的问题，在某个docker中加入这个好使了；但是加入这个之后，发现某些docker中执行date返回的时间信息错了，不知道什么原因
@@ -211,7 +212,7 @@ docker node demote hostname 	# 降级为worker节点
 
 -----
 
-#### 0x04 docker-compose.yml
+#### 0x4 docker-compose.yml
 
 
 
@@ -243,7 +244,7 @@ services:
 
 ---
 
-#### 0x09 references
+#### 0x9 references
 
 1. [macOS 安装 Docker](https://yeasy.gitbooks.io/docker_practice/install/mac.html)
 2. [如何使用Docker部署Go Web应用程序](http://www.infoq.com/cn/articles/how-to-deploy-a-go-web-application-with-docker)
