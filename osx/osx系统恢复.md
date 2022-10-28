@@ -39,9 +39,13 @@ brew install ripgrep	# https://github.com/BurntSushi/ripgrep
 # 以下是cask
 brew install android-platform-tools
 brew install sequel-ace
-brew install kaleidoscope   # 试用版
 
-brew install shadowsocksx-ng
+# 还是使用破解版的kaleidoscope吧，其它的在git difftool两个分支的时候，都只能按每次弹出单个文件来比较，很麻烦
+#brew install p4v   # 代替收费的kaleidoscope
+#git config --global diff.tool p4merge
+#git config --global merge.tool p4merge
+
+#brew install shadowsocksx-ng
 
 # 在Finder中显示目录路径
 defaults write com.apple.finder _FXShowPosixPathInTitle -bool TRUE;killall Finder
