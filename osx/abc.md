@@ -32,6 +32,10 @@ sudo xattr -rc /Applications/Kaleidoscope.app
 # 格式化clipboard中的json串
 pbpaste | jq .
 
+# 启动 apache web server
+httpd -v
+sudo apachectl start	# 根目录在 /Library/WebServer/Documents
+sudo apachectl stop		
 
 ```
 
