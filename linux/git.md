@@ -83,7 +83,22 @@ git rm --cached filename | 删除远程的文件，但是保存本地的
 
 
 
-##### 06 git pull
+##### 06 git merge
+
+```shell
+git checkout dev
+git merge test
+git mergetool # 通过kaleidoscope解决冲突
+
+git commit -m "解决完冲突"
+git push
+git checkout test
+git merge dev
+```
+
+
+
+##### 07 git pull
 
 
 
@@ -93,7 +108,7 @@ git rm --cached filename | 删除远程的文件，但是保存本地的
 
 
 
-##### 07 git push
+##### 08 git push
 
 
 
@@ -105,7 +120,7 @@ git rm --cached filename | 删除远程的文件，但是保存本地的
 
 
 
-##### 08 git rebase
+##### 09 git rebase
 
 
 
@@ -125,7 +140,7 @@ git rm --cached filename | 删除远程的文件，但是保存本地的
 
 
 
-##### 09 git remote
+##### 10 git remote
 
 
 
@@ -138,7 +153,7 @@ git rm --cached filename | 删除远程的文件，但是保存本地的
 
 
 
-##### 10 git stash
+##### 11 git stash
 
 
 
