@@ -39,3 +39,15 @@ sudo apachectl stop
 
 ```
 
+
+
+#### 04 开启apache网页服务器
+
+```shell
+sudo apachectl start
+sudo apachectl stop
+
+文件在目录在： /Library/WebServer/Documents
+
+```
+

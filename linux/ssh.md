@@ -8,6 +8,9 @@ cat ~/.ssh/id_rsa.pub
 # 将自己的公钥copy到远程服务器，方便登陆
 ssh-copy-id root@{IP}
 
+# 如果证书是由远端生成的，则需要按以下方式登录
+ssh ubuntu@12.34.56.78 -i ubuntu.pem
+
 # 递归上传当前目录到服务器的指定目录
 rsync -av -e ssh --exclude='.git' --exclude='logs' . root@{IP}:/root/xmli/tour-words
 scp -r .  root@{IP}:/root/xmli/tour-words
