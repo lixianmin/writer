@@ -18,5 +18,8 @@ svn revert test.txt	# 回滚test.txt
 svn status					# 打印状态
 svn up							# 更新当前目录，在哪个目录执行就只更新哪个目录
 
+
+export SVN_EDITOR=vim
+svn propedit svn:ignore .
 ```
 
