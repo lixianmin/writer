@@ -30,7 +30,7 @@
 3. Tools → File Watchers，点击+，加入go fmt，设置文件保存时自动格式化
 4. 代码运行有可能需要设置working directory，位置在 Run → Edit Configrations → Go Build → Working Directory
 5. 解决`go list -m -json all`超时的问题：设置 Go → Go Mudules(vgo) → Vendoring mode
-5. vendor目录可以下断点: 在编译选项的go tool arguments中加入 `-mod vendor` 🔥
+5. vendor目录可以下断点: 编辑Run/Debug Configuration → Go Build → go tool arguments中加入 `-mod vendor` 🔥
 
 
 
