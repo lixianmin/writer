@@ -24,11 +24,12 @@
 ----
 #### 02 设置
 
-1. Appearance & Behaviour -> Appearance -> Use custom font，调整侧边栏字体
-2. Editor -> General -> Auto Import，设置自动导入
-3. Tools -> File Watchers，点击+，加入go fmt，设置文件保存时自动格式化
-4. 代码运行有可能需要设置working directory，位置在 Run -> Edit Configrations -> Go Build -> Working Directory
-5. 解决`go list -m -json all`超时的问题：设置 Go -> Go Mudules(vgo) -> Vendoring mode
+1. Appearance & Behaviour → Appearance → Use custom font，调整侧边栏字体
+1. Go→Go Modules→Enable Go modules integration→解决引用本项目module时，如果未使用全路径url地址，会提示找不到的问题
+2. Editor → General → Auto Import，设置自动导入
+3. Tools → File Watchers，点击+，加入go fmt，设置文件保存时自动格式化
+4. 代码运行有可能需要设置working directory，位置在 Run → Edit Configrations → Go Build → Working Directory
+5. 解决`go list -m -json all`超时的问题：设置 Go → Go Mudules(vgo) → Vendoring mode
 5. vendor目录可以下断点: 在编译选项的go tool arguments中加入 `-mod vendor` 🔥
 
 
