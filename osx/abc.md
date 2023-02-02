@@ -51,3 +51,8 @@ sudo apachectl stop
 
 ```
 
+
+
+#### 05 在recent文件列表中不显示某个目录的内容
+
+1. System Settings → Siri & Spotlight → Spotlight Privacy → 添加需要隐藏的文件夹
