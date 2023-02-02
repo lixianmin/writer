@@ -21,13 +21,12 @@
 # 安装homebrew，这里使用国内源
 /bin/zsh -c "$(curl -fsSL https://gitee.com/cunkai/HomebrewCN/raw/master/Homebrew.sh)"
 
-# 如果使用brew命令出现错误，请使用brew doctor命令解决
+# 如果使用brew命令出现错误，请使用brew doctor命令解决. 比如遇见：Error: Command failed with exit 128: git
 brew install htop
 brew install macvim
 brew install git  # 默认安装的git版本太低了, 可能不支持git ls-remote -q
 brew install tig
-brew install wget
-brew install graphviz
+brew install wget graphviz
 
 softwareupdate --all --install --force
 brew install fzf 			# https://github.com/junegunn/fzf
