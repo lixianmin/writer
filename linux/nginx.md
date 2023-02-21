@@ -2,10 +2,18 @@
 
 
 
-#### 1 常用命令
+#### 1 Basics
 
-1. yum install nginx
-2. vim /etc/nginx/nginx.conf 编辑conf文件
+##### 1 导论
+
+1. 反向代理, 7层负载
+2. 正向代理在client配置, 用于隐藏client; 反向代理在server配置, 用于隐藏server; 透明代理配置在网络中间设备上, 对双方都透明
+
+
+
+##### 2 常用命令
+
+1. vim /etc/nginx/nginx.conf 编辑conf文件
 2. python -m http.server 8000 在python3.x下启动一个测试用的http服务器
 
 
@@ -23,7 +31,7 @@
 
 
 
-#### 2 docker搭建nginx
+##### 3 docker搭建nginx
 
 ```shell
 docker pull nginx
@@ -47,26 +55,7 @@ docker rm 67e
 
 
 
-修改配置，在nginx.conf的http {} 中补以下配置：
-
-```
-# 显示目录
-autoindex on;
-# 显示文件大小
-autoindex_exact_size on;
-# 显示文件时间
-autoindex_localtime on;
-server{
-	  listen 8888;
-    server_name localhost ;
-	  # 本地文件路径
-	  root  /data;
-}
-```
-
-
-
-```
+```shell
 # 重新启动nginx
 docker run --name nginx -p 8888:8888  \
 	-v /home/ubuntu/etc/nginx/nginx.conf:/etc/nginx/nginx.conf \
@@ -80,7 +69,9 @@ docker run --name nginx -p 8888:8888  \
 
 
 
-#### 3 设置代理
+#### 2 常用模式
+
+##### 1 Reverse Proxy
 
 ```nginx
 stream {
@@ -98,14 +89,168 @@ stream {
 
 
 
-#### 4 重定向到443
+##### 2 Load Balancing
 
-1. 去[百度云](https://cloud.baidu.com/product/ssl.html)平台购买证书
-2. 创建实例的时候，选择 TrustAsia --> 域名型DV --> 单域名版，这样的证书不要钱
+```nginx
+upstream backend_servers {
+  	ip_hash;	# 基于ip的确定性路由
+    server backend1.example.com;
+    server backend2.example.com;
+    server backend3.example.com;
+}
+
+server {
+    listen 80;
+    server_name example.com;
+    location / {
+        proxy_pass http://backend_servers;
+        proxy_set_header Host $host;
+    }
+}
+
+```
+
+
+
+##### 3 SSL Termination
+
+```nginx
+server {
+  listen 443 ssl http2;
+  server_name example.com;
+  ssl_certificate /path/to/ssl/certificate;
+  ssl_certificate_key /path/to/ssl/key;
+
+  location / {
+    proxy_pass http://backend;
+  }
+}
+```
+
+
+
+##### 4 Rate Limiting
+
+
+
+```nginx
+# ip粒度限流
+http {
+  limit_req_zone $binary_remote_addr zone=one:10m rate=10r/s;
+  server {
+    listen 80;
+    server_name example.com;
+    location / {
+      limit_req zone=one burst=3;
+      proxy_pass http://backend_server;
+    }
+  }
+}
+```
+
+
+
+```nginx
+# uid粒度限流
+http {
+  # Define a map that extracts the "userid" part of the cookie
+  map $cookie_userid $userid {
+    default "";
+    ~^(?<id>[^;]+)(;.*)?$ $id;
+  }
+
+  # Use the "userid" variable in the rate limiting rules
+  limit_req_zone $userid zone=one:10m rate=1r/s;
+
+  server {
+    listen 80;
+
+    location / {
+      # Rate limit requests based on the "userid" variable
+      limit_req zone=one burst=5;
+      # other directives
+    }
+  }
+}
+
+```
 
 
 
 
+
+##### 5 动态缓存
+
+1. 以往我们习惯于将缓存放在golang服务器内,
+
+
+
+```nginx
+http {
+    proxy_cache_path /var/cache/nginx levels=1:2 keys_zone=my_cache:10m inactive=60m;
+    proxy_cache_valid 200 302 1s;	# 最小单位 1s
+    proxy_cache_valid 404     1m;
+
+    server {
+        listen 80;
+        server_name example.com;
+
+        location / {
+            proxy_pass http://backend_server;
+            proxy_cache my_cache;
+            proxy_cache_key "$scheme$request_method$host$request_uri";
+            proxy_cache_valid 200 302 10m;
+            proxy_cache_valid 404 1m;
+        }
+    }
+}
+```
+
+
+
+##### 6 File Server
+
+修改配置，在nginx.conf的http {} 中补以下配置：
+
+```nginx
+# 显示目录
+autoindex on;
+# 显示文件大小
+autoindex_exact_size on;
+# 显示文件时间
+autoindex_localtime on;
+server {
+	  listen 8888;
+    server_name localhost ;
+	  # 本地文件路径
+	  root  /data;
+}
+```
+
+
+
+##### 7 拒绝服务
+
+```nginx
+http {
+    ...
+    server {
+        ...
+        if ($load_average) {
+            set $overload 0;
+            if ($load_average > 0.9) {
+                set $overload 1;
+            }
+            if ($overload) {
+                return 503;
+            }
+        }
+        ...
+    }
+    ...
+}
+
+```
 
 
 
