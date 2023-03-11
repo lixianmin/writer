@@ -4,9 +4,9 @@
 
 ---
 
-#### 0x01 类型导论
+#### 01 Abstract
 
-
+##### 1 Basics
 
 | Type            | Notes                       |
 | --------------- | --------------------------- |
@@ -17,6 +17,8 @@
 | text            | unlimited length字符串      |
 
 
+
+##### 2 psql
 
 |                      |                          |      |
 | -------------------- | ------------------------ | ---- |
@@ -32,11 +34,19 @@
 
 
 
+##### 3 DataGrid
+
+| short key       | notes                                 |      |
+| --------------- | ------------------------------------- | ---- |
+| cmd+shift+alt+B | 选中table/index，查看table/index的DDL |      |
+| cmd+F6          | 选中table的任意部分，修改table        |      |
+| cmd+shift+L     | 打开console                           |      |
+
 
 
 ----
 
-#### 0x02 SQL语句
+#### 02 SQL语句
 
 
 
@@ -234,28 +244,27 @@ done
 
 ----
 
-#### 0x03 索引
+#### 03 索引
 
 
 
 1. 在先导列上的等值约束，加上第一个无等值约束列上的不等值约束，将被用于限制索引被扫描的部分
-2. hash索引只支持等值判断
+2. hash索引仅用于等值判断
 
 
 
 ```mysql
+-- 在name列创建hash索引
+CREATE INDEX idx_user_name ON user USING HASH(name);
+DROP INDEX idx_user_name;
 
--- 在title列创建hash索引
-CREATE INDEX events_title ON events USING HASH(title);
-
-DROP INDEX events_title;
 ```
 
 
 
 ---
 
-#### 0x04 Select
+#### 04 Select
 
 ##### 01. 常用
 
