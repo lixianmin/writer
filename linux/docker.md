@@ -1,13 +1,22 @@
-dock
-
 ---
 
-#### 0x1 安装并启动
+#### 01 Basics
 
-##### 01 macos
+##### 1 macos安装
 
-1. brew install --cask docker，500M，直接下载：https://download.docker.com/mac/stable/Docker.dmg
-2. 在  Perferences... -> Daemon -> Registry mirrors中添加镜像https://registry.docker-cn.com， 并重启
+```shell
+# brew install docker, 不要安装这个, 这个不能用, 必须安装桌面版的, 虽然大了10倍不止
+brew install --cask docker
+
+# 安装后启动, 然后会自己安装docker与docker-compose命令到命令行
+open /Applications/Docker.app
+
+# 执行 docker ps
+# 如果报: -bash: /opt/homebrew/bin/docker: No such file or directory
+# 则执行ln命令创建新的链接
+docker ps
+ln -s /usr/local/bin/docker /opt/homebrew/bin/docker
+```
 
 
 
@@ -33,7 +42,7 @@ ENTRYPOINT ["./exchange-ws-golang.bin"]
 
 
 
-##### 02 centos
+##### 2 centos
 
 1. 参考文档： https://docs.docker.com/engine/install/centos/
 
@@ -66,7 +75,7 @@ sudo chmod 666 /var/run/docker.sock
 
 
 ----
-#### 0x2 常用命令
+#### 02 常用命令
 
 
 
@@ -85,6 +94,7 @@ sudo chmod 666 /var/run/docker.sock
 | docker rm [container-id]         | 删除容器      |
 | docker rm  -f [container-id] | 强制删除多出来的容器 |
 | docker restart [container-id] | 重启容器 |
+| docker search logstash | 搜索名字带logstash的容器 |
 | docker stop [container-id] | 停止容器运行 |
 | docker exec -it [container-id] bash | 进入到容器的shell，进一步查看 |
 
@@ -204,7 +214,7 @@ docker node demote hostname 	# 降级为worker节点
 
 -----
 
-#### 0x3 时区
+#### 03 时区
 
 1.  到目前为止仍然没有搞清楚时区的规则
 2. `--env TZ=Asia/Shanghai`，在sqoop把时间信息从mysql(datetime)导出到hive(bigint)时，发生了-8小时的问题，在某个docker中加入这个好使了；但是加入这个之后，发现某些docker中执行date返回的时间信息错了，不知道什么原因
@@ -214,7 +224,7 @@ docker node demote hostname 	# 降级为worker节点
 
 -----
 
-#### 0x4 docker-compose.yml
+#### 04 docker-compose.yml
 
 
 
@@ -246,7 +256,7 @@ services:
 
 ---
 
-#### 0x9 references
+#### 09 references
 
 1. [macOS 安装 Docker](https://yeasy.gitbooks.io/docker_practice/install/mac.html)
 2. [如何使用Docker部署Go Web应用程序](http://www.infoq.com/cn/articles/how-to-deploy-a-go-web-application-with-docker)
