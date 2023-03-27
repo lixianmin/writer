@@ -35,10 +35,9 @@
 
 ```shell
 docker pull nginx
-docker run --name nginx -p 80:80 -d nginx
+docker run --rm --name nginx -p 80:80 -d nginx
 
 # 创建一些本机的配置目录
-mkdir -p /home/ubuntu/etc/nginx
 mkdir -p /home/ubuntu/etc/nginx/conf
 mkdir -p /home/ubuntu/etc/nginx/logs
 mkdir -p /home/ubuntu/data/nginx
@@ -50,18 +49,26 @@ docker cp 67e:/etc/nginx/conf.d     /home/ubuntu/etc/nginx/conf/
 
 # 停止和移除
 docker stop 67e
-docker rm 67e
 ```
 
 
 
 ```shell
 # 重新启动nginx
-docker run --name nginx -p 8888:8888  \
+docker run --rm --name nginx -p 8888:8888  \
 	-v /home/ubuntu/etc/nginx/nginx.conf:/etc/nginx/nginx.conf \
 	-v /home/ubuntu/etc/nginx/logs/:/var/log/nginx/ \
 	-v /home/ubuntu/etc/nginx/conf/:/etc/nginx/conf.d \
 	-v /home/ubuntu/data/nginx/:/data \
+	--privileged=true -d nginx
+	
+	
+	docker run --name nginx -p 80:80 -p 443:443  \
+	-v ~/me/docker/nginx/etc/nginx.conf:/etc/nginx/nginx.conf \
+	-v ~/me/docker/nginx/etc/logs/:/var/log/nginx/ \
+	-v ~/me/docker/nginx/etc/conf/:/etc/nginx/conf.d \
+	-v ~/me/docker/nginx/etc/ssl/:/etc/nginx/ssl \
+	-v ~/me/docker/nginx/data/:/data \
 	--privileged=true -d nginx
 ```
 
@@ -114,7 +121,11 @@ server {
 
 ##### 3 SSL Termination
 
+
+
 ```nginx
+
+# 以下是nginx的代码
 server {
   listen 443 ssl http2;
   server_name example.com;
