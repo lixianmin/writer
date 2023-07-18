@@ -90,6 +90,7 @@ sudo chmod 666 /var/run/docker.sock
 | docker run -p 2745:2745 exchange-ws.bin | 运行image     |
 | docker logs [container-id] | 如果启动失败了，通过logs命令查看失败原因 |
 |                                  |               |
+| docker cp openresty:/opt/bitnami/openresty/nginx/conf . | 启动容器后, 把容器中的conf复制到本地 |
 | docker ps -a                     | 显示所有进程  |
 | docker rm [container-id]         | 删除容器      |
 | docker rm  -f [container-id] | 强制删除多出来的容器 |
