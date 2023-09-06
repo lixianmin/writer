@@ -92,6 +92,7 @@ sudo chmod 666 /var/run/docker.sock
 |                                  |               |
 | docker cp openresty:/opt/bitnami/openresty/nginx/conf . | 启动容器后, 把容器中的conf复制到本地 |
 | docker ps -a                     | 显示所有进程  |
+| docker ps ----no-trunc | 显示进程完整的信息 |
 | docker rm [container-id]         | 删除容器      |
 | docker rm  -f [container-id] | 强制删除多出来的容器 |
 | docker restart [container-id] | 重启容器 |

@@ -30,12 +30,12 @@
 ##### 1 增大File Tree字体
 
 1. 打开Settings→Appearance→Open Theme Folder
-2. 找到你要修改的那个样式的xxx.css文件
+2. 找到你要修改的那个样式的xxx.css文件 (现在使用的github.css)
 3. 打开它, 在里面加入如下css, 你就发现sidebar的字体变大了. 这个css来自于Pixyll.css
 
 ```css
 #typora-sidebar {
-	font-size:1rem !important;
+	font-size:0.8rem !important;
 }
 
 .html-for-mac #typora-sidebar {
