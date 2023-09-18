@@ -99,6 +99,9 @@ sudo chmod 666 /var/run/docker.sock
 | docker search logstash | 搜索名字带logstash的容器 |
 | docker stop [container-id] | 停止容器运行 |
 | docker exec -it [container-id] bash | 进入到容器的shell，进一步查看 |
+|  |  |
+| docker stats --no-stream | 打印当前docker进程的cpu/mem/IO状态 |
+| docker update --cpus 2.5 [container-id] | 设置使用2.5个cpu |
 
 
 
