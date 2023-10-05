@@ -16,5 +16,8 @@ export NVM_DIR="$HOME/.nvm"
 # 创建虚拟环境
 nvm install 14.21.3
 nvm use 14.21.3
+nvm use default
+
+nvm ls # 列出当前环境列表
 ```
 
