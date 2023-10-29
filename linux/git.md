@@ -14,6 +14,8 @@
 git config --global user.email "lixianmin@live.cn"
 git config --global user.name "lixianmin"
 git config --global branch.autosetuprebase always
+
+git config --global credential.helper store
 ```
 
 
