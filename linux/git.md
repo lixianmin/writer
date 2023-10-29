@@ -15,7 +15,8 @@ git config --global user.email "lixianmin@live.cn"
 git config --global user.name "lixianmin"
 git config --global branch.autosetuprebase always
 
-git config --global credential.helper store
+git config --global credential.helper store			# 每次上传都需要输入用户名密码的问题
+git config --global --add core.filemode false		# mac与windows共享代码库时，因为filemode改变导致文件需要重新上传的问题
 ```
 
 
