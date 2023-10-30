@@ -36,7 +36,20 @@
 
 
 -------------
-#### 03 重置VM Options相关的错误
+#### 03 [WSL调试](https://zhuanlan.zhihu.com/p/378437571)
+
+1. goland安装在windows上，使用的是windows上安装的go的sdk
+2. Settings→Build, Execution, Deployment→Run Targets→新建一个WSL的Target：
+   1. Go Executable→ /usr/local/go/bin
+   2. GOPATH→ /home/xmli/go
+3. 正常编辑Go Build的配置→Run On选WSL
+   1. 项目本身，需要安装在windows上，而不是在wsl中，否则在Go Build这个配置页面看不到Run on:这个下拉菜单框
+
+
+
+---
+
+#### 04 重置VM Options相关的错误
 
 ```shell
 # 把二进制文件拖到命令行里执行，会打印VM Options相关的信息
