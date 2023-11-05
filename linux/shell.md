@@ -95,6 +95,7 @@ du -md 2 | sort -rn
 du -h --max-depth=2
 # 显示当前目录下所有entry的大小
 du -sh *
+du -hd 1
 
 # 每隔1秒，执行一次
 echo "while true; do ls; sleep 1; done" | sh
