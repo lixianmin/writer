@@ -5,6 +5,7 @@
 ```shell
 # 安装
 brew install protobuf
+sudo apt install -y protobuf-compiler
 
 # 如果link失败, 则需要强写
 brew link --overwrite protobuf
