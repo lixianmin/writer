@@ -43,7 +43,21 @@ ENTRYPOINT ["./exchange-ws-golang.bin"]
 
 
 
-##### 2 centos
+##### 2 ubuntu
+
+```shell
+sudo apt install docker.io
+sudo apt install docker-compose
+
+# 把当前用户加入docker用户组
+sudo groupadd docker
+sudo usermod -aG docker ${USER}
+su -s ${USER}
+```
+
+
+
+##### 3 centos
 
 1. 参考文档： https://docs.docker.com/engine/install/centos/
 
