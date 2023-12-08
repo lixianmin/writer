@@ -2,6 +2,10 @@
 
 
 
+##### macos
+
+
+
 ```shell
 # 安装conda
 brew install miniconda
@@ -15,9 +19,26 @@ export NVM_DIR="$HOME/.nvm"
 
 # 创建虚拟环境
 nvm install 14.21.3
+nvm uninstall 14.21.3
+nvm alias default 20.10.0	# 设置默认版本
 nvm use 14.21.3
 nvm use default
 
-nvm ls # 列出当前环境列表
+corepack enable	# 似乎可以直接启用yarn
+nvm ls 			# 列出当前node版本
+nvm ls-remote   # 列出可用的node版本
+```
+
+
+
+##### ubuntu
+
+
+
+```shell
+# https://github.com/nvm-sh/nvm
+
+wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+
 ```
 

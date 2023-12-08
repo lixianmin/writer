@@ -2,7 +2,9 @@
 
 
 
+#### 1 Basics
 
+##### 01 Basics
 
 ```shell
 
@@ -25,3 +27,9 @@ export SVN_EDITOR=vim
 svn propedit svn:ignore .
 ```
 
+
+
+##### 02 lock导致无法更新
+
+1. 右键→Tortoise SVN→Settings→General→Context Menu→Win 11 Context Menu→勾选Clean up..
+2. 然后: 右键→Tortoise SVN→Clean up..
