@@ -63,7 +63,8 @@ echo "hello" >&2
 # centos：创建用户，然后修改密码，然后加入wheel组以获取sudoer权限
 adduser work
 passwd work
-usermod -a -G wheel work
+usermod -a -G wheel work  # centos
+usermod -a -G sudo work	  # ubuntu
 
 
 # bc执行计算
