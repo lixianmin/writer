@@ -261,6 +261,19 @@ export LESSCHARSET=utf-8
 
 
 
+##### 07 wsl配置winmerge
+
+```shell
+
+git config --global diff.tool winmerge
+git config --global difftool.winmerge.cmd "'C:\Progra~1\WinMerge\WinMergeU.exe' -e -u \$LOCAL \$REMOTE"
+git config --global difftool.prompt false
+```
+
+
+
+
+
 ---
 
 #### 03 tig [vim版]
