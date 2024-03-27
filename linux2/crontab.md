@@ -72,6 +72,18 @@ man flock
 
 
 
+```shell
+# 如果要在crontab中执行sudo命令, 则要使用
+sudo crontab -e
+
+# 加入以下指令, 每10分钟同步一次系统时间
+*/10 * * * * sudo hwclock -s
+```
+
+
+
+
+
 -------
 
 #### 2 安装
