@@ -119,11 +119,11 @@ git merge dev
 
 
 
-| 命令                                         | 详解                                                         |
-| -------------------------------------------- | ------------------------------------------------------------ |
-| git push --delete origin review              | 删除远程的名字为review的分支                                 |
-| git push -f origin(远程) head(源):test(目标) | 1. 将当前分支强推到远程的test分支上。<br />2. 需要到gitlab的设置 --> 版本库 --> 保护分支，把相关分支摘出来 |
-| git push -f personal head:dev                | 1. 强推本地head到personal/dev分支，简记为PHD<br />2. 需要到gitlab的设置 --> 版本库 --> 保护分支，把相关分支摘出来 |
+| 命令                                      | 详解                                                                               |
+| --------------------------------------- | -------------------------------------------------------------------------------- |
+| git push --delete origin review         | 删除远程的名字为review的分支                                                                |
+| git push -f origin(远程) head(源):test(目标) | 1. 将当前分支强推到远程的test分支上。<br />2. 需要到gitlab的设置 --> 版本库 --> 保护分支，把相关分支摘出来            |
+| git push -f personal head:dev           | 1. 强推本地head到personal/dev分支，简记为PHD<br />2. 需要到gitlab的设置 --> 版本库 --> 保护分支，把相关分支摘出来 |
 
 
 

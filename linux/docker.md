@@ -103,6 +103,8 @@ sudo chmod 666 /var/run/docker.sock
 | docker info                                             | 打印docker信息                     |
 | docker run -p 2745:2745 exchange-ws.bin                 | 运行image                        |
 | docker run --rm image.bin                               | 运行结束后自动删除container             |
+| docker login                                            | 登录                             |
+| docker logout                                           | 登出                             |
 | docker logs [container-id]                              | 如果启动失败了，通过logs命令查看失败原因         |
 |                                                         |                                |
 | docker cp openresty:/opt/bitnami/openresty/nginx/conf . | 启动容器后, 把容器中的conf复制到本地          |
