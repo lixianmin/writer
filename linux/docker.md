@@ -52,7 +52,7 @@ sudo apt install docker-compose
 # 把当前用户加入docker用户组
 sudo groupadd docker
 sudo usermod -aG docker ${USER}
-su -s ${USER}
+su -s ${USER}　　# 如果不成功，可以重启电脑
 ```
 
 

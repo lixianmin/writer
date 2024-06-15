@@ -8,6 +8,14 @@
 
 
 
+|          |                   |      |
+| -------- | ----------------- | ---- |
+| win+箭头 | 窗口最大化， 分屏 |      |
+|          |                   |      |
+|          |                   |      |
+
+
+
 #### 2 apt
 
 1. 使用`apt install abc.deb`而不是`dpkg -i abc.deb`， 安装软折的时候， 可以自动安装信赖
@@ -94,6 +102,60 @@ ln -s /usr/share/rime-data/wubi86.* ~/.config/fcitx/rime/
 \- schema: wubi86
 
 重启fcitx，F4选择五笔/五笔拼音，OK。
+
+
+
+##### 4 unity hub
+
+以下是修正unity hub安装后打不开界面的问题
+
+If you installed using the `.deb` distribution, your Unity Hub binary file is probably at `/opt/unityhub/unityhub-bin`, so you can just copy-paste the snippet to `/etc/apparmor.d/unityhub`
+
+You should open it as root/with sudo and your text editor of preference:
+`sudo vim /etc/apparmor.d/unityhub`
+or
+`sudo nano /etc/apparmor.d/unityhub`
+or
+`sudo gedit /etc/apparmor.d/unityhub`
+and so on...
+
+Write the following (assuming your Unity Hub binary path is `/opt/unityhub/unityhub-bin` which is the default, otherwise change it to match your binary path):
+
+```
+abi <abi/4.0>,
+include <tunables/global>
+
+profile unityhub /opt/unityhub/unityhub-bin flags=(unconfined) {
+  userns,
+
+  # Site-specific additions and overrides. See local/README for details.
+  include if exists <local/unityhub>
+}
+```
+
+Now restart apparmor
+`sudo systemctl restart apparmor.service`
+Check if everything is ok
+`systemctl status apparmor.service`
+If so then you are good to go!
+
+
+
+以下是修正打开了界面，但界面是空的问题
+
+1. ubuntu 22.04/24.04上面， 因为缺少libssl的旧版本库一直下载不到license, [解决方案](https://gist.github.com/joulgs/c8a85bb462f48ffc2044dd878ecaa786)  ： `
+   wget http://archive.ubuntu.com/ubuntu/pool/main/o/openssl/libssl1.1_1.1.0g-2ubuntu4_amd64.deb `
+   `sudo apt install libssl1.1_1.1.0g-2ubuntu4_amd64.deb` 
+2. 然后重启ubuntu
+
+
+
+```shell
+# 增加adb的访问权限
+chmod +x ~/Unity/Hub/Editor/2022.3.30f1c1/Editor/Data/PlaybackEngines/AndroidPlayer/SDK/platform-tools/adb
+```
+
+
 
 
 
