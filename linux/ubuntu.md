@@ -18,7 +18,7 @@
 
 #### 2 apt
 
-1. 使用`apt install abc.deb`而不是`dpkg -i abc.deb`， 安装软折的时候， 可以自动安装信赖
+1. 使用`apt install ./abc.deb`而不是`dpkg -i ./abc.deb`， 安装软折的时候， 可以自动安装依赖
 
 
 
