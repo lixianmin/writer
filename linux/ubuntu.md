@@ -60,9 +60,10 @@ apt purge xxx.deb
 ##### 2 cisco anyconnect
 
 1. 这个玩意去cisco官网下载不靠谱，需要登录，但我无法正常注册，废了两个邮箱了
-2. 从这里下载：https://vpn.nic.in/
-3. 解压后进入anyconnect-linux64-4.10.07061/vpn目录， 执行 `bash vpn_install.sh`
-4. 安装成功扗， 从系统菜单中启动， 正常使用
+2. 从这里下载5.13版本：https://blog.1e3.ru/cisco-anyconnect-vpn-installation-for-windows-linux-mac-os/
+3. 从这里下载4.10版本：https://vpn.nic.in/
+4. 解压后进入anyconnect-linux64-4.10.07061/vpn目录， 执行 `bash vpn_install.sh`
+5. 安装成功扗， 从系统菜单中启动， 正常使用
 
 
 
