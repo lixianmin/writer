@@ -57,6 +57,32 @@ su -s ${USER}　　# 如果不成功，可以重启电脑
 
 
 
+
+
+```
+报错：  
+raise DockerException(
+    docker.errors.DockerException: Error while fetching server API version: HTTPConnection.request() got an unexpected keyword argument 'chunked'
+
+方案：
+https://www.reddit.com/r/docker/comments/198a0nl/whats_the_latest_with_dockercompose/
+
+$ sudo apt remove docker-compose
+$ wget https://github.com/docker/compose/releases/download/v2.24.1/docker-compose-linux-x86_64
+$ chmod +x docker-compose-linux-x86_64
+$ sudo mv docker-compose-linux-x86_64 /usr/bin/docker-compose
+$ docker-compose --version
+Docker Compose version v2.24.1
+$ sudo docker-compose up
+# Things work
+```
+
+
+
+
+
+
+
 ##### 3 centos
 
 1. 参考文档： https://docs.docker.com/engine/install/centos/
