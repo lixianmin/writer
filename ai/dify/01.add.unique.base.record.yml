@@ -1,0 +1,552 @@
+app:
+  description: ''
+  icon: "\U0001F916"
+  icon_background: '#FFEAD5'
+  mode: workflow
+  name: add.unique.base.record
+kind: app
+version: 0.1.0
+workflow:
+  features:
+    file_upload:
+      image:
+        enabled: false
+        number_limits: 3
+        transfer_methods:
+        - local_file
+        - remote_url
+    opening_statement: ''
+    retriever_resource:
+      enabled: true
+    sensitive_word_avoidance:
+      enabled: false
+    speech_to_text:
+      enabled: false
+    suggested_questions: []
+    suggested_questions_after_answer:
+      enabled: false
+    text_to_speech:
+      enabled: false
+      language: ''
+      voice: ''
+  graph:
+    edges:
+    - data:
+        isInIteration: false
+        sourceType: code
+        targetType: tool
+      id: 1721553496302-source-1721553569221-target
+      source: '1721553496302'
+      sourceHandle: source
+      target: '1721553569221'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: start
+        targetType: tool
+      id: 1721553339152-source-1721553453188-target
+      source: '1721553339152'
+      sourceHandle: source
+      target: '1721553453188'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: tool
+        targetType: code
+      id: 1721553453188-source-1721553672406-target
+      source: '1721553453188'
+      sourceHandle: source
+      target: '1721553672406'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: code
+        targetType: code
+      id: 1721553672406-source-1721553496302-target
+      source: '1721553672406'
+      sourceHandle: source
+      target: '1721553496302'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: tool
+        targetType: code
+      id: 1721553569221-source-1721553942293-target
+      source: '1721553569221'
+      sourceHandle: source
+      target: '1721553942293'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: code
+        targetType: if-else
+      id: 1721553942293-source-1721553990412-target
+      source: '1721553942293'
+      sourceHandle: source
+      target: '1721553990412'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: if-else
+        targetType: tool
+      id: 1721553990412-true-1721554018130-target
+      source: '1721553990412'
+      sourceHandle: 'true'
+      target: '1721554018130'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: if-else
+        targetType: code
+      id: 1721553990412-false-1721554698214-target
+      source: '1721553990412'
+      sourceHandle: 'false'
+      target: '1721554698214'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: tool
+        targetType: code
+      id: 1721554018130-source-17215547618610-target
+      source: '1721554018130'
+      sourceHandle: source
+      target: '17215547618610'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: code
+        targetType: end
+      id: 17215547618610-source-1721554144317-target
+      source: '17215547618610'
+      sourceHandle: source
+      target: '1721554144317'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: code
+        targetType: end
+      id: 1721554698214-source-1721554796463-target
+      source: '1721554698214'
+      sourceHandle: source
+      target: '1721554796463'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    nodes:
+    - data:
+        desc: ''
+        selected: false
+        title: Start
+        type: start
+        variables:
+        - label: app_id
+          max_length: 48
+          options: []
+          required: true
+          type: text-input
+          variable: app_id
+        - label: app_secret
+          max_length: 48
+          options: []
+          required: true
+          type: text-input
+          variable: app_secret
+        - label: doc_url
+          max_length: 256
+          options: []
+          required: true
+          type: text-input
+          variable: doc_url
+        - label: doc_field_name
+          max_length: 48
+          options: []
+          required: true
+          type: text-input
+          variable: doc_field_name
+        - label: doc_field_value
+          max_length: 48
+          options: []
+          required: true
+          type: text-input
+          variable: doc_field_value
+        - label: doc_record_json
+          max_length: 4096
+          options: []
+          required: true
+          type: paragraph
+          variable: doc_record_json
+      height: 219
+      id: '1721553339152'
+      position:
+        x: 30
+        y: 309.5
+      positionAbsolute:
+        x: 30
+        y: 309.5
+      selected: true
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        desc: ''
+        provider_id: feishu_base
+        provider_name: feishu_base
+        provider_type: builtin
+        selected: false
+        title: Get Tenant Access Token
+        tool_configurations: {}
+        tool_label: Get Tenant Access Token
+        tool_name: get_tenant_access_token
+        tool_parameters:
+          app_id:
+            type: mixed
+            value: '{{#1721553339152.app_id#}}'
+          app_secret:
+            type: mixed
+            value: '{{#1721553339152.app_secret#}}'
+        type: tool
+      height: 53
+      id: '1721553453188'
+      position:
+        x: 334
+        y: 309.5
+      positionAbsolute:
+        x: 334
+        y: 309.5
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        code: "import re\n\ndef main(feishu_doc_url) -> dict:\n    match = re.search(r'base/([^?]+)\\\
+          ?table=([^&]+)', feishu_doc_url)\n\n    if match:\n        app_token = match.group(1)\n\
+          \        table_id = match.group(2)\n        return {\n            \"app_token\"\
+          : app_token,\n            \"table_id\": table_id\n        }\n"
+        code_language: python3
+        desc: extract app_token and table_id
+        outputs:
+          app_token:
+            children: null
+            type: string
+          table_id:
+            children: null
+            type: string
+        selected: false
+        title: Code
+        type: code
+        variables:
+        - value_selector:
+          - '1721553339152'
+          - doc_url
+          variable: feishu_doc_url
+      height: 83
+      id: '1721553496302'
+      position:
+        x: 942
+        y: 309.5
+      positionAbsolute:
+        x: 942
+        y: 309.5
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        desc: ''
+        provider_id: feishu_base
+        provider_name: feishu_base
+        provider_type: builtin
+        selected: false
+        title: List Base Records
+        tool_configurations: {}
+        tool_label: List Base Records
+        tool_name: list_base_records
+        tool_parameters:
+          Authorization:
+            type: mixed
+            value: '{{#1721553672406.tenant_access_token#}}'
+          app_token:
+            type: mixed
+            value: '{{#1721553496302.app_token#}}'
+          filter_condition:
+            type: mixed
+            value: '{"conjunction":"and","conditions":[{"field_name":"{{#1721553339152.doc_field_name#}}","operator":"is","value":["{{#1721553339152.doc_field_value#}}"]}]}'
+          page_size:
+            type: constant
+            value: '10'
+          page_token:
+            type: mixed
+            value: ''
+          sort_condition:
+            type: mixed
+            value: ''
+          table_id:
+            type: mixed
+            value: '{{#1721553496302.table_id#}}'
+        type: tool
+      height: 53
+      id: '1721553569221'
+      position:
+        x: 1246
+        y: 309.5
+      positionAbsolute:
+        x: 1246
+        y: 309.5
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        code: "import json\n\ndef main(text) -> dict:\n    data = json.loads(text)\n\
+          \    return {\n        \"tenant_access_token\": data['tenant_access_token'],\n\
+          \    }\n"
+        code_language: python3
+        desc: ''
+        outputs:
+          tenant_access_token:
+            children: null
+            type: string
+        selected: false
+        title: 'Code: tenant_access_token'
+        type: code
+        variables:
+        - value_selector:
+          - '1721553453188'
+          - text
+          variable: text
+      height: 53
+      id: '1721553672406'
+      position:
+        x: 638
+        y: 309.5
+      positionAbsolute:
+        x: 638
+        y: 309.5
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        code: "import json\n\ndef main(text) -> dict:\n    obj = json.loads(text)\n\
+          \    total = obj['data']['total']\n    return {\"total\": total }"
+        code_language: python3
+        desc: ''
+        outputs:
+          total:
+            children: null
+            type: number
+        selected: false
+        title: 'Code : get total'
+        type: code
+        variables:
+        - value_selector:
+          - '1721553569221'
+          - text
+          variable: text
+      height: 53
+      id: '1721553942293'
+      position:
+        x: 1550
+        y: 309.5
+      positionAbsolute:
+        x: 1550
+        y: 309.5
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        cases:
+        - case_id: 'true'
+          conditions:
+          - comparison_operator: '='
+            id: 02285b49-b0be-428c-879f-efd7379189d9
+            value: '0'
+            varType: number
+            variable_selector:
+            - '1721553942293'
+            - total
+          id: 'true'
+          logical_operator: and
+        desc: ''
+        selected: false
+        title: IF/ELSE
+        type: if-else
+      height: 125
+      id: '1721553990412'
+      position:
+        x: 1854
+        y: 309.5
+      positionAbsolute:
+        x: 1854
+        y: 309.5
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        desc: ''
+        provider_id: feishu_base
+        provider_name: feishu_base
+        provider_type: builtin
+        selected: false
+        title: Add Base Record
+        tool_configurations: {}
+        tool_label: Add Base Record
+        tool_name: add_base_record
+        tool_parameters:
+          Authorization:
+            type: mixed
+            value: '{{#1721553672406.tenant_access_token#}}'
+          app_token:
+            type: mixed
+            value: '{{#1721553496302.app_token#}}'
+          fields:
+            type: mixed
+            value: '{{#1721553339152.doc_record_json#}}'
+          table_id:
+            type: mixed
+            value: '{{#1721553496302.table_id#}}'
+        type: tool
+      height: 53
+      id: '1721554018130'
+      position:
+        x: 2158
+        y: 309.5
+      positionAbsolute:
+        x: 2158
+        y: 309.5
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        desc: ''
+        outputs:
+        - value_selector:
+          - '17215547618610'
+          - add_count
+          variable: add_count
+        selected: false
+        title: End
+        type: end
+      height: 89
+      id: '1721554144317'
+      position:
+        x: 2766
+        y: 309.5
+      positionAbsolute:
+        x: 2766
+        y: 309.5
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        code: "\ndef main() -> dict:\n    return {\n        \"add_count\": 0,\n  \
+          \  }\n"
+        code_language: python3
+        desc: ''
+        outputs:
+          add_count:
+            children: null
+            type: number
+        selected: false
+        title: 'Code : add_count_0'
+        type: code
+        variables: []
+      height: 53
+      id: '1721554698214'
+      position:
+        x: 2158
+        y: 420.5
+      positionAbsolute:
+        x: 2158
+        y: 420.5
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        code: "\ndef main() -> dict:\n    return {\n        \"add_count\": 1,\n  \
+          \  }\n"
+        code_language: python3
+        desc: ''
+        outputs:
+          add_count:
+            children: null
+            type: number
+        selected: false
+        title: 'Code : add_count_1'
+        type: code
+        variables: []
+      height: 53
+      id: '17215547618610'
+      position:
+        x: 2462
+        y: 309.5
+      positionAbsolute:
+        x: 2462
+        y: 309.5
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        desc: ''
+        outputs:
+        - value_selector:
+          - '1721554698214'
+          - add_count
+          variable: add_count
+        selected: false
+        title: End 2
+        type: end
+      height: 89
+      id: '1721554796463'
+      position:
+        x: 2462
+        y: 402.5
+      positionAbsolute:
+        x: 2462
+        y: 402.5
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    viewport:
+      x: 196
+      y: -13.999999999999943
+      zoom: 0.7
