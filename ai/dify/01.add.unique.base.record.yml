@@ -17,7 +17,7 @@ workflow:
         - remote_url
     opening_statement: ''
     retriever_resource:
-      enabled: true
+      enabled: false
     sensitive_word_avoidance:
       enabled: false
     speech_to_text:
@@ -171,12 +171,12 @@ workflow:
           required: true
           type: text-input
           variable: app_secret
-        - label: doc_url
+        - label: doc_table_url
           max_length: 256
           options: []
           required: true
           type: text-input
-          variable: doc_url
+          variable: doc_table_url
         - label: doc_field_name
           max_length: 48
           options: []
@@ -195,7 +195,7 @@ workflow:
           required: true
           type: paragraph
           variable: doc_record_json
-      height: 219
+      height: 218
       id: '1721553339152'
       position:
         x: 30
@@ -207,7 +207,7 @@ workflow:
       sourcePosition: right
       targetPosition: left
       type: custom
-      width: 244
+      width: 243
     - data:
         desc: ''
         provider_id: feishu_base
@@ -226,7 +226,7 @@ workflow:
             type: mixed
             value: '{{#1721553339152.app_secret#}}'
         type: tool
-      height: 53
+      height: 52
       id: '1721553453188'
       position:
         x: 334
@@ -238,14 +238,14 @@ workflow:
       sourcePosition: right
       targetPosition: left
       type: custom
-      width: 244
+      width: 243
     - data:
         code: "import re\n\ndef main(feishu_doc_url) -> dict:\n    match = re.search(r'base/([^?]+)\\\
           ?table=([^&]+)', feishu_doc_url)\n\n    if match:\n        app_token = match.group(1)\n\
           \        table_id = match.group(2)\n        return {\n            \"app_token\"\
           : app_token,\n            \"table_id\": table_id\n        }\n"
         code_language: python3
-        desc: extract app_token and table_id
+        desc: ''
         outputs:
           app_token:
             children: null
@@ -254,14 +254,14 @@ workflow:
             children: null
             type: string
         selected: false
-        title: Code
+        title: 'Code: extract app_token and table_id'
         type: code
         variables:
         - value_selector:
           - '1721553339152'
-          - doc_url
-          variable: feishu_doc_url
-      height: 83
+          - doc_table_url
+          variable: doc_table_url
+      height: 52
       id: '1721553496302'
       position:
         x: 942
@@ -273,7 +273,7 @@ workflow:
       sourcePosition: right
       targetPosition: left
       type: custom
-      width: 244
+      width: 243
     - data:
         desc: ''
         provider_id: feishu_base
@@ -307,7 +307,7 @@ workflow:
             type: mixed
             value: '{{#1721553496302.table_id#}}'
         type: tool
-      height: 53
+      height: 52
       id: '1721553569221'
       position:
         x: 1246
@@ -319,7 +319,7 @@ workflow:
       sourcePosition: right
       targetPosition: left
       type: custom
-      width: 244
+      width: 243
     - data:
         code: "import json\n\ndef main(text) -> dict:\n    data = json.loads(text)\n\
           \    return {\n        \"tenant_access_token\": data['tenant_access_token'],\n\
@@ -338,7 +338,7 @@ workflow:
           - '1721553453188'
           - text
           variable: text
-      height: 53
+      height: 52
       id: '1721553672406'
       position:
         x: 638
@@ -350,7 +350,7 @@ workflow:
       sourcePosition: right
       targetPosition: left
       type: custom
-      width: 244
+      width: 243
     - data:
         code: "import json\n\ndef main(text) -> dict:\n    obj = json.loads(text)\n\
           \    total = obj['data']['total']\n    return {\"total\": total }"
@@ -368,7 +368,7 @@ workflow:
           - '1721553569221'
           - text
           variable: text
-      height: 53
+      height: 52
       id: '1721553942293'
       position:
         x: 1550
@@ -380,7 +380,7 @@ workflow:
       sourcePosition: right
       targetPosition: left
       type: custom
-      width: 244
+      width: 243
     - data:
         cases:
         - case_id: 'true'
@@ -398,7 +398,7 @@ workflow:
         selected: false
         title: IF/ELSE
         type: if-else
-      height: 125
+      height: 124
       id: '1721553990412'
       position:
         x: 1854
@@ -410,7 +410,7 @@ workflow:
       sourcePosition: right
       targetPosition: left
       type: custom
-      width: 244
+      width: 243
     - data:
         desc: ''
         provider_id: feishu_base
@@ -435,7 +435,7 @@ workflow:
             type: mixed
             value: '{{#1721553496302.table_id#}}'
         type: tool
-      height: 53
+      height: 52
       id: '1721554018130'
       position:
         x: 2158
@@ -447,7 +447,7 @@ workflow:
       sourcePosition: right
       targetPosition: left
       type: custom
-      width: 244
+      width: 243
     - data:
         desc: ''
         outputs:
@@ -458,7 +458,7 @@ workflow:
         selected: false
         title: End
         type: end
-      height: 89
+      height: 88
       id: '1721554144317'
       position:
         x: 2766
@@ -470,7 +470,7 @@ workflow:
       sourcePosition: right
       targetPosition: left
       type: custom
-      width: 244
+      width: 243
     - data:
         code: "\ndef main() -> dict:\n    return {\n        \"add_count\": 0,\n  \
           \  }\n"
@@ -480,11 +480,11 @@ workflow:
           add_count:
             children: null
             type: number
-        selected: false
+        selected: true
         title: 'Code : add_count_0'
         type: code
         variables: []
-      height: 53
+      height: 52
       id: '1721554698214'
       position:
         x: 2158
@@ -492,11 +492,11 @@ workflow:
       positionAbsolute:
         x: 2158
         y: 420.5
-      selected: false
+      selected: true
       sourcePosition: right
       targetPosition: left
       type: custom
-      width: 244
+      width: 243
     - data:
         code: "\ndef main() -> dict:\n    return {\n        \"add_count\": 1,\n  \
           \  }\n"
@@ -510,7 +510,7 @@ workflow:
         title: 'Code : add_count_1'
         type: code
         variables: []
-      height: 53
+      height: 52
       id: '17215547618610'
       position:
         x: 2462
@@ -522,7 +522,7 @@ workflow:
       sourcePosition: right
       targetPosition: left
       type: custom
-      width: 244
+      width: 243
     - data:
         desc: ''
         outputs:
@@ -533,7 +533,7 @@ workflow:
         selected: false
         title: End 2
         type: end
-      height: 89
+      height: 88
       id: '1721554796463'
       position:
         x: 2462
@@ -545,7 +545,7 @@ workflow:
       sourcePosition: right
       targetPosition: left
       type: custom
-      width: 244
+      width: 243
     - data:
         author: lixianmin
         desc: ''
@@ -593,12 +593,12 @@ workflow:
       positionAbsolute:
         x: 30
         y: 598.4657997129045
-      selected: true
+      selected: false
       sourcePosition: right
       targetPosition: left
       type: custom-note
       width: 500
     viewport:
-      x: 233
-      y: -16
-      zoom: 0.7
+      x: -2263.2412571036557
+      y: -48.612021038319426
+      zoom: 1.2187707886145744
