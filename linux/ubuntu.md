@@ -57,7 +57,21 @@ apt purge xxx.deb
 
 
 
-##### 2 cisco anyconnect
+##### 2 安装显卡驱动
+
+```shell
+
+# 开机时一直按住del，进入bios设置，关闭security boot
+# 安装驱动（不需要vpn）
+sudo apt install nvidia-driver-550
+nvidia-smi
+```
+
+
+
+
+
+##### ３cisco anyconnect
 
 1. 这个玩意去cisco官网下载不靠谱，需要登录，但我无法正常注册，废了两个邮箱了
 2. 从这里下载5.13版本：https://blog.1e3.ru/cisco-anyconnect-vpn-installation-for-windows-linux-mac-os/
@@ -67,7 +81,7 @@ apt purge xxx.deb
 
 
 
-##### 3 rime五笔输入法
+##### ４ rime五笔输入法
 
 
 
@@ -104,7 +118,7 @@ ln -s /usr/share/rime-data/wubi86.* ~/.config/fcitx/rime/
 
 
 
-##### 4 unity hub
+##### 5 unity hub
 
 以下是修正unity hub安装后打不开界面的问题
 
