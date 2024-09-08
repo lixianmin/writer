@@ -34,43 +34,46 @@
 ##### 3 docker搭建nginx
 
 ```shell
-docker pull nginx
-docker run --rm --name nginx -p 80:80 -d nginx
+docker run --rm --name nginx -p 80:80 -d nginx:alpine
+export DATA=/home/xmli/me/data
 
 # 创建一些本机的配置目录
-mkdir -p /home/ubuntu/etc/nginx/conf
-mkdir -p /home/ubuntu/etc/nginx/logs
-mkdir -p /home/ubuntu/data/nginx
+mkdir -p $DATA/nginx/etc/nginx/conf
+mkdir -p $DATA/nginx/etc/nginx/logs
+mkdir -p $DATA/nginx/data/nginx/html
 
 # 将容器中的相应文件copy到刚创建的管理目录中
-# 注：docker cp 67e 中的 "67e" 为容器ID前缀，只要唯一就好了
-docker cp 67e:/etc/nginx/nginx.conf /home/ubuntu/etc/nginx/
-docker cp 67e:/etc/nginx/conf.d     /home/ubuntu/etc/nginx/conf/
+# 注：docker cp abc 中的 "abc" 为容器ID前缀，只要唯一就好了
+docker cp abc:/etc/nginx/nginx.conf $DATA/nginx/etc/nginx/
+docker cp abc:/etc/nginx/conf.d     $DATA/nginx/etc/nginx/conf/
 
 # 停止和移除
-docker stop 67e
-```
+docker stop abc
 
-
-
-```shell
 # 重新启动nginx
-docker run --rm --name nginx -p 8888:8888  \
-	-v /home/ubuntu/etc/nginx/nginx.conf:/etc/nginx/nginx.conf \
-	-v /home/ubuntu/etc/nginx/logs/:/var/log/nginx/ \
-	-v /home/ubuntu/etc/nginx/conf/:/etc/nginx/conf.d \
-	-v /home/ubuntu/data/nginx/:/data \
-	--privileged=true -d nginx
+docker run --name nginx -p 80:80 \
+	-v $DATA/nginx/etc/nginx/nginx.conf:/etc/nginx/nginx.conf \
+	-v $DATA/nginx/etc/nginx/logs/:/var/log/nginx/ \
+	-v $DATA/nginx/etc/nginx/conf/:/etc/nginx/conf.d \
+	-v $DATA/nginx/data/:/data \
+	--privileged=true -d nginx:alpine
 	
 	
-	docker run --name nginx -p 80:80 -p 443:443  \
-	-v ~/me/docker/nginx/etc/nginx.conf:/etc/nginx/nginx.conf \
-	-v ~/me/docker/nginx/etc/logs/:/var/log/nginx/ \
-	-v ~/me/docker/nginx/etc/conf/:/etc/nginx/conf.d \
-	-v ~/me/docker/nginx/etc/ssl/:/etc/nginx/ssl \
-	-v ~/me/docker/nginx/data/:/data \
-	--privileged=true -d nginx
+# 部署静态html: 在http这个section中加入以下内容
+    server {
+        listen 80; 
+        server_name localhost;
+
+        root /data/html;
+        index index.html;
+
+        location / { 
+            try_files $uri $uri/ /index.html;
+        }   
+    }   
 ```
+
+
 
 参考： https://www.cnblogs.com/chuyi-/p/15201718.html
 
