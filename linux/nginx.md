@@ -38,39 +38,31 @@ docker run --rm --name nginx -p 80:80 -d nginx:alpine
 export DATA=/home/xmli/me/data
 
 # 创建一些本机的配置目录
-mkdir -p $DATA/nginx/etc/nginx/conf
-mkdir -p $DATA/nginx/etc/nginx/logs
-mkdir -p $DATA/nginx/data/nginx/html
+mkdir -p $DATA/nginx/etc
+mkdir -p $DATA/nginx/logs
+mkdir -p $DATA/nginx/data/html
 
 # 将容器中的相应文件copy到刚创建的管理目录中
 # 注：docker cp abc 中的 "abc" 为容器ID前缀，只要唯一就好了
-docker cp abc:/etc/nginx/nginx.conf $DATA/nginx/etc/nginx/
-docker cp abc:/etc/nginx/conf.d     $DATA/nginx/etc/nginx/conf/
+docker cp 69:/etc/nginx/. $DATA/nginx/etc
 
 # 停止和移除
 docker stop abc
 
 # 重新启动nginx
 docker run --name nginx -p 80:80 \
-	-v $DATA/nginx/etc/nginx/nginx.conf:/etc/nginx/nginx.conf \
-	-v $DATA/nginx/etc/nginx/logs/:/var/log/nginx/ \
-	-v $DATA/nginx/etc/nginx/conf/:/etc/nginx/conf.d \
-	-v $DATA/nginx/data/:/data \
+	-v $DATA/nginx/etc:/etc/nginx \
+	-v $DATA/nginx/logs/:/var/log/nginx/ \
+	-v $DATA/nginx/data/:/data/ \
 	--privileged=true -d nginx:alpine
 	
 	
-# 部署静态html: 在http这个section中加入以下内容
-    server {
-        listen 80; 
-        server_name localhost;
+# 部署静态html
+vi $DATA/nginx/etc/conf.d/default.conf
+# 将root一行改为:
+root /data/html;
 
-        root /data/html;
-        index index.html;
-
-        location / { 
-            try_files $uri $uri/ /index.html;
-        }   
-    }   
+docker restart xxx
 ```
 
 
