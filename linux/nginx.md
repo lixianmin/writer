@@ -50,6 +50,7 @@ docker cp abc:/etc/nginx/. $DATA/nginx/etc
 docker stop abc
 
 # 重新启动nginx
+# 如果没有定义$DATA是启动不了的
 docker run -d --name nginx -p 80:80 \
 	-v $DATA/nginx/etc:/etc/nginx \
 	-v $DATA/nginx/logs/:/var/log/nginx/ \
