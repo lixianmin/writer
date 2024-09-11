@@ -44,7 +44,7 @@ mkdir -p $DATA/nginx/data/html
 
 # 将容器中的相应文件copy到刚创建的管理目录中
 # 注：docker cp abc 中的 "abc" 为容器ID前缀，只要唯一就好了
-docker cp 69:/etc/nginx/. $DATA/nginx/etc
+docker cp abc:/etc/nginx/. $DATA/nginx/etc
 
 # 停止和移除
 docker stop abc
