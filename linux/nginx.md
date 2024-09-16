@@ -55,7 +55,7 @@ docker run -d --name nginx -p 80:80 \
 	-v $DATA/nginx/etc:/etc/nginx \
 	-v $DATA/nginx/logs/:/var/log/nginx/ \
 	-v $DATA/nginx/data/:/data/ \
-	--privileged=true -d nginx:alpine
+	--privileged=true --restart unless-stopped nginx:alpine
 	
 	
 # 部署静态html
