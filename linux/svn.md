@@ -33,3 +33,13 @@ svn propedit svn:ignore .
 
 1. 右键→Tortoise SVN→Settings→General→Context Menu→Win 11 Context Menu→勾选Clean up..
 2. 然后: 右键→Tortoise SVN→Clean up..
+
+
+
+##### 03 切分支
+
+1. 在Tortoise SVN中, 选中要切分支的目录, 比如 metadata
+2. 右键点击metadata目录, 找到Branch/tag..
+3. 在弹出的dialog中, 找到To path, 填写入新的名字, 如: metadata2
+   1. 如果需要创建多级目录, 可能需要选中 create intermediate folders
+4. 点击OK
