@@ -36,6 +36,7 @@
 ```shell
 docker run --rm --name nginx -p 80:80 -d nginx:alpine
 export DATA=/home/xmli/me/data
+export DATA=/home/ubuntu/me/data
 
 # 创建一些本机的配置目录
 mkdir -p $DATA/nginx/etc
@@ -51,7 +52,7 @@ docker stop abc
 
 # 重新启动nginx
 # 如果没有定义$DATA是启动不了的
-docker run -d --name nginx -p 80:80 \
+docker run -d --name nginx --network=host_network -p 80:80 -p 443:443\
 	-v $DATA/nginx/etc:/etc/nginx \
 	-v $DATA/nginx/logs/:/var/log/nginx/ \
 	-v $DATA/nginx/data/:/data/ \
@@ -123,7 +124,7 @@ server {
 
 # 以下是nginx的代码
 server {
-  listen 443 ssl http2;
+  listen 443 ssl;
   server_name example.com;
   ssl_certificate /path/to/ssl/certificate;
   ssl_certificate_key /path/to/ssl/key;
