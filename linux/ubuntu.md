@@ -170,5 +170,18 @@ chmod +x ~/Unity/Hub/Editor/2022.3.30f1c1/Editor/Data/PlaybackEngines/AndroidPla
 
 
 
+##### 6 安装mx keys键盘的usb
+
+1. 去这个地址，安装solaar: https://launchpad.net/~solaar-unifying/+archive/ubuntu/stable
+
+```shell
+sudo add-apt-repository ppa:solaar-unifying/stable
+sudo apt update
+sudo apt install solaar
+sudo solaar
+
+然后在弹出的界面中配对mx keys
+```
+
 
 
