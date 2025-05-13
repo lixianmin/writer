@@ -10,6 +10,16 @@
 
 
 
+```shell
+
+docker run --name redis_alpine -p 6379:6379 --restart unless-stopped -d redis:alpine
+
+```
+
+
+
+
+
 | Command                              | Description                  |
 | ------------------------------------ | ---------------------------- |
 | dbsize                               | key总数                      |
