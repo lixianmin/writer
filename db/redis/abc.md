@@ -12,8 +12,11 @@
 
 ```shell
 
-docker run --name redis_alpine -p 6379:6379 --restart unless-stopped -d redis:alpine
+# redis stack
+docker run -d --name redis_stack -p 6379:6379 -p 8001:8001 --restart unless-stopped redis/redis-stack:latest
 
+# minimal
+docker run -d --name redis_alpine -p 6379:6379 --restart unless-stopped redis:alpine
 ```
 
 
