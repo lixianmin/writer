@@ -124,30 +124,31 @@ sudo chmod 666 /var/run/docker.sock
 
 ##### docker basics
 
-| 命令                                                      | 描述                             |
-| ------------------------------------------------------- | ------------------------------ |
-| docker build -t lixianmin/golang-mini:latest .          | build image，最后的.指Dockerfile的位置 |
-| docker push lixianmin/golang-mini:latest                | 把build完成的image推到docker hub上去   |
-|                                                         |                                |
-| docker info                                             | 打印docker信息                     |
-| docker run -p 2745:2745 exchange-ws.bin                 | 运行image                        |
-| docker run --rm image.bin                               | 运行结束后自动删除container             |
-| docker login                                            | 登录                             |
-| docker logout                                           | 登出                             |
-| docker logs [container-id]                              | 如果启动失败了，通过logs命令查看失败原因         |
-|                                                         |                                |
-| docker cp openresty:/opt/bitnami/openresty/nginx/conf . | 启动容器后, 把容器中的conf复制到本地          |
-| docker ps -a                                            | 显示所有进程                         |
-| docker ps ----no-trunc                                  | 显示进程完整的信息                      |
-| docker rm [container-id]                                | 删除容器                           |
-| docker rm  -f [container-id]                            | 强制删除多出来的容器                     |
-| docker restart [container-id]                           | 重启容器                           |
-| docker search logstash                                  | 搜索名字带logstash的容器               |
-| docker stop [container-id]                              | 停止容器运行                         |
-| docker exec -it [container-id] bash                     | 进入到容器的shell，进一步查看              |
-|                                                         |                                |
-| docker stats --no-stream                                | 打印当前docker进程的cpu/mem/IO状态      |
-| docker update --cpus 2.5 [container-id]                 | 设置使用2.5个cpu                    |
+| 命令                                                    | 描述                                           |
+| ------------------------------------------------------- | ---------------------------------------------- |
+| docker build -t lixianmin/golang-mini:latest .          | build image，最后的.指Dockerfile的位置         |
+| docker push lixianmin/golang-mini:latest                | 把build完成的image推到docker hub上去           |
+|                                                         |                                                |
+| docker info                                             | 打印docker信息                                 |
+| docker run -p 2745:2745 exchange-ws.bin                 | 运行image                                      |
+| docker run --rm image.bin                               | 运行结束后自动删除container                    |
+| docker login                                            | 登录                                           |
+| docker logout                                           | 登出                                           |
+| docker logs [container-id]                              | 如果启动失败了，通过logs命令查看失败原因       |
+|                                                         |                                                |
+| docker cp openresty:/opt/bitnami/openresty/nginx/conf . | 启动容器后, 把容器中的conf复制到本地           |
+| docker ps -a                                            | 显示所有进程                                   |
+| docker ps ----no-trunc                                  | 显示进程完整的信息                             |
+| docker rm [container-id]                                | 删除容器                                       |
+| docker rm  -f [container-id]                            | 强制删除多出来的容器                           |
+| docker restart [container-id]                           | 重启容器                                       |
+| docker search logstash                                  | 搜索名字带logstash的容器                       |
+| docker stop [container-id]                              | 停止容器运行                                   |
+| docker system prune -a -f --volumes                     | 彻底清理磁盘（包括停止的容器、未引用的镜像等） |
+| docker exec -it [container-id] bash                     | 进入到容器的shell，进一步查看                  |
+|                                                         |                                                |
+| docker stats --no-stream                                | 打印当前docker进程的cpu/mem/IO状态             |
+| docker update --cpus 2.5 [container-id]                 | 设置使用2.5个cpu                               |
 
 
 
