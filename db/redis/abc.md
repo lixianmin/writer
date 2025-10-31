@@ -12,10 +12,10 @@
 
 ```shell
 
-# redis stack
+# redis stack: 约900M
 docker run -d --name redis_stack -p 6379:6379 -p 8001:8001 --restart unless-stopped redis/redis-stack:latest
 
-# minimal
+# minimal: 约60M
 docker run -d --name redis_alpine -p 6379:6379 --restart unless-stopped redis:alpine
 ```
 
