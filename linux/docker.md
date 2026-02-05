@@ -49,7 +49,9 @@ ENTRYPOINT ["./exchange-ws-golang.bin"]
 sudo apt install docker.io
 # sudo apt install docker-compose --> cant use
 
-wget https://github.com/docker/compose/releases/download/v2.24.1/docker-compose-linux-x86_64
+# wget https://github.com/docker/compose/releases/download/v5.0.2/docker-compose-linux-x86_64
+wget https://unity.tos-cn-beijing.volces.com/rim.res/uploads/docker-compose-linux-x86_64
+
 chmod +x docker-compose-linux-x86_64
 sudo mv docker-compose-linux-x86_64 /usr/bin/docker-compose
 
