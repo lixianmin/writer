@@ -6,7 +6,7 @@
 ##### 01 基础命令
 
 1. HEAD表示当前版本， HEAD^是前一个版本，HEAD^^是前前一个版本, 或者用 HEAD@{5}这样的格式
-2. git config --global pull.rebase true 设置[pull下的rebase=true
+2. `git config --global pull.rebase true` 设置pull下的rebase=true
 
 
 
@@ -14,12 +14,12 @@
 git config --global user.email "lixianmin@live.cn"
 git config --global user.name "lixianmin"
 git config --global branch.autosetuprebase always
-
+git config --global core.quotepath false				# diff时无法显示中文路径
 git config --global credential.helper store			# 每次上传都需要输入用户名密码的问题
-git config --global core.autocrlf true				# mac与windows共享代码库时, 忽略因\r\n改变导致文件需要重新上传的问题
-git config --add core.filemode false				# mac与windows共享代码库时，因为filemode改变导致文件需要重新上传的问题, 不支持global?
+git config --global core.editor "vim"						# 设置vim为编辑器
 
-git config --global core.editor "vim"				# 设置vim为编辑器
+git config --global core.autocrlf true				# mac与windows共享代码库时, 忽略因\r\n改变导致文件需要重新上传的问题
+git config --add core.filemode false					# mac与windows共享代码库时，因为filemode改变导致文件需要重新上传的问题, 不支持global?
 ```
 
 

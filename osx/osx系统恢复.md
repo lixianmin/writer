@@ -37,9 +37,13 @@ brew install ripgrep	# https://github.com/BurntSushi/ripgrep
 
 # 以下是cask
 brew install android-platform-tools
-brew install sequel-ace	# mysql客户端
-#brew install obsidian		# markdown编辑器
-brew install orbstack		# 代替docker desktop
+#brew install sequel-ace		# mysql客户端
+#brew install obsidian			# markdown编辑器
+brew install orbstack				# 代替docker desktop
+
+# 调整小米显示器的分辨率：Display->System Configuraion and Flexible Scaling->Enable flxible scaling-> apply|activate->
+# Settings -> Displays -> Show all resolutions -> 2546x1066 (似乎所有文字清晰的分辨率都有对应的low resolution版本)
+brew install BetterDisplay
 
 # 还是使用破解版的kaleidoscope吧，其它的在git difftool两个分支的时候，都只能按每次弹出单个文件来比较，很麻烦
 #brew install p4v   # 代替收费的kaleidoscope

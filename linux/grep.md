@@ -5,6 +5,8 @@
 
     ```shell
     grep -rin --include=*.didi tga . 
+    
+    rg -it didi tga
     ```
 
     在当前目录递归搜索包含tga的所有didi文件，忽略大小写，另一条功能类型的命令为find . -name '*.didi' | xargs grep 'tga'；
@@ -13,6 +15,7 @@
 
     ```shell
     grep -ri --include=*.{xml,lua} "_bag\.ab” .
+    rg -it go -t md  指令
     ```
 
     - —include是可以匹配多个文件类型的
@@ -22,6 +25,7 @@
 
     ```shell
     adb logcat | egrep -i ‘unity|debug|crash’
+    adb logcat | rg -i 'unity|debug|crash'
     ```
 
 4. 查找文件内容符合pattern的文件并打开
